@@ -2,8 +2,14 @@
  tanks
  */
 
+const game = {
+  currentPlayer: 1,
+};
+
 let NUM_PLAYERS = 2;
 const PLAYER_COLORS = ["null", "red", "yellow", "purple,", "blue", "black"];
+const TURRET_INCREMENT = 5;
+const terrainArray = [];
 
 //////////////////////////////////////
 class Tank {
@@ -23,6 +29,14 @@ class Tank {
 }
 
 //////////////////////////////////////
+// CLEAR CANVAS
+const clearCanvas = function (ctx) {
+  // console.log(ctx.canvas);
+  // const ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // clear canvas
+};
+
+//////////////////////////////////////
 // returns random int >= low && < high
 const getRandomInt = function (low, high) {
   return Math.floor(Math.random() * (high - low) + low);
@@ -35,43 +49,60 @@ function degreesToRadians(degrees) {
 }
 
 //////////////////////////////////////
-// draws random elevation ground and sky
-// ctx = canvas 2d context to draw on
+// generate random elevation ground and sky
 // numSlopes = how many changes in elevatio per screen width
-// steepness = %
-const drawBackground = function (ctx, width, height, numSlopes, steepnessPercent) {
+// steepness = % (currently not implemented)
+const generateTerrain = function (width, height, numSlopes, steepnessPercent) {
+  if (numSlopes === 0) {
+    terrainArray[0] = [0, height * 0.7];
+    terrainArray[1] = [width, height * 0.7];
+    return;
+  }
+  // let startPoint = [0, getRandomInt(height * 0.55, height)]; // TODO need to integrate steepness%
+  // let previousPoint = startPoint;
+  // let nextPoint = [];
+
+  // random hills
+  // for (let i = 0; i <= numSlopes; i++) {
+  //   nextPoint[0] = width * (i / numSlopes);
+  //   nextPoint[1] = getRandomInt(height * 0.55, height);
+  //   ctx.lineTo(nextPoint[0], nextPoint[1]);
+  //   previousPoint = nextPoint;
+  // }
+};
+
+//////////////////////////////////////
+// draws sky and stored terrain array
+const drawBackground = function () {
   // SKY
   ctx.beginPath();
-  ctx.rect(0, 0, width, height);
+  ctx.rect(0, 0, ctx.canvas.width, ctx.canvas.height);
   ctx.fillStyle = "skyblue";
   ctx.fill();
 
   // GROUND
   ctx.beginPath();
-  if (numSlopes === 0) {
-    // ctx.beginPath();
-    ctx.rect(0, height * 0.7, width, height);
-    ctx.fillStyle = "#00EE00";
-    ctx.fill();
-    return;
-  }
-  let startPoint = [0, getRandomInt(height * 0.55, height)]; // TODO need to integrate steepness%
-  let previousPoint = startPoint;
+  // if (numSlopes === 0) {
+  //   // ctx.beginPath();
+  //   ctx.rect(0, height * 0.7, width, height);
+  //   ctx.fillStyle = "#00EE00";
+  //   ctx.fill();
+  //   return;
+  // }
+
+  let previousPoint = terrainArray[0]; // TODO need to integrate steepness%
   let nextPoint = [];
 
   // random hills
-  for (let i = 0; i <= numSlopes; i++) {
-    nextPoint[0] = width * (i / numSlopes);
-    nextPoint[1] = getRandomInt(height * 0.55, height);
-    ctx.lineTo(nextPoint[0], nextPoint[1]);
-    previousPoint = nextPoint;
+  for (let i = 0; i < terrainArray.length; i++) {
+    ctx.lineTo(terrainArray[i][0], terrainArray[i][1]);
   }
   // connect polygon
-  ctxL.lineTo(width, height); // to bottom right corner
-  ctxL.lineTo(0, canvasLandscape.height); // to bottom left corner
-  ctxL.closePath(); // back to start
-  ctxL.fillStyle = "#00EE00";
-  ctxL.fill();
+  ctx.lineTo(canvas.width, canvas.height); // to bottom right corner
+  ctx.lineTo(0, canvas.height); // to bottom left corner
+  ctx.closePath(); // back to start
+  ctx.fillStyle = "#00EE00";
+  ctx.fill();
 };
 
 //////////////////////////////////////
@@ -88,60 +119,78 @@ const drawPlayers = function (ctx, tankObjects) {
     ctx.lineWidth = 5;
     ctx.stroke();
 
-    // TURRET
-    // rotate turret based on the tank center
-    // 0deg all the way left, 180deg all the way right
-    ctx.save();
-    ctx.translate(tank.x, tank.y);
-    ctx.rotate(degreesToRadians(tank.turret.angle));
-    ctx.beginPath();
-    ctx.moveTo(-35, 0);
-    ctxL.lineTo(-10, 0);
-    ctx.lineWidth = 5;
-    ctx.stroke();
-    ctx.restore();
-    console.log(tank);
+    // DRAW TURRET
+    drawTurret(tank);
   }
 };
 
 //////////////////////////////////////
-// handle keyboard input
+// DRAW TURRET
+const drawTurret = function (tank) {
+  // rotate turret based on the tank center
+  // 0deg all the way left, 180deg all the way right
+  ctx.save();
+  ctx.translate(tank.x, tank.y);
+  ctx.rotate(degreesToRadians(tank.turret.angle));
+  ctx.beginPath();
+  ctx.moveTo(-35, 0);
+  ctx.lineTo(-10, 0);
+  ctx.lineWidth = 5;
+  ctx.stroke();
+  ctx.restore();
+  // console.log(tank);
+};
+
+//////////////////////////////////////
+// ADJUST TURRET
+const adjustTurret = function (amount) {
+  let angle = (tankObjects[game.currentPlayer - 1].turret.angle + amount) % 180;
+  if (angle < 0) {
+    angle = 180;
+  }
+
+  tankObjects[0].turret.angle = angle;
+  clearCanvas(ctx);
+  drawBackground();
+  drawPlayers(ctx, tankObjects);
+};
+
+//////////////////////////////////////
+// HANDLE KEYBOARD INPUT
 // https://stackoverflow.com/questions/5597060/detecting-arrow-key-presses-in-javascript
 const listenKeys = function (e) {
   e = e || window.event; // TODO figure out what this is all about
 
   // TODO Figure out why == not ===
+
+  // LEFT ARROW DECREASES ANGLE (counter clockwise across top only)
   if (e.keyCode == "37") {
-    console.log("left");
+    adjustTurret(TURRET_INCREMENT * -1);
+
+    // RIGHT ARROW INCREASES ANGLE ( clockwise across top only)
   } else if (e.keyCode == "39") {
-    console.log("right");
+    adjustTurret(TURRET_INCREMENT);
   }
+
   // if (e.keyCode == "38") {
   //   // up arrow
   // } else if (e.keyCode == "40") {
   //   // down arrow
-  // } else if (e.keyCode == "37") {
-  //   // left arrow
-  // } else if (e.keyCode == "39") {
-  //   // right arrow
   // }
 };
 
 /// SCREEN LOAD
-const canvasLandscape = document.querySelector("#landscape");
-canvasLandscape.height = 400;
-canvasLandscape.width = canvasLandscape.height * 2;
-const ctxL = canvasLandscape.getContext("2d");
-
-// DRAW SKY AND GROUND
-// 0 as numSlopes bypasses random function and just adds a rectangle
-drawBackground(ctxL, canvasLandscape.width, canvasLandscape.height, 0, 1);
-
-// SECOND CANVAS FOR MOVING GAME ELEMENTS
-const canvas = document.querySelector("#gameplay");
+const canvas = document.querySelector("#canvas");
 canvas.height = 400;
 canvas.width = canvas.height * 2;
-const ctx = canvasLandscape.getContext("2d");
+const ctx = canvas.getContext("2d");
+
+// RANDOMLY GENERATE TERRAIN AND STORE TO ARRAY FOR REFRESHES
+// 0 as numSlopes bypasses random function and just adds a rectangle
+generateTerrain(canvas.width, canvas.height, 0, 1);
+
+// DRAW SKY AND GROUND
+drawBackground();
 
 // CREATE TANK OBJECTS
 const tankObjects = [];
