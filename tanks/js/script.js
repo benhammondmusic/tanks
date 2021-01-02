@@ -13,7 +13,7 @@ class Tank {
     this.playerNumber = playerNumber;
     this.hitpoints = 1;
     this.turret = {
-      angle: 45,
+      angle: getRandomInt(10, 170),
     };
   }
 }
@@ -23,6 +23,12 @@ class Tank {
 const getRandomInt = function (low, high) {
   return Math.floor(Math.random() * (high - low) + low);
 };
+
+//////////////////////////////////////
+// http://www.dhtmlgoodies.com/tutorials/canvas-clock/
+function degreesToRadians(degrees) {
+  return (Math.PI / 180) * degrees;
+}
 
 //////////////////////////////////////
 // draws random elevation ground and sky
@@ -39,7 +45,7 @@ const drawBackground = function (ctx, width, height, numSlopes, steepnessPercent
   // GROUND
   ctx.beginPath();
   if (numSlopes === 0) {
-    ctx.beginPath();
+    // ctx.beginPath();
     ctx.rect(0, height * 0.7, width, height);
     ctx.fillStyle = "#00EE00";
     ctx.fill();
@@ -74,26 +80,41 @@ const ctxL = canvasLandscape.getContext("2d");
 // 0 as numSlopes bypasses random function and just adds a rectangle
 drawBackground(ctxL, canvasLandscape.width, canvasLandscape.height, 0, 1);
 
-// CREATE TANK OBJECTS
-const tankObjects = [];
-for (i = 1; i <= NUM_PLAYERS; i++) {
-  const tank = new Tank(100 * i, 300, i);
-  tankObjects.push(tank);
-}
-
 // SECOND CANVAS FOR MOVING GAME ELEMENTS
 const canvas = document.querySelector("#gameplay");
 canvas.height = 400;
 canvas.width = canvas.height * 2;
 const ctx = canvasLandscape.getContext("2d");
 
-// DRAW ALL TANKS
+// CREATE TANK OBJECTS
+const tankObjects = [];
+for (i = 1; i <= NUM_PLAYERS; i++) {
+  // space out tanks evenly along horizontal
+  const tank = new Tank((canvas.width * i) / (NUM_PLAYERS + 1), canvas.height * 0.7, i);
+  tankObjects.push(tank);
+}
+
+// DRAW TANKS
 console.log(tankObjects);
 for (let tank of tankObjects) {
-  // console.log("draw tank", tank);
+  // TANK BODY
   ctx.beginPath();
   ctx.arc(tank.x, tank.y, 10, 0, 2 * Math.PI);
-  // tank.playerNumber === 1 ? (ctx.fillStyle = "red") : (ctx.fillStyle = "yellow");
+  // cycle thru colors array CONSTANT for fill
   ctx.fillStyle = PLAYER_COLORS[tank.playerNumber];
   ctx.fill();
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 5;
+  ctx.stroke();
+
+  // TURRET
+  // rotate turret based on the tank center
+  // 0deg all the way left, 180deg all the way right
+  ctx.translate(tank.x, tank.y);
+  ctx.rotate(degreesToRadians(tank.turret.angle));
+  ctx.beginPath();
+  ctx.moveTo(-35, 0);
+  ctxL.lineTo(-10, 0);
+  ctx.lineWidth = 5;
+  ctx.stroke();
 }
