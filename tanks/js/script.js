@@ -2,6 +2,9 @@
  tanks
  */
 
+let NUM_PLAYERS = 2;
+const PLAYER_COLORS = ["null", "red", "orange", "yellow", "purple,", "black"];
+
 //////////////////////////////////////
 class Tank {
   constructor(x, y, playerNumber) {
@@ -62,7 +65,6 @@ const drawBackground = function (ctx, width, height, numSlopes, steepnessPercent
 };
 
 /// SCREEN LOAD
-
 const canvasLandscape = document.querySelector("#landscape");
 canvasLandscape.height = 400;
 canvasLandscape.width = canvasLandscape.height * 2;
@@ -71,3 +73,27 @@ const ctxL = canvasLandscape.getContext("2d");
 // DRAW SKY AND GROUND
 // 0 as numSlopes bypasses random function and just adds a rectangle
 drawBackground(ctxL, canvasLandscape.width, canvasLandscape.height, 0, 1);
+
+// CREATE TANK OBJECTS
+const tankObjects = [];
+for (i = 1; i <= NUM_PLAYERS; i++) {
+  const tank = new Tank(100 * i, 300, i);
+  tankObjects.push(tank);
+}
+
+// SECOND CANVAS FOR MOVING GAME ELEMENTS
+const canvas = document.querySelector("#gameplay");
+canvas.height = 400;
+canvas.width = canvas.height * 2;
+const ctx = canvasLandscape.getContext("2d");
+
+// DRAW ALL TANKS
+console.log(tankObjects);
+for (let tank of tankObjects) {
+  // console.log("draw tank", tank);
+  ctx.beginPath();
+  ctx.arc(tank.x, tank.y, 10, 0, 2 * Math.PI);
+  // tank.playerNumber === 1 ? (ctx.fillStyle = "red") : (ctx.fillStyle = "yellow");
+  ctx.fillStyle = PLAYER_COLORS[tank.playerNumber];
+  ctx.fill();
+}
