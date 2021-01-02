@@ -3,7 +3,7 @@
  */
 
 let NUM_PLAYERS = 2;
-const PLAYER_COLORS = ["null", "red", "orange", "yellow", "purple,", "black"];
+const PLAYER_COLORS = ["null", "red", "yellow", "purple,", "blue", "black"];
 
 //////////////////////////////////////
 class Tank {
@@ -15,6 +15,10 @@ class Tank {
     this.turret = {
       angle: getRandomInt(10, 170),
     };
+  }
+  // tank methods
+  fire() {
+    console.log("SHOT FIRED!");
   }
 }
 
@@ -70,6 +74,36 @@ const drawBackground = function (ctx, width, height, numSlopes, steepnessPercent
   ctxL.fill();
 };
 
+//////////////////////////////////////
+// DRAW PLAYERS
+const drawPlayers = function (ctx, tankObjects) {
+  for (let tank of tankObjects) {
+    // TANK BODY
+    ctx.beginPath();
+    ctx.arc(tank.x, tank.y, 10, 0, 2 * Math.PI);
+    // cycle thru colors array CONSTANT for fill
+    ctx.fillStyle = PLAYER_COLORS[tank.playerNumber];
+    ctx.fill();
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 5;
+    ctx.stroke();
+
+    // TURRET
+    // rotate turret based on the tank center
+    // 0deg all the way left, 180deg all the way right
+    ctx.save();
+    ctx.translate(tank.x, tank.y);
+    ctx.rotate(degreesToRadians(tank.turret.angle));
+    ctx.beginPath();
+    ctx.moveTo(-35, 0);
+    ctxL.lineTo(-10, 0);
+    ctx.lineWidth = 5;
+    ctx.stroke();
+    ctx.restore();
+    console.log(tank);
+  }
+};
+
 /// SCREEN LOAD
 const canvasLandscape = document.querySelector("#landscape");
 canvasLandscape.height = 400;
@@ -95,29 +129,5 @@ for (i = 1; i <= NUM_PLAYERS; i++) {
 }
 
 // DRAW TANKS
-console.log(tankObjects);
-for (let tank of tankObjects) {
-  // TANK BODY
-  ctx.beginPath();
-  ctx.arc(tank.x, tank.y, 10, 0, 2 * Math.PI);
-  // cycle thru colors array CONSTANT for fill
-  ctx.fillStyle = PLAYER_COLORS[tank.playerNumber];
-  ctx.fill();
-  ctx.strokeStyle = "black";
-  ctx.lineWidth = 5;
-  ctx.stroke();
-
-  // TURRET
-  // rotate turret based on the tank center
-  // 0deg all the way left, 180deg all the way right
-  ctx.save();
-  ctx.translate(tank.x, tank.y);
-  ctx.rotate(degreesToRadians(tank.turret.angle));
-  ctx.beginPath();
-  ctx.moveTo(-35, 0);
-  ctxL.lineTo(-10, 0);
-  ctx.lineWidth = 5;
-  ctx.stroke();
-  ctx.restore();
-  console.log(tank);
-}
+// context canvas to draw on, array of tanks to draw
+drawPlayers(ctx, tankObjects);
