@@ -18,7 +18,7 @@ class Tank {
   }
   // tank methods
   fire() {
-    console.log("SHOT FIRED!");
+    return "SHOT FIRED!";
   }
 }
 
@@ -104,6 +104,29 @@ const drawPlayers = function (ctx, tankObjects) {
   }
 };
 
+//////////////////////////////////////
+// handle keyboard input
+// https://stackoverflow.com/questions/5597060/detecting-arrow-key-presses-in-javascript
+const listenKeys = function (e) {
+  e = e || window.event; // TODO figure out what this is all about
+
+  // TODO Figure out why == not ===
+  if (e.keyCode == "37") {
+    console.log("left");
+  } else if (e.keyCode == "39") {
+    console.log("right");
+  }
+  // if (e.keyCode == "38") {
+  //   // up arrow
+  // } else if (e.keyCode == "40") {
+  //   // down arrow
+  // } else if (e.keyCode == "37") {
+  //   // left arrow
+  // } else if (e.keyCode == "39") {
+  //   // right arrow
+  // }
+};
+
 /// SCREEN LOAD
 const canvasLandscape = document.querySelector("#landscape");
 canvasLandscape.height = 400;
@@ -126,8 +149,24 @@ for (i = 1; i <= NUM_PLAYERS; i++) {
   // space out tanks evenly along horizontal
   const tank = new Tank(Math.floor((canvas.width * i) / (NUM_PLAYERS + 1)), canvas.height * 0.7, i);
   tankObjects.push(tank);
+  // console.log(`PLAYER ${tank.playerNumber}`, tank.fire());
 }
 
 // DRAW TANKS
 // context canvas to draw on, array of tanks to draw
 drawPlayers(ctx, tankObjects);
+
+// LISTEN FOR USER KEYBOARD INPUT TO ADJUST TURRET ANGLE
+document.onkeydown = listenKeys;
+
+//// REDRAW TANKS
+
+// LISTEN FOR USER KEYBOARD INPUT TO FIRE
+//// ANIMATE BULLET
+//// CHECK FOR COLLISION
+////// ANIMATE TANK COLLISION AND END GAME
+////// OR ANIMATE GROUND COLLISION AND SWITCH TURNS
+
+// MAP MOUSE INPUT TO CORRESPONDING KEY BINDINGS
+
+// ADD RANDOM TERRAIN, DROP TANKS APPROPRIATE HEIGHTS
