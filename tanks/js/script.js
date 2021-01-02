@@ -3,6 +3,19 @@
  */
 
 //////////////////////////////////////
+class Tank {
+  constructor(x, y, playerNumber) {
+    this.x = x;
+    this.y = y;
+    this.playerNumber = playerNumber;
+    this.hitpoints = 1;
+    this.turret = {
+      angle: 45,
+    };
+  }
+}
+
+//////////////////////////////////////
 // returns random int >= low && < high
 const getRandomInt = function (low, high) {
   return Math.floor(Math.random() * (high - low) + low);
@@ -22,7 +35,13 @@ const drawBackground = function (ctx, width, height, numSlopes, steepnessPercent
 
   // GROUND
   ctx.beginPath();
-
+  if (numSlopes === 0) {
+    ctx.beginPath();
+    ctx.rect(0, height * 0.7, width, height);
+    ctx.fillStyle = "#00EE00";
+    ctx.fill();
+    return;
+  }
   let startPoint = [0, getRandomInt(height * 0.55, height)]; // TODO need to integrate steepness%
   let previousPoint = startPoint;
   let nextPoint = [];
@@ -34,14 +53,10 @@ const drawBackground = function (ctx, width, height, numSlopes, steepnessPercent
     ctx.lineTo(nextPoint[0], nextPoint[1]);
     previousPoint = nextPoint;
   }
-
   // connect polygon
-  // to bottom right corner
-  ctxL.lineTo(width, height);
-  // to bottom left corner
-  ctxL.lineTo(0, canvasLandscape.height);
-  // back to start
-  ctxL.closePath();
+  ctxL.lineTo(width, height); // to bottom right corner
+  ctxL.lineTo(0, canvasLandscape.height); // to bottom left corner
+  ctxL.closePath(); // back to start
   ctxL.fillStyle = "#00EE00";
   ctxL.fill();
 };
@@ -54,4 +69,5 @@ canvasLandscape.width = canvasLandscape.height * 2;
 const ctxL = canvasLandscape.getContext("2d");
 
 // DRAW SKY AND GROUND
-drawBackground(ctxL, canvasLandscape.width, canvasLandscape.height, 5, 1);
+// 0 as numSlopes bypasses random function and just adds a rectangle
+drawBackground(ctxL, canvasLandscape.width, canvasLandscape.height, 0, 1);
