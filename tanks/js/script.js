@@ -90,7 +90,7 @@ const ctx = canvasLandscape.getContext("2d");
 const tankObjects = [];
 for (i = 1; i <= NUM_PLAYERS; i++) {
   // space out tanks evenly along horizontal
-  const tank = new Tank((canvas.width * i) / (NUM_PLAYERS + 1), canvas.height * 0.7, i);
+  const tank = new Tank(Math.floor((canvas.width * i) / (NUM_PLAYERS + 1)), canvas.height * 0.7, i);
   tankObjects.push(tank);
 }
 
@@ -110,6 +110,7 @@ for (let tank of tankObjects) {
   // TURRET
   // rotate turret based on the tank center
   // 0deg all the way left, 180deg all the way right
+  ctx.save();
   ctx.translate(tank.x, tank.y);
   ctx.rotate(degreesToRadians(tank.turret.angle));
   ctx.beginPath();
@@ -117,4 +118,6 @@ for (let tank of tankObjects) {
   ctxL.lineTo(-10, 0);
   ctx.lineWidth = 5;
   ctx.stroke();
+  ctx.restore();
+  console.log(tank);
 }
