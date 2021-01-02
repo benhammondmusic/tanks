@@ -9,21 +9,28 @@ const getRandomInt = function (low, high) {
 };
 
 //////////////////////////////////////
-// draws random elevation ground
+// draws random elevation ground and sky
 // ctx = canvas 2d context to draw on
 // numSlopes = how many changes in elevatio per screen width
 // steepness = %
-const drawGound = function (ctx, width, height, numSlopes, steepnessPercent) {
+const drawBackground = function (ctx, width, height, numSlopes, steepnessPercent) {
+  // SKY
+  ctx.beginPath();
+  ctx.rect(0, 0, width, height);
+  ctx.fillStyle = "skyblue";
+  ctx.fill();
+
+  // GROUND
   ctx.beginPath();
 
-  let startPoint = [0, getRandomInt(canvasLandscape.height * 0.5, canvasLandscape.height)]; // need to integrate steepness%
+  let startPoint = [0, getRandomInt(height * 0.55, height)]; // TODO need to integrate steepness%
   let previousPoint = startPoint;
   let nextPoint = [];
 
   // random hills
   for (let i = 0; i <= numSlopes; i++) {
     nextPoint[0] = width * (i / numSlopes);
-    nextPoint[1] = getRandomInt(height * 0.5, height);
+    nextPoint[1] = getRandomInt(height * 0.55, height);
     ctx.lineTo(nextPoint[0], nextPoint[1]);
     previousPoint = nextPoint;
   }
@@ -39,19 +46,12 @@ const drawGound = function (ctx, width, height, numSlopes, steepnessPercent) {
   ctxL.fill();
 };
 
+/// SCREEN LOAD
+
 const canvasLandscape = document.querySelector("#landscape");
-// canvasLandscape.width = document.body.clientWidth;
-// canvasLandscape.width = 800;
-// canvasLandscape.height = document.body.clientHeight;
 canvasLandscape.height = 400;
 canvasLandscape.width = canvasLandscape.height * 2;
 const ctxL = canvasLandscape.getContext("2d");
 
-// DRAW SKY
-ctxL.beginPath();
-ctxL.rect(0, 0, canvasLandscape.width, canvasLandscape.height);
-ctxL.fillStyle = "skyblue";
-ctxL.fill();
-
-// DRAW GROUND
-drawGound(ctxL, canvasLandscape.width, canvasLandscape.height, 5, 100);
+// DRAW SKY AND GROUND
+drawBackground(ctxL, canvasLandscape.width, canvasLandscape.height, 5, 1);
