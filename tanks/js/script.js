@@ -2,9 +2,41 @@
  tanks
  */
 
+//////////////////////////////////////
 // returns random int >= low && < high
 const getRandomInt = function (low, high) {
   return Math.floor(Math.random() * (high - low) + low);
+};
+
+//////////////////////////////////////
+// draws random elevation ground
+// ctx = canvas 2d context to draw on
+// numSlopes = how many changes in elevatio per screen width
+// steepness = %
+const drawGound = function (ctx, width, height, numSlopes, steepnessPercent) {
+  ctx.beginPath();
+
+  let startPoint = [0, getRandomInt(canvasLandscape.height * 0.5, canvasLandscape.height)]; // need to integrate steepness%
+  let previousPoint = startPoint;
+  let nextPoint = [];
+
+  // random hills
+  for (let i = 0; i <= numSlopes; i++) {
+    nextPoint[0] = width * (i / numSlopes);
+    nextPoint[1] = getRandomInt(height * 0.5, height);
+    ctx.lineTo(nextPoint[0], nextPoint[1]);
+    previousPoint = nextPoint;
+  }
+
+  // connect polygon
+  // to bottom right corner
+  ctxL.lineTo(width, height);
+  // to bottom left corner
+  ctxL.lineTo(0, canvasLandscape.height);
+  // back to start
+  ctxL.closePath();
+  ctxL.fillStyle = "#00EE00";
+  ctxL.fill();
 };
 
 const canvasLandscape = document.querySelector("#landscape");
@@ -22,34 +54,4 @@ ctxL.fillStyle = "skyblue";
 ctxL.fill();
 
 // DRAW GROUND
-
-ctxL.beginPath();
-let startPoint = [0, getRandomInt(canvasLandscape.height * 0.5, canvasLandscape.height * 0.95)];
-let previousPoint = startPoint;
-let nextPoint = [0, 0];
-
-// random hills
-for (let i = 0; i <= 4; i++) {
-  //   console.log(previousPoint, "prev");
-
-  //   ctxL.moveTo(previousPoint[0], previousPoint[1]);
-  nextPoint[0] = canvasLandscape.width * (i / 4);
-  nextPoint[1] = getRandomInt(canvasLandscape.height * 0.5, canvasLandscape.height * 0.8);
-  //   console.log(nextPoint, "next");
-  ctxL.lineTo(nextPoint[0], nextPoint[1]);
-  previousPoint = nextPoint;
-}
-
-// connect polygon along bottom edges
-// ctxL.moveTo(previousPoint[0], previousPoint[1]);
-ctxL.lineTo(canvasLandscape.width, canvasLandscape.height);
-// ctxL.moveTo(canvasLandscape.width, canvasLandscape.height);
-ctxL.lineTo(0, canvasLandscape.height);
-// ctxL.moveTo(0, canvasLandscape.height);
-// ctxL.lineTo(startPoint[0], startPoint[1]);
-
-ctxL.stroke();
-
-ctxL.closePath();
-ctxL.fillStyle = "#00EE00";
-ctxL.fill();
+drawGound(ctxL, canvasLandscape.width, canvasLandscape.height, 5, 100);
