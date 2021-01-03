@@ -32,8 +32,6 @@ class Tank {
       // TODO: start angled toward other players
       angle: getRandomInt(10, 170),
       length: TANK_SIZE * 3,
-
-      // store turret tip location here?
     };
   }
   // tank methods
@@ -42,23 +40,29 @@ class Tank {
     let angle = this.turret.angle;
     const thisShot = new Bullet(this.x - Math.cos(degreesToRadians(angle)) * (this.turret.length + this.radius), this.y - Math.sin(degreesToRadians(angle)) * (this.turret.length + this.radius));
 
-    // TODO: change to while loop, end condition is collision with ground. thn test for tank collision?
+    // TODO: change to while loop, end condition is collision with ground, or shot off of horiztonal screen.
+    // TODO: test for tank collision... need to re define tanks like redefined terrain before test
+    // TODO: animate shot rather than tracing path
 
-    for (i = 0; i < 100; i += 1) {
-      ctx.beginPath();
-      ctx.arc(thisShot.x, thisShot.y, 2, 0, 2 * Math.PI);
+    for (i = 0; i < 500; i += 1) {
+      if (hitGround(thisShot)) {
+        // console.log("HIT SOMETHING");
+      } else {
+        ctx.beginPath();
+        ctx.arc(thisShot.x, thisShot.y, 2, 0, 2 * Math.PI);
 
-      // 0-180 degrees = 0 to PI radians
-      // sin of radians: 0 on the sides, 1 straight up
-      // bullets were going backwards, so used decrement
+        // 0-180 degrees = 0 to PI radians
+        // sin of radians: 0 on the sides, 1 straight up
+        // bullets were going backwards, so used decrement
 
-      // fire based on turret angle; -i gives gravity over time
-      thisShot.y -= 25 * Math.sin(degreesToRadians(angle)) - i;
-      thisShot.x -= 25 * Math.cos(degreesToRadians(angle));
+        // fire based on turret angle; -i gives gravity over time
+        thisShot.y -= 25 * Math.sin(degreesToRadians(angle)) - i;
+        thisShot.x -= 25 * Math.cos(degreesToRadians(angle));
 
-      ctx.strokeStyle = "black";
-      ctx.lineWidth = 2;
-      ctx.stroke();
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
     }
   }
 }
@@ -102,7 +106,7 @@ const generateTerrain = function (width, height, numSlopes, steepnessPercent) {
     return;
   }
 
-  // TODO: need to implement randomized terrain
+  // TODO: need to re-implement randomized terrain
 
   // let startPoint = [0, getRandomInt(height * 0.55, height)]; // TODO need to integrate steepness%
   // let previousPoint = startPoint;
@@ -126,15 +130,15 @@ const drawBackground = function () {
   ctx.fillStyle = "skyblue";
   ctx.fill();
 
-  // GROUND
+  defineTerrain();
+  ctx.fillStyle = "#00EE00";
+  ctx.fill();
+};
+
+//////////////////////////////////////
+// DEFINE TERRAIN
+const defineTerrain = function () {
   ctx.beginPath();
-  // if (numSlopes === 0) {
-  //   // ctx.beginPath();
-  //   ctx.rect(0, height * 0.7, width, height);
-  //   ctx.fillStyle = "#00EE00";
-  //   ctx.fill();
-  //   return;
-  // }
 
   let previousPoint = terrainArray[0]; // TODO need to integrate steepness%
   let nextPoint = [];
@@ -147,8 +151,6 @@ const drawBackground = function () {
   ctx.lineTo(canvas.width, canvas.height); // to bottom right corner
   ctx.lineTo(0, canvas.height); // to bottom left corner
   ctx.closePath(); // back to start
-  ctx.fillStyle = "#00EE00";
-  ctx.fill();
 };
 
 //////////////////////////////////////
@@ -198,6 +200,15 @@ const adjustTurret = function (amount) {
   }
   currentTank.turret.angle = angle;
   refreshScreen();
+};
+
+//////////////////////////////////////
+// HIT GROUND
+const hitGround = function (aShot) {
+  // redefine but dont draw the terrain again
+  defineTerrain();
+  // console.log(aShot);
+  return ctx.isPointInStroke(aShot.x, aShot.y) || ctx.isPointInPath(aShot.x, aShot.y);
 };
 
 //////////////////////////////////////
