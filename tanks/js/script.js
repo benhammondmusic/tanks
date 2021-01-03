@@ -13,6 +13,8 @@ const PLAYER_COLORS = ["null", "red", "yellow", "purple,", "blue", "black"];
 const TURRET_INCREMENT = 3;
 const TANK_SIZE = 20;
 const terrainArray = [];
+const TERRAIN_BUMPS = 20;
+const STEEPNESS = 1;
 
 //////////////////////////////////////
 class Bullet {
@@ -245,7 +247,7 @@ const ctx = canvas.getContext("2d");
 
 // RANDOMLY GENERATE TERRAIN AND STORE TO ARRAY FOR REFRESHES
 // 0 as numSlopes bypasses random function and just adds a rectangle
-generateTerrain(canvas.width, canvas.height, 5, 1);
+generateTerrain(canvas.width, canvas.height, TERRAIN_BUMPS, STEEPNESS);
 
 // DRAW SKY AND GROUND
 drawBackground();
