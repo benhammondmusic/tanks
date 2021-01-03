@@ -3,7 +3,7 @@
  */
 
 const game = {
-  currentPlayer: 1,
+  currentPlayer: 2,
 };
 
 let NUM_PLAYERS = 2;
@@ -37,6 +37,14 @@ const clearCanvas = function (ctx) {
 };
 
 //////////////////////////////////////
+// REFRESH SCREEN
+const refreshScreen = function () {
+  clearCanvas(ctx);
+  drawBackground();
+  drawPlayers(ctx, tankObjects);
+};
+
+//////////////////////////////////////
 // returns random int >= low && < high
 const getRandomInt = function (low, high) {
   return Math.floor(Math.random() * (high - low) + low);
@@ -58,6 +66,9 @@ const generateTerrain = function (width, height, numSlopes, steepnessPercent) {
     terrainArray[1] = [width, height * 0.7];
     return;
   }
+
+  // TODO: need to implement randomized terrain
+
   // let startPoint = [0, getRandomInt(height * 0.55, height)]; // TODO need to integrate steepness%
   // let previousPoint = startPoint;
   // let nextPoint = [];
@@ -144,39 +155,31 @@ const drawTurret = function (tank) {
 //////////////////////////////////////
 // ADJUST TURRET
 const adjustTurret = function (amount) {
-  let angle = (tankObjects[game.currentPlayer - 1].turret.angle + amount) % 180;
+  let currentTank = tankObjects[game.currentPlayer - 1];
+  let angle = (currentTank.turret.angle + amount) % 180;
   if (angle < 0) {
     angle = 180;
   }
-
-  tankObjects[0].turret.angle = angle;
-  clearCanvas(ctx);
-  drawBackground();
-  drawPlayers(ctx, tankObjects);
+  currentTank.turret.angle = angle;
+  refreshScreen();
 };
 
 //////////////////////////////////////
 // HANDLE KEYBOARD INPUT
 // https://stackoverflow.com/questions/5597060/detecting-arrow-key-presses-in-javascript
 const listenKeys = function (e) {
-  e = e || window.event; // TODO figure out what this is all about
-
-  // TODO Figure out why == not ===
-
-  // LEFT ARROW DECREASES ANGLE (counter clockwise across top only)
-  if (e.keyCode == "37") {
-    adjustTurret(TURRET_INCREMENT * -1);
-
-    // RIGHT ARROW INCREASES ANGLE ( clockwise across top only)
-  } else if (e.keyCode == "39") {
-    adjustTurret(TURRET_INCREMENT);
+  switch (e.code) {
+    case "ArrowLeft":
+      adjustTurret(TURRET_INCREMENT * -1);
+      break;
+    case "ArrowRight":
+      adjustTurret(TURRET_INCREMENT);
+      break;
+    case "Space":
+      // tankObjects[game.currentPlayer - 1].fire();
+      console.log(tankObjects[game.currentPlayer - 1].fire());
+      break;
   }
-
-  // if (e.keyCode == "38") {
-  //   // up arrow
-  // } else if (e.keyCode == "40") {
-  //   // down arrow
-  // }
 };
 
 /// SCREEN LOAD
