@@ -26,9 +26,9 @@ class Bullet {
 
 //////////////////////////////////////
 class Tank {
-  constructor(x, y, playerNumber) {
+  constructor(x, playerNumber) {
     this.x = x;
-    this.y = y;
+    this.y = dropTank(this).y;
     this.radius = TANK_SIZE;
     this.playerNumber = playerNumber;
     this.hitpoints = 1;
@@ -75,8 +75,6 @@ class Tank {
 //////////////////////////////////////
 // CLEAR CANVAS
 const clearCanvas = function (ctx) {
-  // console.log(ctx.canvas);
-  // const ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // clear canvas
 };
 
@@ -164,6 +162,13 @@ const defineTerrain = function () {
 };
 
 //////////////////////////////////////
+// DROP TANK
+const dropTank = function (tank) {
+  tank.y = 200;
+  return tank;
+};
+
+//////////////////////////////////////
 // DRAW PLAYERS
 const drawPlayers = function (ctx, tankObjects) {
   for (let tank of tankObjects) {
@@ -214,11 +219,11 @@ const adjustTurret = function (amount) {
 
 //////////////////////////////////////
 // HIT GROUND
-const hitGround = function (aShot) {
+const hitGround = function (aPoint) {
   // redefine but dont draw the terrain again
   defineTerrain();
   // console.log(aShot);
-  return ctx.isPointInStroke(aShot.x, aShot.y) || ctx.isPointInPath(aShot.x, aShot.y);
+  return ctx.isPointInStroke(aPoint.x, aPoint.y) || ctx.isPointInPath(aPoint.x, aPoint.y);
 };
 
 //////////////////////////////////////
@@ -256,7 +261,7 @@ drawBackground();
 const tankObjects = [];
 for (i = 1; i <= NUM_PLAYERS; i++) {
   // space out tanks evenly along horizontal
-  const tank = new Tank(Math.floor((canvas.width * i) / (NUM_PLAYERS + 1)), canvas.height * 0.7, i);
+  const tank = new Tank(Math.floor((canvas.width * i) / (NUM_PLAYERS + 1)), i);
   // TODO: spreak taks further apart
   // TODO: set tanks onto sloped terrain
   tankObjects.push(tank);
