@@ -3,12 +3,13 @@
  */
 
 const game = {
-  currentPlayer: 1,
+  currentPlayer: 2,
 };
 
 let NUM_PLAYERS = 2;
 const PLAYER_COLORS = ["null", "red", "yellow", "purple,", "blue", "black"];
-const TURRET_INCREMENT = 5;
+const TURRET_INCREMENT = 3;
+const TANK_SIZE = 10;
 const terrainArray = [];
 
 //////////////////////////////////////
@@ -24,11 +25,14 @@ class Tank {
   constructor(x, y, playerNumber) {
     this.x = x;
     this.y = y;
+    this.radius = TANK_SIZE;
     this.playerNumber = playerNumber;
     this.hitpoints = 1;
     this.turret = {
       // TODO: start angled toward other players
       angle: getRandomInt(10, 170),
+      length: TANK_SIZE * 3,
+
       // store turret tip location here?
     };
   }
@@ -39,21 +43,18 @@ class Tank {
     const thisShot = new Bullet(this.x, this.y);
 
     // TODO: change to while loop, end condition is collision with ground. thn test for tank collision?
-    for (i = 0; i < 100; i++) {
+    for (i = 0; i < 100; i += 1) {
       ctx.beginPath();
       ctx.arc(thisShot.x, thisShot.y, 2, 0, 2 * Math.PI);
       let angle = this.turret.angle;
-      // console.log("sin:", Math.sin(degreesToRadians(angle)), "cos:", Math.cos(degreesToRadians(angle)));
 
       // 0-180 degrees = 0 to PI radians
       // sin of radians: 0 on the sides, 1 straight up
       // bullets were going backwards, so used decrement
 
-      // fire based on turret angle
-      thisShot.y -= 10 * Math.sin(degreesToRadians(angle));
-      thisShot.x -= 10 * Math.cos(degreesToRadians(angle));
-
-      // TODO: account for gravity
+      // fire based on turret angle; -i gives gravity over time
+      thisShot.y -= 25 * Math.sin(degreesToRadians(angle)) - i;
+      thisShot.x -= 25 * Math.cos(degreesToRadians(angle));
 
       ctx.strokeStyle = "black";
       ctx.lineWidth = 2;
@@ -156,7 +157,7 @@ const drawPlayers = function (ctx, tankObjects) {
   for (let tank of tankObjects) {
     // TANK BODY
     ctx.beginPath();
-    ctx.arc(tank.x, tank.y, 10, 0, 2 * Math.PI);
+    ctx.arc(tank.x, tank.y, tank.radius, 0, 2 * Math.PI);
     // cycle thru colors array CONSTANT for fill
     ctx.fillStyle = PLAYER_COLORS[tank.playerNumber];
     ctx.fill();
@@ -178,8 +179,8 @@ const drawTurret = function (tank) {
   ctx.translate(tank.x, tank.y);
   ctx.rotate(degreesToRadians(tank.turret.angle));
   ctx.beginPath();
-  ctx.moveTo(-35, 0);
-  ctx.lineTo(-10, 0);
+  ctx.moveTo(-1 * tank.radius, 0);
+  ctx.lineTo(-1 * tank.turret.length, 0);
   ctx.lineWidth = 5;
   ctx.stroke();
   ctx.restore();
@@ -219,7 +220,7 @@ const listenKeys = function (e) {
 
 /// SCREEN LOAD
 const canvas = document.querySelector("#canvas");
-canvas.height = 400;
+canvas.height = 600;
 canvas.width = canvas.height * 2;
 const ctx = canvas.getContext("2d");
 
