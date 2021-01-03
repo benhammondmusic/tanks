@@ -8,7 +8,7 @@ const game = {
   currentPlayer: 1,
 };
 
-let NUM_PLAYERS = 2;
+let NUM_PLAYERS = 3;
 const PLAYER_COLORS = ["null", "red", "yellow", "purple,", "blue", "black"];
 const TURRET_INCREMENT = 3;
 const TANK_SIZE = 20;
