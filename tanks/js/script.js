@@ -255,8 +255,9 @@ const tankObjects = [];
 for (i = 1; i <= NUM_PLAYERS; i++) {
   // space out tanks evenly along horizontal
   const tank = new Tank(Math.floor((canvas.width * i) / (NUM_PLAYERS + 1)), canvas.height * 0.7, i);
+  // TODO: spreak taks further apart
+  // TODO: set tanks onto sloped terrain
   tankObjects.push(tank);
-  // console.log(`PLAYER ${tank.playerNumber}`, tank.fire());
 }
 
 // DRAW TANKS
