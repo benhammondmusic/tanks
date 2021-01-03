@@ -33,8 +33,6 @@ class Tank {
     this.playerNumber = playerNumber;
     this.hitpoints = 1;
     this.turret = {
-      // TODO: start angled toward other players
-
       angle: 180 - getRandomInt(((playerNumber - 1) / NUM_PLAYERS) * 180, (playerNumber / NUM_PLAYERS) * 180),
       length: TANK_SIZE * 3,
     };
@@ -111,22 +109,9 @@ const generateTerrain = function (width, height, numSlopes, steepnessPercent) {
     for (let i = 0; i <= numSlopes; i++) {
       terrainArray[i] = [width * (i / numSlopes), getRandomInt(height * 0.55, height)];
     }
-    // console.log(terrainArray);
   }
 
-  // TODO: need to re-implement randomized terrain
-
-  // let startPoint = [0, getRandomInt(height * 0.55, height)]; // TODO need to integrate steepness%
-  // let previousPoint = startPoint;
-  // let nextPoint = [];
-
-  // random hills
-  // for (let i = 0; i <= numSlopes; i++) {
-  //   nextPoint[0] = width * (i / numSlopes);
-  //   nextPoint[1] = getRandomInt(height * 0.55, height);
-  //   ctx.lineTo(nextPoint[0], nextPoint[1]);
-  //   previousPoint = nextPoint;
-  // }
+  // TODO need to integrate steepness%
 };
 
 //////////////////////////////////////
@@ -270,6 +255,7 @@ for (ii = 1; ii <= NUM_PLAYERS; ii++) {
   // space out tanks evenly along horizontal
   const tank = new Tank(Math.floor((canvas.width * ii) / (NUM_PLAYERS + 1)), ii);
   // TODO: spreak taks further apart
+
   // TODO: set tanks onto sloped terrain
   tankObjects.push(tank);
   console.log(tankObjects, ii);
