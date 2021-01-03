@@ -3,13 +3,13 @@
  */
 
 const game = {
-  currentPlayer: 2,
+  currentPlayer: 1,
 };
 
 let NUM_PLAYERS = 2;
 const PLAYER_COLORS = ["null", "red", "yellow", "purple,", "blue", "black"];
 const TURRET_INCREMENT = 3;
-const TANK_SIZE = 10;
+const TANK_SIZE = 20;
 const terrainArray = [];
 
 //////////////////////////////////////
@@ -39,14 +39,14 @@ class Tank {
   // tank methods
   fire() {
     // console.log("SHOT FIRED!");
-    // TODO: make shot originate from turret tip
-    const thisShot = new Bullet(this.x, this.y);
+    let angle = this.turret.angle;
+    const thisShot = new Bullet(this.x - Math.cos(degreesToRadians(angle)) * (this.turret.length + this.radius), this.y - Math.sin(degreesToRadians(angle)) * (this.turret.length + this.radius));
 
     // TODO: change to while loop, end condition is collision with ground. thn test for tank collision?
+
     for (i = 0; i < 100; i += 1) {
       ctx.beginPath();
       ctx.arc(thisShot.x, thisShot.y, 2, 0, 2 * Math.PI);
-      let angle = this.turret.angle;
 
       // 0-180 degrees = 0 to PI radians
       // sin of radians: 0 on the sides, 1 straight up
