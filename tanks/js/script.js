@@ -27,13 +27,14 @@ class Tank {
     this.playerNumber = playerNumber;
     this.hitpoints = 1;
     this.turret = {
+      // TODO: start angled toward other players
       angle: getRandomInt(10, 170),
       // store turret tip location here?
     };
   }
   // tank methods
   fire() {
-    console.log("SHOT FIRED!");
+    // console.log("SHOT FIRED!");
     // TODO: make shot originate from turret tip
     const thisShot = new Bullet(this.x, this.y);
 
@@ -46,7 +47,7 @@ class Tank {
 
       // 0-180 degrees = 0 to PI radians
       // sin of radians: 0 on the sides, 1 straight up
-      // bullets were going backwars, so used decrement
+      // bullets were going backwards, so used decrement
 
       // fire based on turret angle
       thisShot.y -= 10 * Math.sin(degreesToRadians(angle));
