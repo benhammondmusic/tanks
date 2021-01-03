@@ -28,19 +28,19 @@ class Bullet {
 class Tank {
   constructor(x, playerNumber) {
     this.x = x;
-    this.y = dropTank(this).y;
+    this.y = dropTank(this).y; // lower from sky until contacts terrain shape
     this.radius = TANK_SIZE;
     this.playerNumber = playerNumber;
     this.hitpoints = 1;
     this.turret = {
       // TODO: start angled toward other players
-      angle: getRandomInt(10, 170),
+
+      angle: 180 - getRandomInt(((playerNumber - 1) / NUM_PLAYERS) * 180, (playerNumber / NUM_PLAYERS) * 180),
       length: TANK_SIZE * 3,
     };
   }
   // tank methods
   fire() {
-    // console.log("SHOT FIRED!");
     let angle = this.turret.angle;
     const thisShot = new Bullet(this.x - Math.cos(degreesToRadians(angle)) * (this.turret.length + this.radius), this.y - Math.sin(degreesToRadians(angle)) * (this.turret.length + this.radius));
 
@@ -111,7 +111,7 @@ const generateTerrain = function (width, height, numSlopes, steepnessPercent) {
     for (let i = 0; i <= numSlopes; i++) {
       terrainArray[i] = [width * (i / numSlopes), getRandomInt(height * 0.55, height)];
     }
-    console.log(terrainArray);
+    // console.log(terrainArray);
   }
 
   // TODO: need to re-implement randomized terrain
@@ -167,9 +167,9 @@ const dropTank = function (tank) {
   tank.y = 0;
   for (i = 0; i < canvas.height; i++) {
     tank.y++;
-    console.log("dropping tank:", tank);
+    // console.log("dropping tank:", tank);
     if (hitGround(tank)) {
-      console.log("landed!", tank);
+      // console.log("landed!", tank);
       break;
     }
   }
@@ -266,12 +266,13 @@ drawBackground();
 
 // CREATE TANK OBJECTS
 const tankObjects = [];
-for (i = 1; i <= NUM_PLAYERS; i++) {
+for (ii = 1; ii <= NUM_PLAYERS; ii++) {
   // space out tanks evenly along horizontal
-  const tank = new Tank(Math.floor((canvas.width * i) / (NUM_PLAYERS + 1)), i);
+  const tank = new Tank(Math.floor((canvas.width * ii) / (NUM_PLAYERS + 1)), ii);
   // TODO: spreak taks further apart
   // TODO: set tanks onto sloped terrain
   tankObjects.push(tank);
+  console.log(tankObjects, ii);
 }
 
 // DRAW TANKS
