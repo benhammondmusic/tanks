@@ -2,6 +2,8 @@
  tanks
  */
 
+// TODO: IMPLEMENT TURNS
+// TODO: IMPLEMENT RESET BUTTON
 const game = {
   currentPlayer: 1,
 };
@@ -46,7 +48,8 @@ class Tank {
 
     for (i = 0; i < 500; i += 1) {
       if (hitGround(thisShot)) {
-        // console.log("HIT SOMETHING");
+        console.log("HIT SOMETHING");
+        break;
       } else {
         ctx.beginPath();
         ctx.arc(thisShot.x, thisShot.y, 2, 0, 2 * Math.PI);
@@ -104,6 +107,11 @@ const generateTerrain = function (width, height, numSlopes, steepnessPercent) {
     terrainArray[0] = [0, height * 0.7];
     terrainArray[1] = [width, height * 0.7];
     return;
+  } else {
+    for (let i = 0; i <= numSlopes; i++) {
+      terrainArray[i] = [width * (i / numSlopes), getRandomInt(height * 0.55, height)];
+    }
+    console.log(terrainArray);
   }
 
   // TODO: need to re-implement randomized terrain
@@ -237,7 +245,7 @@ const ctx = canvas.getContext("2d");
 
 // RANDOMLY GENERATE TERRAIN AND STORE TO ARRAY FOR REFRESHES
 // 0 as numSlopes bypasses random function and just adds a rectangle
-generateTerrain(canvas.width, canvas.height, 0, 1);
+generateTerrain(canvas.width, canvas.height, 5, 1);
 
 // DRAW SKY AND GROUND
 drawBackground();
