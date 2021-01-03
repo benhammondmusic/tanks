@@ -164,7 +164,15 @@ const defineTerrain = function () {
 //////////////////////////////////////
 // DROP TANK
 const dropTank = function (tank) {
-  tank.y = 200;
+  tank.y = 0;
+  for (i = 0; i < canvas.height; i++) {
+    tank.y++;
+    console.log("dropping tank:", tank);
+    if (hitGround(tank)) {
+      console.log("landed!", tank);
+      break;
+    }
+  }
   return tank;
 };
 
@@ -222,7 +230,6 @@ const adjustTurret = function (amount) {
 const hitGround = function (aPoint) {
   // redefine but dont draw the terrain again
   defineTerrain();
-  // console.log(aShot);
   return ctx.isPointInStroke(aPoint.x, aPoint.y) || ctx.isPointInPath(aPoint.x, aPoint.y);
 };
 
