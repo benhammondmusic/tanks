@@ -48,7 +48,9 @@ class Tank {
 
     for (i = 0; i < 500; i += 1) {
       if (hitGround(thisShot)) {
-        console.log("HIT SOMETHING");
+        console.log("HIT GROUND");
+        showExplosion();
+        destroyGround();
         break;
       } else {
         ctx.beginPath();
@@ -147,14 +149,24 @@ const defineTerrain = function () {
 };
 
 //////////////////////////////////////
+// SHOW EXPLOSION
+const showExplosion = function () {
+  console.log("EXPLOSION!");
+};
+
+//////////////////////////////////////
+// DESTROY GROUND
+const destroyGround = function () {
+  console.log("DESTROY GROUND");
+};
+
+//////////////////////////////////////
 // DROP TANK
 const dropTank = function (tank) {
   tank.y = 0;
   for (i = 0; i < canvas.height; i++) {
     tank.y++;
-    // console.log("dropping tank:", tank);
     if (hitGround(tank)) {
-      // console.log("landed!", tank);
       break;
     }
   }
@@ -256,9 +268,7 @@ for (ii = 1; ii <= NUM_PLAYERS; ii++) {
   const tank = new Tank(Math.floor((canvas.width * ii) / (NUM_PLAYERS + 1)), ii);
   // TODO: spreak taks further apart
 
-  // TODO: set tanks onto sloped terrain
   tankObjects.push(tank);
-  console.log(tankObjects, ii);
 }
 
 // DRAW TANKS
@@ -268,14 +278,9 @@ drawPlayers(ctx, tankObjects);
 // LISTEN FOR USER KEYBOARD INPUT TO ADJUST TURRET ANGLE
 document.onkeydown = listenKeys;
 
-//// REDRAW TANKS
-
-// LISTEN FOR USER KEYBOARD INPUT TO FIRE
 //// ANIMATE BULLET
 //// CHECK FOR COLLISION
 ////// ANIMATE TANK COLLISION AND END GAME
 ////// OR ANIMATE GROUND COLLISION AND SWITCH TURNS
 
 // MAP MOUSE INPUT TO CORRESPONDING KEY BINDINGS
-
-// ADD RANDOM TERRAIN, DROP TANKS APPROPRIATE HEIGHTS
