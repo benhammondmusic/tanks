@@ -242,8 +242,11 @@ const listenKeys = function (e) {
       adjustTurret(TURRET_INCREMENT);
       break;
     case "Space":
-      tankObjects[game.currentPlayer - 1].fire();
-
+      tankObjects[game.currentPlayer - 1].fire(); // array 0 is player 1
+      game.currentPlayer += 1; // rotate turns
+      if (game.currentPlayer > NUM_PLAYERS) {
+        game.currentPlayer = game.currentPlayer % NUM_PLAYERS; // player 1 after last player
+      }
       break;
   }
 };
@@ -275,8 +278,12 @@ for (ii = 1; ii <= NUM_PLAYERS; ii++) {
 // context canvas to draw on, array of tanks to draw
 drawPlayers(ctx, tankObjects);
 
-// LISTEN FOR USER KEYBOARD INPUT TO ADJUST TURRET ANGLE
-document.onkeydown = listenKeys;
+if (tankObjects.length > 1) {
+  // LISTEN FOR USER KEYBOARD INPUT TO ADJUST TURRET ANGLE
+  document.onkeydown = listenKeys;
+} else {
+  alert(`Player Number ${tankObjects.pop().playerNumber} Wins!`);
+}
 
 //// ANIMATE BULLET
 //// CHECK FOR COLLISION
