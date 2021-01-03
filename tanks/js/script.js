@@ -9,7 +9,7 @@ const game = {
 };
 
 let NUM_PLAYERS = 3;
-const PLAYER_COLORS = ["null", "red", "yellow", "purple,", "blue", "black"];
+const PLAYER_COLORS = ["orange", "red", "yellow", "purple", "blue", "black", "aqua", "pink"];
 const TURRET_INCREMENT = 3;
 const TANK_SIZE = 20;
 const terrainArray = [];
