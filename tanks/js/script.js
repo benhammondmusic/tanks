@@ -3,13 +3,21 @@
  */
 
 const game = {
-  currentPlayer: 2,
+  currentPlayer: 1,
 };
 
 let NUM_PLAYERS = 2;
 const PLAYER_COLORS = ["null", "red", "yellow", "purple,", "blue", "black"];
 const TURRET_INCREMENT = 5;
 const terrainArray = [];
+
+//////////////////////////////////////
+class Bullet {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+}
 
 //////////////////////////////////////
 class Tank {
@@ -20,11 +28,36 @@ class Tank {
     this.hitpoints = 1;
     this.turret = {
       angle: getRandomInt(10, 170),
+      // store turret tip location here?
     };
   }
   // tank methods
   fire() {
-    return "SHOT FIRED!";
+    console.log("SHOT FIRED!");
+    // TODO: make shot originate from turret tip
+    const thisShot = new Bullet(this.x, this.y);
+
+    // TODO: change to while loop, end condition is collision with ground. thn test for tank collision?
+    for (i = 0; i < 100; i++) {
+      ctx.beginPath();
+      ctx.arc(thisShot.x, thisShot.y, 2, 0, 2 * Math.PI);
+      let angle = this.turret.angle;
+      // console.log("sin:", Math.sin(degreesToRadians(angle)), "cos:", Math.cos(degreesToRadians(angle)));
+
+      // 0-180 degrees = 0 to PI radians
+      // sin of radians: 0 on the sides, 1 straight up
+      // bullets were going backwars, so used decrement
+
+      // fire based on turret angle
+      thisShot.y -= 10 * Math.sin(degreesToRadians(angle));
+      thisShot.x -= 10 * Math.cos(degreesToRadians(angle));
+
+      // TODO: account for gravity
+
+      ctx.strokeStyle = "black";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
   }
 }
 
@@ -149,16 +182,17 @@ const drawTurret = function (tank) {
   ctx.lineWidth = 5;
   ctx.stroke();
   ctx.restore();
-  // console.log(tank);
 };
 
 //////////////////////////////////////
 // ADJUST TURRET
 const adjustTurret = function (amount) {
   let currentTank = tankObjects[game.currentPlayer - 1];
-  let angle = (currentTank.turret.angle + amount) % 180;
+  let angle = currentTank.turret.angle + amount;
   if (angle < 0) {
     angle = 180;
+  } else if (angle > 180) {
+    angle = 0;
   }
   currentTank.turret.angle = angle;
   refreshScreen();
@@ -176,8 +210,8 @@ const listenKeys = function (e) {
       adjustTurret(TURRET_INCREMENT);
       break;
     case "Space":
-      // tankObjects[game.currentPlayer - 1].fire();
-      console.log(tankObjects[game.currentPlayer - 1].fire());
+      tankObjects[game.currentPlayer - 1].fire();
+
       break;
   }
 };
