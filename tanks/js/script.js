@@ -13,11 +13,11 @@ const game = {
   },
 };
 
-let NUM_PLAYERS = 3;
+let NUM_PLAYERS = 2;
 const PLAYER_COLORS = ["orange", "red", "yellow", "purple", "blue", "black", "aqua", "pink"];
 const TURRET_INCREMENT = 3;
 const TANK_SIZE = 20;
-const EXPLOSION_RADIUS = 20;
+const EXPLOSION_RADIUS = 40;
 const terrainArray = [];
 const TERRAIN_BUMPS = 20;
 const STEEPNESS = 1;
@@ -56,18 +56,19 @@ class Tank {
       // cycle through tanks and check if explosion hit them
       for (let idx in tankObjects) {
         let tank = tankObjects[idx];
-        if (Math.abs(tank.x - thisShot.x) < EXPLOSION_RADIUS + TANK_SIZE && Math.abs(tank.y - thisShot.y) < EXPLOSION_RADIUS + TANK_SIZE) {
+        // TODO add TANK_SIZE and include SIN / COS for more accurate circle target
+        if (Math.abs(tank.x - thisShot.x) < EXPLOSION_RADIUS && Math.abs(tank.y - thisShot.y) < EXPLOSION_RADIUS) {
           console.log("HIT!");
           showExplosion(thisShot);
           destroyGround(thisShot);
           hitTank = tankObjects[idx];
-          // tankObjects.
-          // TODO bullet doesn't fly after hitting a tank
           break;
         }
       }
       if (hitTank) {
-        tankObjects.filter((tank) => tank !== hitTank);
+        console.log(hitTank, "hit");
+        hitTank.hitpoints--;
+        tankObjects = tankObjects.filter((tank) => tank.hitpoints > 0);
         break;
       }
       // if no tanks were hit above, check for ground collision
@@ -287,16 +288,23 @@ const hitGround = function (aPoint) {
 const listenKeys = function (e) {
   switch (e.code) {
     case "ArrowLeft":
+      refreshScreen();
       adjustTurret(TURRET_INCREMENT * -1);
       break;
     case "ArrowRight":
+      refreshScreen();
       adjustTurret(TURRET_INCREMENT);
       break;
     case "Space":
       refreshScreen();
       tankObjects[game.currentPlayer - 1].fire(); // array 0 is player 1
-      game.nextPlayersTurn();
-      break;
+      if (tankObjects.length < 2) {
+        console.log(`PLAYER ${tankObjects[0].playerNumber} WINS!!!`);
+        return;
+      } else {
+        game.nextPlayersTurn();
+        break;
+      }
   }
 };
 
@@ -314,7 +322,7 @@ generateTerrain(canvas.width, canvas.height, TERRAIN_BUMPS, STEEPNESS);
 drawBackground();
 
 // CREATE TANK OBJECTS
-const tankObjects = [];
+let tankObjects = [];
 for (ii = 1; ii <= NUM_PLAYERS; ii++) {
   // space out tanks evenly along horizontal
   const tank = new Tank(Math.floor((canvas.width * ii) / (NUM_PLAYERS + 1)), ii);
@@ -327,12 +335,7 @@ for (ii = 1; ii <= NUM_PLAYERS; ii++) {
 // context canvas to draw on, array of tanks to draw
 drawPlayers(ctx, tankObjects);
 
-if (tankObjects.length > 1) {
-  // LISTEN FOR USER KEYBOARD INPUT TO ADJUST TURRET ANGLE
-  document.onkeydown = listenKeys;
-} else {
-  alert(`Player Number ${tankObjects.pop().playerNumber} Wins!`);
-}
+document.onkeydown = listenKeys;
 
 // TODO ANIMATE BULLET
 // TODO MAP MOUSE INPUT TO CORRESPONDING KEY BINDINGS
