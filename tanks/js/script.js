@@ -76,7 +76,7 @@ class Tank {
 
     let hitTank = null;
 
-    for (i = 0; i < 500; i += 1) {
+    for (i = 0; i < canvas.height * 2; i += 1) {
       // cycle through tanks and check if explosion hit them
       for (let idx in tankObjects) {
         let tank = tankObjects[idx];
@@ -114,8 +114,8 @@ class Tank {
         // bullets were going backwards, so used decrement
 
         // fire based on turret angle; -i gives gravity over time
-        thisShot.y -= 25 * Math.sin(degreesToRadians(angle)) - i;
-        thisShot.x -= 25 * Math.cos(degreesToRadians(angle));
+        thisShot.y -= TANK_SIZE * Math.sin(degreesToRadians(angle)) - i;
+        thisShot.x -= TANK_SIZE * Math.cos(degreesToRadians(angle));
 
         ctx.strokeStyle = "black";
         ctx.lineWidth = 2;
