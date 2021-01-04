@@ -1,12 +1,11 @@
 /*!
  tanks
+ // TODO: IMPLEMENT RESET BUTTON
  */
 
-// TODO keep player number and tankObject array poisition the same. if needed for user clarity, adjust the display to add one, so player 0 displays as player 1
-
-// TODO: IMPLEMENT RESET BUTTON
 const game = {
   currentPlayer: 0,
+  winningPlayer: null,
   nextPlayersTurn: function () {
     this.currentPlayer += 1; // rotate turns
     if (this.currentPlayer >= NUM_PLAYERS) {
@@ -287,30 +286,44 @@ const hitGround = function (aPoint) {
 };
 
 //////////////////////////////////////
+// GET WINNER
+const getWinner = function () {
+  if (tankObjects.length === 1) {
+    // only one tank left in array = alive
+    game.winningPlayer = tankObjects[0].playerNumber;
+    return true;
+  } else return false;
+};
+
+//////////////////////////////////////
 // HANDLE KEYBOARD INPUT
 // https://stackoverflow.com/questions/5597060/detecting-arrow-key-presses-in-javascript
 const listenKeys = function (e) {
-  switch (e.code) {
-    case "ArrowLeft":
-      refreshScreen();
-      adjustTurret(TURRET_INCREMENT * -1);
-      break;
-    case "ArrowRight":
-      refreshScreen();
-      adjustTurret(TURRET_INCREMENT);
-      break;
-    case "Space":
-      refreshScreen();
-      tankObjects[game.currentPlayer].fire(); // array 0 is player 1
+  // can't use ! because player0
+  if (game.winningPlayer === null) {
+    switch (e.code) {
+      case "ArrowLeft":
+        refreshScreen();
+        adjustTurret(TURRET_INCREMENT * -1);
+        break;
+      case "ArrowRight":
+        refreshScreen();
+        adjustTurret(TURRET_INCREMENT);
+        break;
+      case "Space":
+        refreshScreen();
+        let currentTank = tankObjects[game.currentPlayer];
+        currentTank.fire(); // array 0 is player 0
+        if (getWinner()) {
+          console.log(`PLAYER ${game.winningPlayer} WINS!!!`);
+          return;
+        } else {
+          game.nextPlayersTurn();
+          break;
+        }
 
       // TODO: add checkWin function, handle winning logic, replay or change players or exit
-      if (tankObjects.length < 2) {
-        console.log(`PLAYER ${tankObjects[0].playerNumber} WINS!!!`);
-        return;
-      } else {
-        game.nextPlayersTurn();
-        break;
-      }
+    }
   }
 };
 
