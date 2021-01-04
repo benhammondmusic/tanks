@@ -2,6 +2,8 @@
  tanks
  */
 
+// TODO keep player number and tankObject array poisition the same. if needed for user clarity, adjust the display to add one, so player 0 displays as player 1
+
 // TODO: IMPLEMENT RESET BUTTON
 const game = {
   currentPlayer: 1,
@@ -14,8 +16,8 @@ const game = {
   },
 };
 
-let NUM_PLAYERS = 2;
-const PLAYER_COLORS = ["orange", "red", "yellow", "purple", "blue", "black", "aqua", "pink"];
+let NUM_PLAYERS = 3;
+const PLAYER_COLORS = ["#eb5e55", "#3a3335", "#d81e5b", "#c6d8d3", "#4b7f52", "#7dd181", "#96e8bc", "#b6f9c9", "#c9ffe2"];
 const TURRET_INCREMENT = 3;
 const TANK_SIZE = 20;
 const EXPLOSION_RADIUS = 40;
@@ -237,7 +239,7 @@ const drawPlayers = function (ctx, tankObjects) {
     ctx.beginPath();
     ctx.arc(tank.x, tank.y, tank.radius, 0, 2 * Math.PI);
     // cycle thru colors array CONSTANT for fill
-    ctx.fillStyle = PLAYER_COLORS[tank.playerNumber];
+    ctx.fillStyle = PLAYER_COLORS[tank.playerNumber - (1 % PLAYER_COLORS.length)];
     ctx.fill();
     ctx.strokeStyle = "black";
     ctx.lineWidth = 5;

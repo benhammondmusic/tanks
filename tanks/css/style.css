@@ -2,9 +2,25 @@
 tanks
 */
 
+/* COLOR PALETTES FROM COOLORS.CO */
+:root {
+  /* CSS HEX */
+  --fire-opal: #eb5e55;
+  --black-coffee: #3a3335;
+  --ruby: #d81e5b;
+  --papaya-whip: #fdf0d5;
+  --opal: #c6d8d3;
+  /* CSS HEX */
+  --middle-green: #4b7f52;
+  --mantis: #7dd181;
+  --magic-mint: #96e8bc;
+  --magic-mint-2: #b6f9c9;
+  --aero-blue: #c9ffe2;
+}
+
 body {
-  background-color: antiquewhite;
+  background-color: var(--papaya-whip);
 }
 canvas {
-  border: 1px solid antiquewhite;
+  border: 1px solid var(--papaya-whip);
 }
