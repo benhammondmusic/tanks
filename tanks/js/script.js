@@ -5,6 +5,12 @@
 // TODO: IMPLEMENT RESET BUTTON
 const game = {
   currentPlayer: 1,
+  nextPlayersTurn: function () {
+    this.currentPlayer += 1; // rotate turns
+    if (this.currentPlayer > NUM_PLAYERS) {
+      this.currentPlayer = this.currentPlayer % NUM_PLAYERS; // player 1 after last player
+    }
+  },
 };
 
 let NUM_PLAYERS = 3;
@@ -192,16 +198,13 @@ const drawPlayers = function (ctx, tankObjects) {
     ctx.lineWidth = 5;
     ctx.stroke();
 
-    // DRAW TURRET
     drawTurret(tank);
   }
 };
 
 //////////////////////////////////////
-// DRAW TURRET
+// DRAW TURRET  rotate, draw straight line, then rotate back
 const drawTurret = function (tank) {
-  // rotate turret based on the tank center
-  // 0deg all the way left, 180deg all the way right
   ctx.save();
   ctx.translate(tank.x, tank.y);
   ctx.rotate(degreesToRadians(tank.turret.angle));
@@ -247,11 +250,9 @@ const listenKeys = function (e) {
       adjustTurret(TURRET_INCREMENT);
       break;
     case "Space":
+      refreshScreen();
       tankObjects[game.currentPlayer - 1].fire(); // array 0 is player 1
-      game.currentPlayer += 1; // rotate turns
-      if (game.currentPlayer > NUM_PLAYERS) {
-        game.currentPlayer = game.currentPlayer % NUM_PLAYERS; // player 1 after last player
-      }
+      game.nextPlayersTurn();
       break;
   }
 };
@@ -290,9 +291,5 @@ if (tankObjects.length > 1) {
   alert(`Player Number ${tankObjects.pop().playerNumber} Wins!`);
 }
 
-//// ANIMATE BULLET
-//// CHECK FOR COLLISION
-////// ANIMATE TANK COLLISION AND END GAME
-////// OR ANIMATE GROUND COLLISION AND SWITCH TURNS
-
-// MAP MOUSE INPUT TO CORRESPONDING KEY BINDINGS
+// TODO ANIMATE BULLET
+// TODO MAP MOUSE INPUT TO CORRESPONDING KEY BINDINGS
