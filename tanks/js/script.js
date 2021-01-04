@@ -17,6 +17,7 @@ let NUM_PLAYERS = 3;
 const PLAYER_COLORS = ["orange", "red", "yellow", "purple", "blue", "black", "aqua", "pink"];
 const TURRET_INCREMENT = 3;
 const TANK_SIZE = 20;
+const EXPLOSION_RADIUS = 20;
 const terrainArray = [];
 const TERRAIN_BUMPS = 20;
 const STEEPNESS = 1;
@@ -52,10 +53,24 @@ class Tank {
     // TODO: animate shot rather than tracing path
 
     for (i = 0; i < 500; i += 1) {
+      // cycle through tanks and check if explosion hit them
+      tankObjects.forEach((tank) => {
+        if (Math.abs(tank.x - thisShot.x) < EXPLOSION_RADIUS + TANK_SIZE && Math.abs(tank.y - thisShot.y) < EXPLOSION_RADIUS + TANK_SIZE) {
+          console.log("HIT!");
+          showExplosion(thisShot);
+          destroyGround(thisShot);
+          // TODO bullet doesn't fly after hitting a tank
+        }
+      });
+
+      // if no tanks were hit above, check for ground collision
       if (hitGround(thisShot)) {
-        console.log("HIT GROUND");
-        showExplosion();
+        showExplosion(thisShot);
         destroyGround(thisShot);
+        break;
+        // check if shot went off screen horizontally.
+        // TODO maybe implement wrap around shots? ? ?
+      } else if (offX(thisShot)) {
         break;
       } else {
         ctx.beginPath();
@@ -155,14 +170,19 @@ const defineTerrain = function () {
 
 //////////////////////////////////////
 // SHOW EXPLOSION
-const showExplosion = function () {
-  console.log("EXPLOSION!");
+const showExplosion = function (thisShot) {
+  // console.log("EXPLOSION!");
+  ctx.beginPath();
+  ctx.arc(thisShot.x, thisShot.y, 10, 0, 2 * Math.PI);
+  ctx.strokeStyle = "red";
+  ctx.lineWidth = 4;
+  ctx.stroke();
 };
 
 //////////////////////////////////////
 // DESTROY GROUND
 const destroyGround = function (thisShot) {
-  console.log("DESTROY GROUND");
+  // console.log("DESTROY GROUND");
   // TODO: determine y values at edges of explosion (use item drop method)
   // TODO create new mini terrain array around the impact, starting with first edge, randomized crater ending at second edge
   // load up terrain array, which is already sorted by x value
@@ -182,6 +202,22 @@ const dropItem = function (item) {
     }
   }
   return item;
+};
+
+//////////////////////////////////////
+// OFF X - test if an item is horiztonally off-screen
+// had to be explicit with returns, was getting weird errors
+const offX = function (aPoint) {
+  let shotOffX = false;
+  if (aPoint.x < 0) {
+    shotOffX = true;
+    // console.log("off left");
+  }
+  if (aPoint.x > canvas.width) {
+    shotOffX = true;
+    // console.log("off right");
+  }
+  return shotOffX;
 };
 
 //////////////////////////////////////
