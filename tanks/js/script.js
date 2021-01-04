@@ -6,17 +6,17 @@
 
 // TODO: IMPLEMENT RESET BUTTON
 const game = {
-  currentPlayer: 1,
+  currentPlayer: 0,
   nextPlayersTurn: function () {
     this.currentPlayer += 1; // rotate turns
-    if (this.currentPlayer > NUM_PLAYERS) {
-      this.currentPlayer = this.currentPlayer % NUM_PLAYERS; // player 1 after last player
+    if (this.currentPlayer >= NUM_PLAYERS) {
+      this.currentPlayer = 0; // player 0 after last player
     }
     $("#canvas").css("border", `1px dashed ${PLAYER_COLORS[this.currentPlayer]}`);
   },
 };
 
-let NUM_PLAYERS = 3;
+let NUM_PLAYERS = 2;
 const PLAYER_COLORS = ["#eb5e55", "#3a3335", "#d81e5b", "#c6d8d3", "#4b7f52", "#7dd181", "#96e8bc", "#b6f9c9", "#c9ffe2"];
 const TURRET_INCREMENT = 3;
 const TANK_SIZE = 20;
@@ -39,12 +39,13 @@ class Tank {
     this.x = x;
     this.y = dropItem(this).y; // lower from sky until contacts terrain shape
     this.radius = TANK_SIZE;
-    this.playerNumber = playerNumber;
+    this.playerNumber = playerNumber; // there is a player 0
     this.hitpoints = 1;
     this.turret = {
-      angle: 180 - getRandomInt(((playerNumber - 1) / NUM_PLAYERS) * 180, (playerNumber / NUM_PLAYERS) * 180),
+      angle: getRandomInt((playerNumber / NUM_PLAYERS) * 180, (playerNumber + 1 / NUM_PLAYERS) * 180),
       length: TANK_SIZE * 3,
     };
+    console.log(this);
   }
   // tank methods
   fire() {
@@ -239,7 +240,7 @@ const drawPlayers = function (ctx, tankObjects) {
     ctx.beginPath();
     ctx.arc(tank.x, tank.y, tank.radius, 0, 2 * Math.PI);
     // cycle thru colors array CONSTANT for fill
-    ctx.fillStyle = PLAYER_COLORS[tank.playerNumber - (1 % PLAYER_COLORS.length)];
+    ctx.fillStyle = PLAYER_COLORS[tank.playerNumber % PLAYER_COLORS.length];
     ctx.fill();
     ctx.strokeStyle = "black";
     ctx.lineWidth = 5;
@@ -266,7 +267,7 @@ const drawTurret = function (tank) {
 //////////////////////////////////////
 // ADJUST TURRET
 const adjustTurret = function (amount) {
-  let currentTank = tankObjects[game.currentPlayer - 1];
+  let currentTank = tankObjects[game.currentPlayer];
   let angle = currentTank.turret.angle + amount;
   if (angle < 0) {
     angle = 180;
@@ -300,7 +301,7 @@ const listenKeys = function (e) {
       break;
     case "Space":
       refreshScreen();
-      tankObjects[game.currentPlayer - 1].fire(); // array 0 is player 1
+      tankObjects[game.currentPlayer].fire(); // array 0 is player 1
 
       // TODO: add checkWin function, handle winning logic, replay or change players or exit
       if (tankObjects.length < 2) {
@@ -328,9 +329,9 @@ drawBackground();
 
 // CREATE TANK OBJECTS
 let tankObjects = [];
-for (ii = 1; ii <= NUM_PLAYERS; ii++) {
+for (ii = 0; ii < NUM_PLAYERS; ii++) {
   // space out tanks evenly along horizontal
-  const tank = new Tank(Math.floor((canvas.width * ii) / (NUM_PLAYERS + 1)), ii);
+  const tank = new Tank(Math.floor((canvas.width * (ii + 1)) / (NUM_PLAYERS + 1)), ii);
   // TODO: spreak tanks further apart
 
   tankObjects.push(tank);
