@@ -2,7 +2,6 @@
  tanks
  */
 
-// TODO: IMPLEMENT TURNS
 // TODO: IMPLEMENT RESET BUTTON
 const game = {
   currentPlayer: 1,
@@ -28,7 +27,7 @@ class Bullet {
 class Tank {
   constructor(x, playerNumber) {
     this.x = x;
-    this.y = dropTank(this).y; // lower from sky until contacts terrain shape
+    this.y = dropItem(this).y; // lower from sky until contacts terrain shape
     this.radius = TANK_SIZE;
     this.playerNumber = playerNumber;
     this.hitpoints = 1;
@@ -50,7 +49,7 @@ class Tank {
       if (hitGround(thisShot)) {
         console.log("HIT GROUND");
         showExplosion();
-        destroyGround();
+        destroyGround(thisShot);
         break;
       } else {
         ctx.beginPath();
@@ -156,21 +155,27 @@ const showExplosion = function () {
 
 //////////////////////////////////////
 // DESTROY GROUND
-const destroyGround = function () {
+const destroyGround = function (thisShot) {
   console.log("DESTROY GROUND");
+  // TODO: determine y values at edges of explosion (use item drop method)
+  // TODO create new mini terrain array around the impact, starting with first edge, randomized crater ending at second edge
+  // load up terrain array, which is already sorted by x value
+  // splice crater array into terrain array
+  // replacing any existing terrain nodes that are within crater array range
 };
 
 //////////////////////////////////////
-// DROP TANK
-const dropTank = function (tank) {
-  tank.y = 0;
+// DROP ITEM
+// detects top edge of terrain, sets that y value and returns the item
+const dropItem = function (item) {
+  item.y = 0;
   for (i = 0; i < canvas.height; i++) {
-    tank.y++;
-    if (hitGround(tank)) {
+    item.y++;
+    if (hitGround(item)) {
       break;
     }
   }
-  return tank;
+  return item;
 };
 
 //////////////////////////////////////
