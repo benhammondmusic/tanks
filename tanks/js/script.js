@@ -42,10 +42,9 @@ class Tank {
     this.playerNumber = playerNumber; // there is a player 0
     this.hitpoints = 1;
     this.turret = {
-      angle: getRandomInt((playerNumber / NUM_PLAYERS) * 180, (playerNumber + 1 / NUM_PLAYERS) * 180),
+      angle: getRandomInt(180 - (playerNumber / NUM_PLAYERS) * 180, 180 - ((playerNumber + 1) / NUM_PLAYERS) * 180),
       length: TANK_SIZE * 3,
     };
-    console.log(this);
   }
   // tank methods
   fire() {
@@ -72,6 +71,7 @@ class Tank {
       if (hitTank) {
         console.log(hitTank, "hit");
         hitTank.hitpoints--;
+        // remove dead tanks from the array
         tankObjects = tankObjects.filter((tank) => tank.hitpoints > 0);
         break;
       }
