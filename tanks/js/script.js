@@ -164,7 +164,7 @@ const drawBackground = function () {
 const defineTerrain = function () {
   ctx.beginPath();
 
-  let previousPoint = terrainArray[0]; // TODO need to integrate steepness%
+  let previousPoint = terrainArray[0];
   let nextPoint = [];
 
   // random hills
@@ -299,6 +299,8 @@ const listenKeys = function (e) {
     case "Space":
       refreshScreen();
       tankObjects[game.currentPlayer - 1].fire(); // array 0 is player 1
+
+      // TODO: add checkWin function, handle winning logic, replay or change players or exit
       if (tankObjects.length < 2) {
         console.log(`PLAYER ${tankObjects[0].playerNumber} WINS!!!`);
         return;
@@ -327,7 +329,7 @@ let tankObjects = [];
 for (ii = 1; ii <= NUM_PLAYERS; ii++) {
   // space out tanks evenly along horizontal
   const tank = new Tank(Math.floor((canvas.width * ii) / (NUM_PLAYERS + 1)), ii);
-  // TODO: spreak taks further apart
+  // TODO: spreak tanks further apart
 
   tankObjects.push(tank);
 }
@@ -338,5 +340,4 @@ drawPlayers(ctx, tankObjects);
 
 document.onkeydown = listenKeys;
 
-// TODO ANIMATE BULLET
 // TODO MAP MOUSE INPUT TO CORRESPONDING KEY BINDINGS
