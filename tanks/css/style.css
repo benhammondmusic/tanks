@@ -5,3 +5,6 @@ tanks
 body {
   background-color: antiquewhite;
 }
+canvas {
+  border: 1px solid antiquewhite;
+}

@@ -10,6 +10,7 @@ const game = {
     if (this.currentPlayer > NUM_PLAYERS) {
       this.currentPlayer = this.currentPlayer % NUM_PLAYERS; // player 1 after last player
     }
+    $("#canvas").css("border", `1px dashed ${PLAYER_COLORS[this.currentPlayer]}`);
   },
 };
 
