@@ -7,15 +7,18 @@ const game = {
   currentPlayer: 0,
   winningPlayer: null,
   nextPlayersTurn: function () {
+    console.log(this.currentPlayer, "current player");
+
     this.currentPlayer += 1; // rotate turns
     if (this.currentPlayer >= NUM_PLAYERS) {
       this.currentPlayer = 0; // player 0 after last player
     }
     $("#canvas").css("border", `1px dashed ${PLAYER_COLORS[this.currentPlayer]}`);
+    console.log(this.currentPlayer, "new current player");
   },
 };
 
-let NUM_PLAYERS = 2;
+let NUM_PLAYERS = 6;
 const PLAYER_COLORS = ["#eb5e55", "#3a3335", "#d81e5b", "#c6d8d3", "#4b7f52", "#7dd181", "#96e8bc", "#b6f9c9", "#c9ffe2"];
 const TURRET_INCREMENT = 3;
 const TANK_SIZE = 20;
@@ -72,6 +75,7 @@ class Tank {
         hitTank.hitpoints--;
         // remove dead tanks from the array
         tankObjects = tankObjects.filter((tank) => tank.hitpoints > 0);
+        NUM_PLAYERS--;
         break;
       }
       // if no tanks were hit above, check for ground collision
@@ -184,7 +188,7 @@ const defineTerrain = function () {
 const showExplosion = function (thisShot) {
   // console.log("EXPLOSION!");
   ctx.beginPath();
-  ctx.arc(thisShot.x, thisShot.y, 10, 0, 2 * Math.PI);
+  ctx.arc(thisShot.x, thisShot.y, EXPLOSION_RADIUS, 0, 2 * Math.PI);
   ctx.strokeStyle = "red";
   ctx.lineWidth = 4;
   ctx.stroke();
@@ -298,6 +302,7 @@ const getWinner = function () {
 //////////////////////////////////////
 // HANDLE KEYBOARD INPUT
 // https://stackoverflow.com/questions/5597060/detecting-arrow-key-presses-in-javascript
+// https://keycode.info/ by WES BOS useful for extracting code instead of numberic code
 const listenKeys = function (e) {
   // can't use ! because player0
   if (game.winningPlayer === null) {
@@ -322,7 +327,7 @@ const listenKeys = function (e) {
           break;
         }
 
-      // TODO: add checkWin function, handle winning logic, replay or change players or exit
+      // TODO: replay or change players or exit
     }
   }
 };
