@@ -1,7 +1,28 @@
 /*!
  tanks
- // TODO: IMPLEMENT RESET BUTTON
- */
+  */
+//  REQUIREMENTS:
+
+//  WOULD BE COOL:
+// TODO: IMPLEMENT RESET BUTTON
+// TODO: animate shot rather than tracing path
+// TODO: use while loop, end is collision with ground, or shot off of horiztonal screen.
+// TODO add TANK_SIZE and include SIN / COS for more accurate circle target
+// TODO maybe implement wraparound shots? ? ?
+// TODO  integrate terrain steepness%
+
+// HANDLE MODAL - TEMPLATE FROM https://alligator.io/html/dialog-element/
+const playBtn = document.querySelector(".play-modal-btn");
+const changeBtn = document.querySelector(".change-modal-btn");
+const exitBtn = document.querySelector(".quit-modal-btn");
+const modal = document.querySelector(".modal");
+
+// trigger.addEventListener("click", () => {
+//   modal.showModal();
+// });
+// closeBtn.addEventListener("click", () => {
+//   modal.close();
+// });
 
 const game = {
   currentPlayer: 0,
@@ -18,7 +39,7 @@ const game = {
   },
 };
 
-let NUM_PLAYERS = 6;
+let NUM_PLAYERS = 2;
 const PLAYER_COLORS = ["#eb5e55", "#3a3335", "#d81e5b", "#c6d8d3", "#4b7f52", "#7dd181", "#96e8bc", "#b6f9c9", "#c9ffe2"];
 const TURRET_INCREMENT = 3;
 const TANK_SIZE = 20;
@@ -55,13 +76,11 @@ class Tank {
 
     let hitTank = null;
 
-    // TODO: animate shot rather than tracing path
-    // TODO: use while loop, end is collision with ground, or shot off of horiztonal screen.
     for (i = 0; i < 500; i += 1) {
       // cycle through tanks and check if explosion hit them
       for (let idx in tankObjects) {
         let tank = tankObjects[idx];
-        // TODO add TANK_SIZE and include SIN / COS for more accurate circle target
+
         if (Math.abs(tank.x - thisShot.x) < EXPLOSION_RADIUS && Math.abs(tank.y - thisShot.y) < EXPLOSION_RADIUS) {
           console.log("HIT!");
           showExplosion(thisShot);
@@ -84,7 +103,6 @@ class Tank {
         destroyGround(thisShot);
         break;
         // check if shot went off screen horizontally.
-        // TODO maybe implement wraparound shots? ? ?
       } else if (offX(thisShot)) {
         break;
       } else {
@@ -147,8 +165,6 @@ const generateTerrain = function (width, height, numSlopes, steepnessPercent) {
       terrainArray[i] = [width * (i / numSlopes), getRandomInt(height * 0.55, height)];
     }
   }
-
-  // TODO need to integrate steepness%
 };
 
 //////////////////////////////////////
@@ -295,6 +311,7 @@ const getWinner = function () {
   if (tankObjects.length === 1) {
     // only one tank left in array = alive
     game.winningPlayer = tankObjects[0].playerNumber;
+    refreshScreen();
     return true;
   } else return false;
 };
@@ -326,9 +343,11 @@ const listenKeys = function (e) {
           game.nextPlayersTurn();
           break;
         }
-
-      // TODO: replay or change players or exit
     }
+  } else {
+    // TODO: MODAL replay / change players / exit
+    console.log($(".modal").text());
+    $(".modal").fadeIn();
   }
 };
 
