@@ -48,28 +48,35 @@ class Tank {
     let angle = this.turret.angle;
     const thisShot = new Bullet(this.x - Math.cos(degreesToRadians(angle)) * (this.turret.length + this.radius), this.y - Math.sin(degreesToRadians(angle)) * (this.turret.length + this.radius));
 
-    // TODO: change to while loop, end condition is collision with ground, or shot off of horiztonal screen.
-    // TODO: test for tank collision... need to re define tanks like redefined terrain before test
-    // TODO: animate shot rather than tracing path
+    let hitTank = null;
 
+    // TODO: animate shot rather than tracing path
+    // TODO: use while loop, end is collision with ground, or shot off of horiztonal screen.
     for (i = 0; i < 500; i += 1) {
       // cycle through tanks and check if explosion hit them
-      tankObjects.forEach((tank) => {
+      for (let idx in tankObjects) {
+        let tank = tankObjects[idx];
         if (Math.abs(tank.x - thisShot.x) < EXPLOSION_RADIUS + TANK_SIZE && Math.abs(tank.y - thisShot.y) < EXPLOSION_RADIUS + TANK_SIZE) {
           console.log("HIT!");
           showExplosion(thisShot);
           destroyGround(thisShot);
+          hitTank = tankObjects[idx];
+          // tankObjects.
           // TODO bullet doesn't fly after hitting a tank
+          break;
         }
-      });
-
+      }
+      if (hitTank) {
+        tankObjects.filter((tank) => tank !== hitTank);
+        break;
+      }
       // if no tanks were hit above, check for ground collision
-      if (hitGround(thisShot)) {
+      else if (hitGround(thisShot)) {
         showExplosion(thisShot);
         destroyGround(thisShot);
         break;
         // check if shot went off screen horizontally.
-        // TODO maybe implement wrap around shots? ? ?
+        // TODO maybe implement wraparound shots? ? ?
       } else if (offX(thisShot)) {
         break;
       } else {
