@@ -16,17 +16,17 @@
       <canvas id="canvas"></canvas>
 
       <!--MODAL FOR GAME START, GAME RESET, GAME OVER-->
-      <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="Options" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="staticBackdropLabel">Options</h5>
+              <h5 class="modal-title" id="modal-title">Options</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">What goes up, must come down.</div>
+            <div class="modal-body" id="modal-message">What goes up, must come down.</div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary">Play Game</button>
-              <button type="button" class="btn btn-secondary">Change Players</button>
+              <button type="button" class="btn btn-primary" id="play-button">Play Game</button>
+              <button type="button" class="btn btn-secondary" id="change-button">Change Players</button>
               <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Quit Game</button> -->
             </div>
           </div>

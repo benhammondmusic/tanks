@@ -342,8 +342,11 @@ const listenKeys = function (e) {
         let currentTank = tankObjects[game.currentPlayer];
         currentTank.fire(); // array 0 is player 0
         if (getWinner()) {
-          // console.log(getWinner());
+          $("#modal-title").text(`Player ${game.winningPlayer + 1} Is A Big Winner!`);
+          $("#modal-message").text(`Please Select An Option`);
+          $("#play-button").text(`Play Again`);
           $("#modal").modal("show");
+
           return;
         } else {
           game.nextPlayersTurn();
