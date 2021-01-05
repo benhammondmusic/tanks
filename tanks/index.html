@@ -17,7 +17,7 @@
 
       <!--MODAL FOR GAME START, GAME RESET, GAME OVER-->
       <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="Options" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="modal-title">Options</h5>
@@ -25,8 +25,9 @@
             </div>
             <div class="modal-body" id="modal-message">What goes up, must come down.</div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary" id="play-button">Play Game</button>
-              <button type="button" class="btn btn-secondary" id="change-button">Change Players</button>
+              <button type="button" class="btn btn-primary btn-lg" id="play-button" onclick="game.newGame(game.numHumans, game.numComputers)">Play Game</button>
+
+              <button type="button" class="btn btn-secondary btn-lg" id="change-button">Change Players</button>
               <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Quit Game</button> -->
             </div>
           </div>

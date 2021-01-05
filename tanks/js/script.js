@@ -23,14 +23,16 @@
 
 const game = {
   terrainArray: [],
-  totalPlayers: 2,
+  numHumans: 2,
+  numComputers: 0,
   tankObjects: [],
   currentPlayer: 0,
   winningPlayer: null,
 
   // NEW GAME
   newGame: function (numHumans, numComputers) {
-    this.totalPlayers = numHumans + numComputers;
+    this.numHumans = numHumans;
+    this.numComputers = numComputers;
 
     // populate terrain array
     generateTerrain(canvas.width, canvas.height, TERRAIN_BUMPS, STEEPNESS);
@@ -40,9 +42,9 @@ const game = {
 
     // CREATE / RECREATE TANK OBJECTS
     this.tankObjects = [];
-    for (ii = 0; ii < this.totalPlayers; ii++) {
+    for (ii = 0; ii < this.numHumans; ii++) {
       // space out tanks evenly along horizontal
-      const tank = new Tank(Math.floor((canvas.width * (ii + 1)) / (this.totalPlayers + 1)), ii);
+      const tank = new Tank(Math.floor((canvas.width * (ii + 1)) / (this.numHumans + 1)), ii);
 
       this.tankObjects.push(tank);
     }
@@ -53,7 +55,7 @@ const game = {
   },
   nextPlayersTurn: function () {
     this.currentPlayer += 1; // rotate turns
-    if (this.currentPlayer >= this.totalPlayers) {
+    if (this.currentPlayer >= this.numHumans) {
       this.currentPlayer = 0; // player 0 after last player
     }
     $("#canvas").css("border", `1px dashed ${PLAYER_COLORS[this.currentPlayer]}`);
@@ -86,7 +88,7 @@ class Tank {
     this.playerNumber = playerNumber; // there is a player 0
     this.hitpoints = 1;
     this.turret = {
-      angle: getRandomInt(180 - (playerNumber / game.totalPlayers) * 180, 180 - ((playerNumber + 1) / game.totalPlayers) * 180),
+      angle: getRandomInt(180 - (playerNumber / game.numHumans) * 180, 180 - ((playerNumber + 1) / game.numHumans) * 180),
       length: TANK_SIZE * 3,
     };
   }
@@ -115,7 +117,7 @@ class Tank {
         hitTank.hitpoints--;
         // remove dead tanks from the array
         game.tankObjects = game.tankObjects.filter((tank) => tank.hitpoints > 0);
-        game.totalPlayers--;
+        game.numHumans--;
         break;
       }
       // if no tanks were hit above, check for ground collision
