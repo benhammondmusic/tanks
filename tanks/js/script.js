@@ -33,10 +33,10 @@
 
 const game = {
   // NEW GAME
-  newGame: function (numHumans, numComputers) {
+  newGame: function (numHumans, numRobots) {
     // initialize players
     this.numHumans = numHumans;
-    this.numComputers = numComputers;
+    this.numRobots = numRobots;
     this.currentPlayer = 0;
     this.winningPlayer = null;
 
@@ -48,9 +48,9 @@ const game = {
 
     // CREATE / RECREATE TANK OBJECTS
     this.tankObjects = [];
-    for (let ii = 0; ii < this.numHumans + this.numComputers; ii++) {
+    for (let ii = 0; ii < this.numHumans + this.numRobots; ii++) {
       // space out tanks evenly along horizontal
-      const tank = new Tank(Math.floor((canvas.width * (ii + 1)) / (this.numHumans + this.numComputers + 1)), ii);
+      const tank = new Tank(Math.floor((canvas.width * (ii + 1)) / (this.numHumans + this.numRobots + 1)), ii);
 
       this.tankObjects.push(tank);
     }
@@ -61,7 +61,7 @@ const game = {
   },
   nextPlayersTurn: function () {
     this.currentPlayer += 1; // rotate turns
-    if (this.currentPlayer >= this.numHumans + this.numComputers) {
+    if (this.currentPlayer >= this.numHumans + this.numRobots) {
       this.currentPlayer = 0; // player 0 after last player
     }
     $("#canvas").css("border", `1px dashed ${PLAYER_COLORS[this.currentPlayer]}`);
@@ -94,7 +94,7 @@ class Tank {
     this.playerNumber = playerNumber; // there is a player 0
     this.hitpoints = 1;
     this.turret = {
-      angle: getRandomInt(180 - (playerNumber / game.numHumans + game.numComputers) * 180, 180 - ((playerNumber + 1) / (game.numHumans + game.numComputers)) * 180),
+      angle: getRandomInt(180 - (playerNumber / game.numHumans + game.numRobots) * 180, 180 - ((playerNumber + 1) / (game.numHumans + game.numRobots)) * 180),
       length: TANK_SIZE * 3,
     };
   }
@@ -413,8 +413,6 @@ const listenKeys = function (e) {
       currentTank.fire(); // array 0 is player 0
       if (getWinner()) {
         loadModal(`Player ${game.winningPlayer + 1} Is A Big Winner!`);
-        //
-        // `Please select an option.`
         return;
       } else {
         game.nextPlayersTurn();
@@ -431,6 +429,48 @@ const handleClick = (e) => {
     case "play-button":
       // TODO new game with last number of players
       game.newGame(2, 0);
+      break;
+    case "change-players-button":
+      // $(".modal-content").removeChildren();
+      $(".modal-content").append(`
+      <div id="change-players-container">
+
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="num-humans-button" data-bs-toggle="dropdown" aria-expanded="false">
+          How Many Humans?
+          </button>
+    
+          <ul class="dropdown-menu" aria-labelledby="num-humans-button">
+            <li><button class="dropdown-item" type="button" data-humans="0">0</button></li>
+            <li><button class="dropdown-item" type="button" data-humans="1">1</button></li>
+            <li><button class="dropdown-item" type="button" data-humans="2">2</button></li>
+            <li><button class="dropdown-item" type="button" data-humans="3">3</button></li>
+            <li><button class="dropdown-item" type="button" data-humans="4">4</button></li>
+          </ul>
+        </div>
+
+        <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="num-robots-button" data-bs-toggle="dropdown" aria-expanded="false">
+        How Many Robots?
+        </button>
+  
+        <ul class="dropdown-menu" aria-labelledby="num-robots-button">
+          <li><button class="dropdown-item" type="button" data-robots="0">0</button></li>
+          <li><button class="dropdown-item" type="button" data-robots="1">1</button></li>
+          <li><button class="dropdown-item" type="button" data-robots="2">2</button></li>
+          <li><button class="dropdown-item" type="button" data-robots="3">3</button></li>
+          <li><button class="dropdown-item" type="button" data-robots="4">4</button></li>
+        </ul>
+      </div>
+
+
+
+
+      </div>
+`);
+      const numHumans = 3;
+      const numRobots = 0;
+      game.newGame(numHumans, numRobots);
   }
 };
 
