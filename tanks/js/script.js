@@ -3,16 +3,17 @@
   */
 //  REQUIREMENTS:
 // TODO animate shots, explosions, tank death
-// TODO implement options from modal
+// TODO finish implement options from modal
 
 //  WOULD BE COOL:
 // TODO: IMPLEMENT RESET BUTTON
+// TODO: spreak tanks further apart
 // TODO: animate shot rather than tracing path
 // TODO: use while loop, end is collision with ground, or shot off of horiztonal screen.
 // TODO add TANK_SIZE and include SIN / COS for more accurate circle target
 // TODO maybe implement wraparound shots? ? ?
 // TODO  integrate terrain steepness%
-// TODO sno capped mountains
+// TODO snow capped mountains
 
 // Returns a Bootstrap modal instance
 // var myModalEl = document.getElementById("modal");
@@ -23,11 +24,34 @@
 const game = {
   terrainArray: [],
   totalPlayers: 2,
+  tankObjects: [],
   currentPlayer: 0,
   winningPlayer: null,
-  nextPlayersTurn: function () {
-    // console.log(this.currentPlayer, "current player");
 
+  // NEW GAME
+  newGame: function (numHumans, numComputers) {
+    this.totalPlayers = numHumans + numComputers;
+
+    // populate terrain array
+    generateTerrain(canvas.width, canvas.height, TERRAIN_BUMPS, STEEPNESS);
+
+    // DRAW SKY AND GROUND
+    drawBackground();
+
+    // CREATE / RECREATE TANK OBJECTS
+    this.tankObjects = [];
+    for (ii = 0; ii < this.totalPlayers; ii++) {
+      // space out tanks evenly along horizontal
+      const tank = new Tank(Math.floor((canvas.width * (ii + 1)) / (this.totalPlayers + 1)), ii);
+
+      this.tankObjects.push(tank);
+    }
+
+    // DRAW TANKS
+    // console.log(this.tankObjects);
+    drawPlayers(ctx, this.tankObjects);
+  },
+  nextPlayersTurn: function () {
     this.currentPlayer += 1; // rotate turns
     if (this.currentPlayer >= this.totalPlayers) {
       this.currentPlayer = 0; // player 0 after last player
@@ -37,6 +61,7 @@ const game = {
   },
 };
 
+// GAME CONSTANTS
 const PLAYER_COLORS = [color("fire-opal"), color("ruby"), color("papaya-whip"), color("mantis"), color("magic-mint2")];
 const TURRET_INCREMENT = 3;
 const TANK_SIZE = 20;
@@ -74,14 +99,14 @@ class Tank {
 
     for (i = 0; i < canvas.height * 2; i += 1) {
       // cycle through tanks and check if explosion hit them
-      for (let idx in tankObjects) {
-        let tank = tankObjects[idx];
+      for (let idx in game.tankObjects) {
+        let tank = game.tankObjects[idx];
 
         if (Math.abs(tank.x - thisShot.x) < EXPLOSION_RADIUS && Math.abs(tank.y - thisShot.y) < EXPLOSION_RADIUS) {
           // console.log("HIT!");
           showExplosion(thisShot);
           destroyGround(thisShot);
-          hitTank = tankObjects[idx];
+          hitTank = game.tankObjects[idx];
           break;
         }
       }
@@ -89,7 +114,7 @@ class Tank {
         // console.log(hitTank, "hit");
         hitTank.hitpoints--;
         // remove dead tanks from the array
-        tankObjects = tankObjects.filter((tank) => tank.hitpoints > 0);
+        game.tankObjects = game.tankObjects.filter((tank) => tank.hitpoints > 0);
         game.totalPlayers--;
         break;
       }
@@ -141,7 +166,7 @@ const clearCanvas = function (ctx) {
 const refreshScreen = function () {
   clearCanvas(ctx);
   drawBackground();
-  drawPlayers(ctx, tankObjects);
+  drawPlayers(ctx, game.tankObjects);
 };
 
 //////////////////////////////////////
@@ -259,7 +284,7 @@ const offX = function (aPoint) {
 //////////////////////////////////////
 // DRAW PLAYERS
 const drawPlayers = function (ctx, tankObjects) {
-  for (let tank of tankObjects) {
+  for (let tank of game.tankObjects) {
     // TANK BODY
     ctx.beginPath();
     ctx.arc(tank.x, tank.y, tank.radius, 0, 2 * Math.PI);
@@ -291,7 +316,7 @@ const drawTurret = function (tank) {
 //////////////////////////////////////
 // ADJUST TURRET
 const adjustTurret = function (amount) {
-  let currentTank = tankObjects[game.currentPlayer];
+  let currentTank = game.tankObjects[game.currentPlayer];
   let angle = currentTank.turret.angle + amount;
   if (angle < 0) {
     angle = 180;
@@ -313,9 +338,9 @@ const hitGround = function (aPoint) {
 //////////////////////////////////////
 // GET WINNER
 const getWinner = function () {
-  if (tankObjects.length === 1) {
+  if (game.tankObjects.length === 1) {
     // only one tank left in array = alive
-    game.winningPlayer = tankObjects[0].playerNumber;
+    game.winningPlayer = game.tankObjects[0].playerNumber;
     refreshScreen();
     return true;
   } else return false;
@@ -339,7 +364,7 @@ const listenKeys = function (e) {
         break;
       case "Space":
         refreshScreen();
-        let currentTank = tankObjects[game.currentPlayer];
+        let currentTank = game.tankObjects[game.currentPlayer];
         currentTank.fire(); // array 0 is player 0
         if (getWinner()) {
           $("#modal-title").text(`Player ${game.winningPlayer + 1} Is A Big Winner!`);
@@ -362,26 +387,9 @@ canvas.height = 600;
 canvas.width = canvas.height * 2;
 const ctx = canvas.getContext("2d");
 
-// RANDOMLY GENERATE TERRAIN AND STORE TO ARRAY FOR REFRESHES
-// 0 as numSlopes bypasses random function and just adds a rectangle
-generateTerrain(canvas.width, canvas.height, TERRAIN_BUMPS, STEEPNESS);
-
-// DRAW SKY AND GROUND
-drawBackground();
-
-// CREATE TANK OBJECTS
-let tankObjects = [];
-for (ii = 0; ii < game.totalPlayers; ii++) {
-  // space out tanks evenly along horizontal
-  const tank = new Tank(Math.floor((canvas.width * (ii + 1)) / (game.totalPlayers + 1)), ii);
-  // TODO: spreak tanks further apart
-
-  tankObjects.push(tank);
-}
-
-// DRAW TANKS
-// context canvas to draw on, array of tanks to draw
-drawPlayers(ctx, tankObjects);
+// START
+// newGame({num of humans}, {num of computer players})
+game.newGame(2, 0);
 
 document.onkeydown = listenKeys;
 
