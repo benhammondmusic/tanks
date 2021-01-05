@@ -42,9 +42,9 @@ const game = {
 
     // CREATE / RECREATE TANK OBJECTS
     this.tankObjects = [];
-    for (ii = 0; ii < this.numHumans; ii++) {
+    for (let ii = 0; ii < this.numHumans + this.numComputers; ii++) {
       // space out tanks evenly along horizontal
-      const tank = new Tank(Math.floor((canvas.width * (ii + 1)) / (this.numHumans + 1)), ii);
+      const tank = new Tank(Math.floor((canvas.width * (ii + 1)) / (this.numHumans + this.numComputers + 1)), ii);
 
       this.tankObjects.push(tank);
     }
@@ -55,7 +55,7 @@ const game = {
   },
   nextPlayersTurn: function () {
     this.currentPlayer += 1; // rotate turns
-    if (this.currentPlayer >= this.numHumans) {
+    if (this.currentPlayer >= this.numHumans + this.numComputers) {
       this.currentPlayer = 0; // player 0 after last player
     }
     $("#canvas").css("border", `1px dashed ${PLAYER_COLORS[this.currentPlayer]}`);
@@ -88,7 +88,7 @@ class Tank {
     this.playerNumber = playerNumber; // there is a player 0
     this.hitpoints = 1;
     this.turret = {
-      angle: getRandomInt(180 - (playerNumber / game.numHumans) * 180, 180 - ((playerNumber + 1) / game.numHumans) * 180),
+      angle: getRandomInt(180 - (playerNumber / game.numHumans + game.numComputers) * 180, 180 - ((playerNumber + 1) / (game.numHumans + game.numComputers)) * 180),
       length: TANK_SIZE * 3,
     };
   }
@@ -99,7 +99,7 @@ class Tank {
 
     let hitTank = null;
 
-    for (i = 0; i < canvas.height * 2; i += 1) {
+    for (let i = 0; i < canvas.height * 2; i += 1) {
       // cycle through tanks and check if explosion hit them
       for (let idx in game.tankObjects) {
         let tank = game.tankObjects[idx];
@@ -117,6 +117,7 @@ class Tank {
         hitTank.hitpoints--;
         // remove dead tanks from the array
         game.tankObjects = game.tankObjects.filter((tank) => tank.hitpoints > 0);
+        // TODO: this needs to decrement either computers or humans
         game.numHumans--;
         break;
       }
@@ -235,10 +236,25 @@ const defineTerrain = function () {
 // SHOW EXPLOSION
 const showExplosion = function (thisShot) {
   // console.log("EXPLOSION!");
+  ctx.lineWidth = 1;
+
+  // first set of circles
   ctx.beginPath();
-  ctx.arc(thisShot.x, thisShot.y, EXPLOSION_RADIUS, 0, 2 * Math.PI);
-  ctx.strokeStyle = "red";
-  ctx.lineWidth = 4;
+  ctx.lineWidth = 1;
+  for (let i = 0; i < EXPLOSION_RADIUS; i += EXPLOSION_RADIUS / 24) {
+    ctx.stroke();
+    ctx.strokeStyle = color("papaya-whip");
+    ctx.arc(thisShot.x, thisShot.y, i + EXPLOSION_RADIUS / 40, 0, 2 * Math.PI);
+  }
+  ctx.stroke();
+
+  // other color alternate circles
+  ctx.beginPath();
+  ctx.lineWidth = 3;
+  for (let i = 0; i < EXPLOSION_RADIUS; i += EXPLOSION_RADIUS / 16) {
+    ctx.strokeStyle = color("fire-opal");
+    ctx.arc(thisShot.x, thisShot.y, i, degreesToRadians(getRandomInt(0, 360)), degreesToRadians(getRandomInt(0, 360)));
+  }
   ctx.stroke();
 };
 
@@ -258,7 +274,7 @@ const destroyGround = function (thisShot) {
 // detects top edge of terrain, sets that y value and returns the item
 const dropItem = function (item) {
   item.y = 0;
-  for (i = 0; i < canvas.height; i++) {
+  for (let i = 0; i < canvas.height; i++) {
     item.y++;
     if (hitGround(item)) {
       break;
