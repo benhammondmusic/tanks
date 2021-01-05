@@ -342,18 +342,13 @@ const listenKeys = function (e) {
         let currentTank = tankObjects[game.currentPlayer];
         currentTank.fire(); // array 0 is player 0
         if (getWinner()) {
-          $("#staticBackdrop").show();
-          // console.log(`PLAYER ${game.winningPlayer} WINS!!!`);
+          $("#staticBackdrop").modal("show");
           return;
         } else {
           game.nextPlayersTurn();
           break;
         }
     }
-  } else {
-    // TODO: MODAL replay / change players / exit
-    // console.log($(".modal").text());
-    $("#staticBackdrop").modal("show");
   }
 };
 
