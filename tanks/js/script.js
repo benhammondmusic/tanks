@@ -7,6 +7,8 @@
 
 //  WOULD BE COOL:
 // TODO: IMPLEMENT RESET BUTTON
+// TODO: MOVE TITLE / maybe buttons? OVER CANVAS
+// TODO: randomize start tank. weight towards those in the middle since they are most in danger?
 // TODO: spreak tanks further apart
 // TODO: animate shot rather than tracing path
 // TODO: use while loop, end is collision with ground, or shot off of horiztonal screen.
@@ -14,28 +16,32 @@
 // TODO maybe implement wraparound shots? ? ?
 // TODO  integrate terrain steepness%
 // TODO snow capped mountains
+// TODO: math make sure shot can go across whole screen
+// TODO: add computer logic for 1 player mode
+// -
+// TODO:Explosions
+// TODO:- Ground destroyed
+// TODO:- Utilize actual images / improve graphics: use Bézier curves for terrain
+// TODO:- Testing / edge cases / stretch goals
+// TODO:- Read me:, screenshots
+// TODO:- Demonstration
+// TODO:- Build your own level / defenses: clock add terrain node
+// TODO:- Day/night/wind
+// TODO:- Add my trees
 
-// Returns a Bootstrap modal instance
-// var myModalEl = document.getElementById("modal");
-// console.log(myModalEl);
-// var modal = bootstrap.Modal.getInstance(myModalEl);
-// console.log(modal);
+// TODO:- Fine tuned aiming
 
 const game = {
-  terrainArray: [],
-  numHumans: 2,
-  numComputers: 0,
-  tankObjects: [],
-  currentPlayer: 0,
-  winningPlayer: null,
-
   // NEW GAME
   newGame: function (numHumans, numComputers) {
+    // initialize players
     this.numHumans = numHumans;
     this.numComputers = numComputers;
+    this.currentPlayer = 0;
+    this.winningPlayer = null;
 
     // populate terrain array
-    generateTerrain(canvas.width, canvas.height, TERRAIN_BUMPS, STEEPNESS);
+    this.terrainArray = generateTerrain(canvas.width, canvas.height, TERRAIN_BUMPS, STEEPNESS);
 
     // DRAW SKY AND GROUND
     drawBackground();
@@ -64,7 +70,7 @@ const game = {
 };
 
 // GAME CONSTANTS
-const PLAYER_COLORS = [color("fire-opal"), color("ruby"), color("papaya-whip"), color("mantis"), color("magic-mint2")];
+const PLAYER_COLORS = [color("bs-purple"), color("fire-opal"), color("ruby"), color("papaya-whip"), color("mantis"), color("magic-mint2")];
 const TURRET_INCREMENT = 3;
 const TANK_SIZE = 20;
 const EXPLOSION_RADIUS = 40;
@@ -151,6 +157,27 @@ class Tank {
 }
 
 //////////////////////////////////////
+// LOAD MODAL
+// loadModal(stringTitle, stringMessage)
+// resume message will be appended if game is in progress
+const loadModal = function (strTitle, strMsg) {
+  if (strTitle) {
+    $("#modal-title").text(strTitle);
+  } else {
+    $("#modal-title").text(`Tanks!`);
+  }
+
+  // `Player ${game.winningPlayer + 1} Is A Big Winner!`
+  // `Please select an option.`
+  if (strMsg) {
+    $("#modal-message").text(strMsg);
+  } else {
+    $("#modal-message").hide();
+  }
+  $("#modal").modal("show");
+};
+
+//////////////////////////////////////
 // COLOR
 // takes css variable name, prepends double dashes and returns HEX
 // needs functional decl to access CSS colors above
@@ -189,15 +216,18 @@ function degreesToRadians(degrees) {
 // numSlopes = how many changes in elevatio per screen width
 // steepness = % (currently not implemented)
 const generateTerrain = function (width, height, numSlopes, steepnessPercent) {
+  const arr = [];
   if (numSlopes === 0) {
-    game.terrainArray[0] = [0, height * 0.7];
-    game.terrainArray[1] = [width, height * 0.7];
+    arr[0] = [0, height * 0.7];
+    arr[1] = [width, height * 0.7];
     return;
+    // TODO: eliminate extra zero numSlopes, was added for testing
   } else {
     for (let i = 0; i <= numSlopes; i++) {
-      game.terrainArray[i] = [width * (i / numSlopes), getRandomInt(height * 0.55, height)];
+      arr[i] = [width * (i / numSlopes), getRandomInt(height * 0.55, height)];
     }
   }
+  return arr;
 };
 
 //////////////////////////////////////
@@ -369,33 +399,38 @@ const getWinner = function () {
 // https://stackoverflow.com/questions/5597060/detecting-arrow-key-presses-in-javascript
 // https://keycode.info/ by WES BOS useful for extracting code instead of numberic code
 const listenKeys = function (e) {
-  // can't use ! because player0
-  if (game.winningPlayer === null) {
-    switch (e.code) {
-      case "ArrowLeft":
-        refreshScreen();
-        adjustTurret(TURRET_INCREMENT * -1);
-        break;
-      case "ArrowRight":
-        refreshScreen();
-        adjustTurret(TURRET_INCREMENT);
-        break;
-      case "Space":
-        refreshScreen();
-        let currentTank = game.tankObjects[game.currentPlayer];
-        currentTank.fire(); // array 0 is player 0
-        if (getWinner()) {
-          $("#modal-title").text(`Player ${game.winningPlayer + 1} Is A Big Winner!`);
-          $("#modal-message").text(`Please Select An Option`);
-          $("#play-button").text(`Play Again`);
-          $("#modal").modal("show");
+  switch (e.code) {
+    case "ArrowLeft":
+      refreshScreen();
+      adjustTurret(TURRET_INCREMENT * -1);
+      break;
+    case "ArrowRight":
+      refreshScreen();
+      adjustTurret(TURRET_INCREMENT);
+      break;
+    case "Space":
+      refreshScreen();
+      let currentTank = game.tankObjects[game.currentPlayer];
+      currentTank.fire(); // array 0 is player 0
+      if (getWinner()) {
+        loadModal();
 
-          return;
-        } else {
-          game.nextPlayersTurn();
-          break;
-        }
-    }
+        return;
+      } else {
+        game.nextPlayersTurn();
+        break;
+      }
+  }
+};
+
+//////////////////////////////////////
+// HANDLE CLICK
+const handleClick = (e) => {
+  console.log(e.target);
+  switch (e.target.id) {
+    case "play-button":
+      // TODO new game with last number of players
+      game.newGame(2, 0);
   }
 };
 
@@ -405,10 +440,11 @@ canvas.height = 600;
 canvas.width = canvas.height * 2;
 const ctx = canvas.getContext("2d");
 
-// START
+// START GAME
 // newGame({num of humans}, {num of computer players})
 game.newGame(2, 0);
 
 document.onkeydown = listenKeys;
+$("body").click((e) => handleClick(e));
 
 // TODO MAP MOUSE INPUT TO CORRESPONDING KEY BINDINGS
