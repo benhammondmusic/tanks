@@ -2,6 +2,8 @@
  tanks
   */
 //  REQUIREMENTS:
+// TODO animate shots, explosions, tank death
+// TODO implement options from modal
 
 //  WOULD BE COOL:
 // TODO: IMPLEMENT RESET BUTTON
@@ -10,6 +12,7 @@
 // TODO add TANK_SIZE and include SIN / COS for more accurate circle target
 // TODO maybe implement wraparound shots? ? ?
 // TODO  integrate terrain steepness%
+// TODO sno capped mountains
 
 // HANDLE MODAL - TEMPLATE FROM https://alligator.io/html/dialog-element/
 const playBtn = document.querySelector(".play-modal-btn");
@@ -25,13 +28,15 @@ const modal = document.querySelector(".modal");
 // });
 
 const game = {
+  terrainArray: [],
+  totalPlayers: 2,
   currentPlayer: 0,
   winningPlayer: null,
   nextPlayersTurn: function () {
     console.log(this.currentPlayer, "current player");
 
     this.currentPlayer += 1; // rotate turns
-    if (this.currentPlayer >= NUM_PLAYERS) {
+    if (this.currentPlayer >= this.totalPlayers) {
       this.currentPlayer = 0; // player 0 after last player
     }
     $("#canvas").css("border", `1px dashed ${PLAYER_COLORS[this.currentPlayer]}`);
@@ -39,12 +44,10 @@ const game = {
   },
 };
 
-let NUM_PLAYERS = 2;
-const PLAYER_COLORS = ["#eb5e55", "#3a3335", "#d81e5b", "#c6d8d3", "#4b7f52", "#7dd181", "#96e8bc", "#b6f9c9", "#c9ffe2"];
+const PLAYER_COLORS = [color("fire-opal"), color("ruby"), color("papaya-whip"), color("mantis"), color("magic-mint2")];
 const TURRET_INCREMENT = 3;
 const TANK_SIZE = 20;
 const EXPLOSION_RADIUS = 40;
-const terrainArray = [];
 const TERRAIN_BUMPS = 20;
 const STEEPNESS = 1;
 
@@ -65,7 +68,7 @@ class Tank {
     this.playerNumber = playerNumber; // there is a player 0
     this.hitpoints = 1;
     this.turret = {
-      angle: getRandomInt(180 - (playerNumber / NUM_PLAYERS) * 180, 180 - ((playerNumber + 1) / NUM_PLAYERS) * 180),
+      angle: getRandomInt(180 - (playerNumber / game.totalPlayers) * 180, 180 - ((playerNumber + 1) / game.totalPlayers) * 180),
       length: TANK_SIZE * 3,
     };
   }
@@ -94,7 +97,7 @@ class Tank {
         hitTank.hitpoints--;
         // remove dead tanks from the array
         tankObjects = tankObjects.filter((tank) => tank.hitpoints > 0);
-        NUM_PLAYERS--;
+        game.totalPlayers--;
         break;
       }
       // if no tanks were hit above, check for ground collision
@@ -114,6 +117,7 @@ class Tank {
         // bullets were going backwards, so used decrement
 
         // fire based on turret angle; -i gives gravity over time
+        // TODO adjust spacing if not animating every frame
         thisShot.y -= TANK_SIZE * Math.sin(degreesToRadians(angle)) - i;
         thisShot.x -= TANK_SIZE * Math.cos(degreesToRadians(angle));
 
@@ -123,6 +127,14 @@ class Tank {
       }
     }
   }
+}
+
+//////////////////////////////////////
+// COLOR
+// takes css variable name, prepends double dashes and returns HEX
+// needs functional decl to access CSS colors above
+function color(cssVar) {
+  return getComputedStyle(document.documentElement).getPropertyValue(`--${cssVar}`);
 }
 
 //////////////////////////////////////
@@ -157,12 +169,12 @@ function degreesToRadians(degrees) {
 // steepness = % (currently not implemented)
 const generateTerrain = function (width, height, numSlopes, steepnessPercent) {
   if (numSlopes === 0) {
-    terrainArray[0] = [0, height * 0.7];
-    terrainArray[1] = [width, height * 0.7];
+    game.terrainArray[0] = [0, height * 0.7];
+    game.terrainArray[1] = [width, height * 0.7];
     return;
   } else {
     for (let i = 0; i <= numSlopes; i++) {
-      terrainArray[i] = [width * (i / numSlopes), getRandomInt(height * 0.55, height)];
+      game.terrainArray[i] = [width * (i / numSlopes), getRandomInt(height * 0.55, height)];
     }
   }
 };
@@ -173,11 +185,11 @@ const drawBackground = function () {
   // SKY
   ctx.beginPath();
   ctx.rect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  ctx.fillStyle = "skyblue";
+  ctx.fillStyle = color("opal");
   ctx.fill();
 
   defineTerrain();
-  ctx.fillStyle = "#00EE00";
+  ctx.fillStyle = color("black-coffee");
   ctx.fill();
 };
 
@@ -186,12 +198,12 @@ const drawBackground = function () {
 const defineTerrain = function () {
   ctx.beginPath();
 
-  let previousPoint = terrainArray[0];
+  let previousPoint = game.terrainArray[0];
   let nextPoint = [];
 
   // random hills
-  for (let i = 0; i < terrainArray.length; i++) {
-    ctx.lineTo(terrainArray[i][0], terrainArray[i][1]);
+  for (let i = 0; i < game.terrainArray.length; i++) {
+    ctx.lineTo(game.terrainArray[i][0], game.terrainArray[i][1]);
   }
   // connect polygon
   ctx.lineTo(canvas.width, canvas.height); // to bottom right corner
@@ -366,9 +378,9 @@ drawBackground();
 
 // CREATE TANK OBJECTS
 let tankObjects = [];
-for (ii = 0; ii < NUM_PLAYERS; ii++) {
+for (ii = 0; ii < game.totalPlayers; ii++) {
   // space out tanks evenly along horizontal
-  const tank = new Tank(Math.floor((canvas.width * (ii + 1)) / (NUM_PLAYERS + 1)), ii);
+  const tank = new Tank(Math.floor((canvas.width * (ii + 1)) / (game.totalPlayers + 1)), ii);
   // TODO: spreak tanks further apart
 
   tankObjects.push(tank);

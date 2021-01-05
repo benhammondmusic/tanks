@@ -4,13 +4,13 @@ tanks
 
 /* COLOR PALETTES FROM COOLORS.CO */
 :root {
-  /* CSS HEX */
+  /* CSS HEX SET1*/
   --fire-opal: #eb5e55;
   --black-coffee: #3a3335;
   --ruby: #d81e5b;
   --papaya-whip: #fdf0d5;
   --opal: #c6d8d3;
-  /* CSS HEX */
+  /* CSS HEX SET2*/
   --middle-green: #4b7f52;
   --mantis: #7dd181;
   --magic-mint: #96e8bc;
@@ -32,6 +32,7 @@ dialog {
   text-align: center;
   border: 5px solid var(--fire-opal);
   padding: 2rem;
+  margin-top: 20%;
 
   border-radius: 6px;
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.1), 0 0 10px rgba(0, 0, 0, 0.25);
@@ -50,6 +51,7 @@ dialog::backdrop {
 dialog .actions {
   display: flex;
   justify-content: space-around;
+  align-items: center;
 }
 
 @keyframes appear {
