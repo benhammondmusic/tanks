@@ -25,43 +25,7 @@ canvas {
   border: 1px solid var(--papaya-whip);
 }
 
-/* MODAL TEMPLATE FROM https://alligator.io/html/dialog-element/ */
-dialog {
-  background-color: var(--opal);
-  color: var(--black-coffee);
-  text-align: center;
-  border: 5px solid var(--fire-opal);
-  padding: 2rem;
-
-  border-radius: 6px;
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.1), 0 0 10px rgba(0, 0, 0, 0.25);
-  max-width: 40vw;
-  /* height: 300px;
-  min-height: 20vh; */
-}
-
-dialog[open] {
-  animation: appear 0.15s cubic-bezier(0, 1.8, 1, 1.8);
-}
-
-dialog::backdrop {
-  background: linear-gradient(45deg, rgba(0, 143, 104, 0.5), rgba(250, 224, 66, 0.5));
-}
-
-dialog .actions {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-
-@keyframes appear {
-  from {
-    opacity: 0;
-    transform: translateX(-3rem);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+/* HIDDEN BY DEFAULT */
+#change-players-container {
+  display: none;
 }

@@ -431,46 +431,13 @@ const handleClick = (e) => {
       game.newGame(2, 0);
       break;
     case "change-players-button":
-      // $(".modal-content").removeChildren();
-      $(".modal-content").append(`
-      <div id="change-players-container">
-
-        <div class="dropdown">
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="num-humans-button" data-bs-toggle="dropdown" aria-expanded="false">
-          How Many Humans?
-          </button>
-    
-          <ul class="dropdown-menu" aria-labelledby="num-humans-button">
-            <li><button class="dropdown-item" type="button" data-humans="0">0</button></li>
-            <li><button class="dropdown-item" type="button" data-humans="1">1</button></li>
-            <li><button class="dropdown-item" type="button" data-humans="2">2</button></li>
-            <li><button class="dropdown-item" type="button" data-humans="3">3</button></li>
-            <li><button class="dropdown-item" type="button" data-humans="4">4</button></li>
-          </ul>
-        </div>
-
-        <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="num-robots-button" data-bs-toggle="dropdown" aria-expanded="false">
-        How Many Robots?
-        </button>
-  
-        <ul class="dropdown-menu" aria-labelledby="num-robots-button">
-          <li><button class="dropdown-item" type="button" data-robots="0">0</button></li>
-          <li><button class="dropdown-item" type="button" data-robots="1">1</button></li>
-          <li><button class="dropdown-item" type="button" data-robots="2">2</button></li>
-          <li><button class="dropdown-item" type="button" data-robots="3">3</button></li>
-          <li><button class="dropdown-item" type="button" data-robots="4">4</button></li>
-        </ul>
-      </div>
-
-
-
-
-      </div>
-`);
-      const numHumans = 3;
-      const numRobots = 0;
-      game.newGame(numHumans, numRobots);
+      $("#change-players-container").toggle();
+      // $("#change-players-container").addClass("d-flex");
+      // $("#change-players-container").removeClass("d-none");
+      break;
+    // const numHumans = 3;
+    // const numRobots = 0;
+    // game.newGame(numHumans, numRobots);
   }
 };
 
