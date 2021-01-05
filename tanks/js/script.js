@@ -14,18 +14,11 @@
 // TODO  integrate terrain steepness%
 // TODO sno capped mountains
 
-// HANDLE MODAL - TEMPLATE FROM https://alligator.io/html/dialog-element/
-const playBtn = document.querySelector(".play-modal-btn");
-const changeBtn = document.querySelector(".change-modal-btn");
-const exitBtn = document.querySelector(".quit-modal-btn");
-const modal = document.querySelector(".modal");
-
-// trigger.addEventListener("click", () => {
-//   modal.showModal();
-// });
-// closeBtn.addEventListener("click", () => {
-//   modal.close();
-// });
+// Returns a Bootstrap modal instance
+// var myModalEl = document.getElementById("staticBackdrop");
+// console.log(myModalEl);
+// var modal = bootstrap.Modal.getInstance(myModalEl);
+// console.log(modal);
 
 const game = {
   terrainArray: [],
@@ -33,14 +26,14 @@ const game = {
   currentPlayer: 0,
   winningPlayer: null,
   nextPlayersTurn: function () {
-    console.log(this.currentPlayer, "current player");
+    // console.log(this.currentPlayer, "current player");
 
     this.currentPlayer += 1; // rotate turns
     if (this.currentPlayer >= this.totalPlayers) {
       this.currentPlayer = 0; // player 0 after last player
     }
     $("#canvas").css("border", `1px dashed ${PLAYER_COLORS[this.currentPlayer]}`);
-    console.log(this.currentPlayer, "new current player");
+    // console.log(this.currentPlayer, "new current player");
   },
 };
 
@@ -85,7 +78,7 @@ class Tank {
         let tank = tankObjects[idx];
 
         if (Math.abs(tank.x - thisShot.x) < EXPLOSION_RADIUS && Math.abs(tank.y - thisShot.y) < EXPLOSION_RADIUS) {
-          console.log("HIT!");
+          // console.log("HIT!");
           showExplosion(thisShot);
           destroyGround(thisShot);
           hitTank = tankObjects[idx];
@@ -93,7 +86,7 @@ class Tank {
         }
       }
       if (hitTank) {
-        console.log(hitTank, "hit");
+        // console.log(hitTank, "hit");
         hitTank.hitpoints--;
         // remove dead tanks from the array
         tankObjects = tankObjects.filter((tank) => tank.hitpoints > 0);
@@ -349,7 +342,8 @@ const listenKeys = function (e) {
         let currentTank = tankObjects[game.currentPlayer];
         currentTank.fire(); // array 0 is player 0
         if (getWinner()) {
-          console.log(`PLAYER ${game.winningPlayer} WINS!!!`);
+          $("#staticBackdrop").show();
+          // console.log(`PLAYER ${game.winningPlayer} WINS!!!`);
           return;
         } else {
           game.nextPlayersTurn();
@@ -358,8 +352,8 @@ const listenKeys = function (e) {
     }
   } else {
     // TODO: MODAL replay / change players / exit
-    console.log($(".modal").text());
-    $(".modal").fadeIn();
+    // console.log($(".modal").text());
+    $("#staticBackdrop").modal("show");
   }
 };
 

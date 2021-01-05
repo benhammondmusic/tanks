@@ -16,21 +16,39 @@
       <canvas id="canvas"></canvas>
 
       <!--MODAL FOR GAME START, GAME RESET, GAME OVER-->
-      <dialog class="modal">
-        <h3>OPTIONS</h3>
-        <!-- <p>What goes up, must come down.</p> -->
+      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">Options</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">What goes up, must come down.</div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary">Play Game</button>
+              <button type="button" class="btn btn-secondary">Change Players</button>
+              <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Quit Game</button> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- <dialog class="modal">
+        <p id="message"></p>
         <div class="actions">
           <button class="small start-modal-btn">Play</button>
           <button class="small change-modal-btn">Change Players</button>
           <button class="small quit-modal-btn">Quit Game</button>
         </div>
-      </dialog>
+      </dialog> -->
     </main>
-    <!-- <footer>CONTROLS: .......</footer> -->
-
-    <!-- BOOTSTRAP -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <footer>
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Game Options</button>
+    </footer>
     <!-- JQUERY -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- BOOTSTRAP -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
   </body>
 </html>
