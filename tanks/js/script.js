@@ -15,7 +15,7 @@
 // TODO sno capped mountains
 
 // Returns a Bootstrap modal instance
-// var myModalEl = document.getElementById("staticBackdrop");
+// var myModalEl = document.getElementById("modal");
 // console.log(myModalEl);
 // var modal = bootstrap.Modal.getInstance(myModalEl);
 // console.log(modal);
@@ -342,7 +342,8 @@ const listenKeys = function (e) {
         let currentTank = tankObjects[game.currentPlayer];
         currentTank.fire(); // array 0 is player 0
         if (getWinner()) {
-          $("#staticBackdrop").modal("show");
+          // console.log(getWinner());
+          $("#modal").modal("show");
           return;
         } else {
           game.nextPlayersTurn();
