@@ -167,13 +167,12 @@ const loadModal = function (strTitle, strMsg) {
     $("#modal-title").text(`Tanks!`);
   }
 
-  // `Player ${game.winningPlayer + 1} Is A Big Winner!`
-  // `Please select an option.`
   if (strMsg) {
     $("#modal-message").text(strMsg);
   } else {
     $("#modal-message").hide();
   }
+
   $("#modal").modal("show");
 };
 
@@ -413,8 +412,9 @@ const listenKeys = function (e) {
       let currentTank = game.tankObjects[game.currentPlayer];
       currentTank.fire(); // array 0 is player 0
       if (getWinner()) {
-        loadModal();
-
+        loadModal(`Player ${game.winningPlayer + 1} Is A Big Winner!`);
+        //
+        // `Please select an option.`
         return;
       } else {
         game.nextPlayersTurn();
