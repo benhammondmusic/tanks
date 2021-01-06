@@ -114,7 +114,7 @@ class Tank {
       } else if (offX(thisShot)) {
         break;
       } else {
-        const oldShot = { x: thisShot.x, y: thisShot.y };
+        // const oldShot = { x: thisShot.x, y: thisShot.y };
 
         // 0-180 degrees = 0 to PI radians
         // sin of radians: 0 on the sides, 1 straight up
@@ -131,19 +131,18 @@ class Tank {
         ctx.arc(thisShot.x, thisShot.y, 2, 0, 2 * Math.PI);
         ctx.stroke();
 
-        // slowly erase last shot
-        const list = [1, 2, 3, 4];
-        const eraseLastShot = async () => {
-          await sleep(1000);
+        // // slowly erase last shot
+        // const list = [1, 2, 3, 4];
+        // const eraseLastShot = async () => {
+        //   await sleep(1000);
 
-          ctx.beginPath();
-          ctx.strokeStyle = color("opal");
-          ctx.arc(oldShot.x, oldShot.y, 2, 0, 2 * Math.PI);
-          ctx.lineWidth = 3;
-          ctx.stroke();
-        };
-
-        eraseLastShot();
+        //   ctx.beginPath();
+        //   ctx.strokeStyle = color("opal");
+        //   ctx.arc(oldShot.x, oldShot.y, 2, 0, 2 * Math.PI);
+        //   ctx.lineWidth = 3;
+        //   ctx.stroke();
+        // };
+        // eraseLastShot();
       }
     }
   }
@@ -358,6 +357,8 @@ const drawTurret = function (tank) {
 //////////////////////////////////////
 // ADJUST TURRET
 const adjustTurret = function (amount) {
+  // TODO: rf send tank to adjust in a arg rather than changing
+  console.log(game.tankObjects);
   let currentTank = game.tankObjects[game.currentPlayer];
   let angle = currentTank.turret.angle + amount;
   if (angle < 0) {
@@ -392,11 +393,10 @@ const getWinner = function () {
 // HANDLE KEYBOARD INPUT
 // https://keycode.info/ by WES BOS useful for extracting code instead of numberic code
 const listenKeys = function (e) {
-  let currentTankAngle = game.tankObjects[game.currentPlayer].turret.angle;
-
   switch (e.code) {
     case "ArrowLeft":
       refreshScreen();
+      console.log(game.currentPlayer);
       adjustTurret(TURRET_INCREMENT * -1);
       break;
     case "ArrowRight":
@@ -408,7 +408,7 @@ const listenKeys = function (e) {
 
       // up arrow fine adjusts towards top of screen
       let fineAdjustmentUp = 1;
-      if (currentTankAngle > 90) {
+      if (game.tankObjects[game.currentPlayer].turret.angle > 90) {
         fineAdjustmentUp *= -1;
       }
       adjustTurret(fineAdjustmentUp);
@@ -417,7 +417,7 @@ const listenKeys = function (e) {
       refreshScreen();
       // down arrow fine adjusts towards top of screen
       let fineAdjustmentDown = 1;
-      if (currentTankAngle < 90) {
+      if (game.tankObjects[game.currentPlayer].turret.angle < 90) {
         fineAdjustmentDown *= -1;
       }
       adjustTurret(fineAdjustmentDown);
@@ -426,16 +426,17 @@ const listenKeys = function (e) {
       refreshScreen();
       let currentTank = game.tankObjects[game.currentPlayer];
 
-      // window.requestAnimationFrame(currentTank.fire);
       currentTank.fire();
 
       if (getWinner()) {
         loadModal(`Player ${game.winningPlayer + 1} Is A Big Winner!`, "What Would You Like To Do?");
-        return;
+
+        // return;
       } else {
-        game.nextPlayersTurn();
-        break;
+        // game.nextPlayersTurn();
       }
+
+      game.nextPlayersTurn();
   }
 };
 
