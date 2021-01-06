@@ -48,7 +48,7 @@ const PLAYER_COLORS = [color("bs-purple"), color("fire-opal"), color("ruby"), co
 const TURRET_INCREMENT = 3;
 const TANK_SIZE = 20;
 const EXPLOSION_RADIUS = 40;
-const TERRAIN_BUMPS = 20;
+const TERRAIN_BUMPS = 100;
 const STEEPNESS = 1;
 const DEFAULT_NUM_HUMANS = 2;
 const DEFAULT_NUM_ROBOTS = 0;
@@ -186,6 +186,7 @@ const loadModal = function (strTitle, strMsg) {
   }
 
   $("#modal").modal("show");
+  $("#new-button").focus();
 };
 
 //////////////////////////////////////
@@ -226,27 +227,20 @@ function degreesToRadians(degrees) {
 }
 
 //////////////////////////////////////
-// https://flaviocopes.com/how-to-slow-loop-javascript/
-const sleep = (milliseconds) => {
-  return new Promise((resolve) => setTimeout(resolve, milliseconds));
-};
-
-//////////////////////////////////////
 // generate random elevation ground and sky
-// numSlopes = how many changes in elevatio per screen width
+// numSlopes = how many changes in elevatio per screen width. MUST BE > 0
 // steepness = % (currently not implemented)
 const generateTerrain = function (width, height, numSlopes, steepnessPercent) {
   const arr = [];
-  if (numSlopes === 0) {
-    arr[0] = [0, height * 0.7];
-    arr[1] = [width, height * 0.7];
-    return;
-    // TODO: eliminate extra zero numSlopes, was added for testing
-  } else {
-    for (let i = 0; i <= numSlopes; i++) {
-      arr[i] = [width * (i / numSlopes), getRandomInt(height * 0.55, height)];
-    }
+
+  for (let i = 0; i <= numSlopes; i++) {
+    arr[i] = [width * (i / numSlopes), getRandomInt(height * 0.55, height)];
   }
+  // in case of 0 slopes
+  if (numSlopes === 0) {
+    arr[1] = arr[0];
+  }
+
   return arr;
 };
 
@@ -337,6 +331,8 @@ const destroyGround = function (thisShot) {
 
   // insert crater terrain into remaining game terrain
   game.terrainArray = [...terrainLeftOfCrater, ...crater.terrainArray, ...terrainRightOfCrater];
+
+  refreshScreen();
 };
 
 //////////////////////////////////////
