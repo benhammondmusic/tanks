@@ -29,3 +29,11 @@ canvas {
 #change-players-container {
   display: none;
 }
+
+/* BOOTSTRAP OVERRIDES */
+.dropdown-menu {
+  background-color: transparent;
+}
+.dropdown .dropdown-menu {
+  background-color: transparent;
+}

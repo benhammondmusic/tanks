@@ -4,9 +4,11 @@
 //  REQUIREMENTS:
 // TODO animate shots, explosions, tank death
 // TODO finish implement options from modal
+// TODO: fix bug where PLAY resets board/terrain. need to take terrain generation out of new game method
 
 //  WOULD BE COOL:
 // TODO: IMPLEMENT RESET BUTTON
+// TODO: use slider instead to get new num players
 // TODO: MOVE TITLE / maybe buttons? OVER CANVAS
 // TODO: randomize start tank. weight towards those in the middle since they are most in danger?
 // TODO: spreak tanks further apart
@@ -37,6 +39,9 @@ const game = {
     // initialize players
     this.numHumans = numHumans;
     this.numRobots = numRobots;
+    // remembered after tanks die so new game can have same number players
+    this.numHumansAtStart = numHumans;
+    this.numRobotsAtStart = numRobots;
     this.currentPlayer = 0;
     this.winningPlayer = null;
 
@@ -173,7 +178,7 @@ const loadModal = function (strTitle, strMsg) {
     $("#modal-message").hide();
   }
 
-  console.log($("#modal"));
+  // console.log($("#modal"));
   $("#modal").modal("show");
 };
 
@@ -426,19 +431,31 @@ const listenKeys = function (e) {
 // HANDLE CLICK
 const handleClick = (e) => {
   console.log(e.target);
+
+  // by #ID
   switch (e.target.id) {
     case "play-button":
-      // TODO new game with last number of players
-      game.newGame(2, 0);
+      const prevNumHumans = game.numHumansAtStart;
+      game.newGame(prevNumHumans, 0);
       break;
     case "change-players-button":
+      // show or hide player dropdowns
       $("#change-players-container").toggle();
       break;
-    case ".dropdown-item":
-      const numHumans = e.target.break;
-    // const numHumans = 3;
-    // const numRobots = 0;
-    // game.newGame(numHumans, numRobots);
+  }
+
+  // by .CLASS
+  if ($(e.target).hasClass("dropdown-item-humans")) {
+    //set number of humans
+    game.numHumansAtStart = $(e.target).data("humans");
+    game.newGame(game.numHumansAtStart, 0);
+    // rehide player dropdown in modal for next time
+    $("#change-players-container").toggle();
+    // close modal
+    $("#modal").modal("hide");
+  } else if ($(e.target).hasClass("dropdown-item-robots")) {
+    // set number robots
+    game.numRobotsAtStart = $(e.target).data("robots");
   }
 };
 
