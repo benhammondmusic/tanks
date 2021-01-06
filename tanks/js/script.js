@@ -6,6 +6,8 @@ const TEST_MODE = true;
 
 // TODO better animation
 // TODO smaller buttons so all fit in a row with resume button
+// TODO: add chemtrails
+// animate explosion AFTER shot lands
 
 const game = {
   // NEW GAME
@@ -55,7 +57,9 @@ const TERRAIN_BUMPS = 20;
 const STEEPNESS = 1;
 const DEFAULT_NUM_HUMANS = 2;
 const DEFAULT_NUM_ROBOTS = 0;
-const GRAVITY = 0.5;
+const GRAVITY = 0.04;
+const SHOT_DELAY = 0.2;
+const X_BOOSTER = 1.5;
 
 //////////////////////////////////////
 class Bullet {
@@ -85,7 +89,8 @@ class Tank {
 
     let hitTank = null;
 
-    for (let i = 0; i < canvas.height * 2; i += 1) {
+    // shot placements
+    for (let i = 0; i < canvas.height * 10; i += 10) {
       // cycle through tanks and check if explosion hit them
       for (let idx in game.tankObjects) {
         let tank = game.tankObjects[idx];
@@ -114,46 +119,53 @@ class Tank {
       } else if (offX(thisShot)) {
         break;
       } else {
-        // const oldShot = { x: thisShot.x, y: thisShot.y };
-
-        // 0-180 degrees = 0 to PI radians
-        // sin of radians: 0 on the sides, 1 straight up
-        // bullets were going backwards, so used decrement
+        const oldShot = { x: thisShot.x, y: thisShot.y };
 
         // fire based on turret angle;
         thisShot.y -= TANK_SIZE * Math.sin(degreesToRadians(angle)) - i * GRAVITY; // i gives gravity
-        thisShot.x -= TANK_SIZE * Math.cos(degreesToRadians(angle));
-
-        // draw new shot
-        ctx.beginPath();
-        ctx.strokeStyle = color("black-coffee");
-        ctx.lineWidth = 2;
-        ctx.arc(thisShot.x, thisShot.y, 2, 0, 2 * Math.PI);
-        ctx.stroke();
+        thisShot.x -= TANK_SIZE * X_BOOSTER * Math.cos(degreesToRadians(angle));
 
         // using jCanvas
-        // Create and draw a rectangle layer
+        // start at old bullet spot, animate to new bullet spot
         $("#jcanvas").drawRect({
           layer: true,
           name: "shot",
           fillStyle: color("black-coffee"),
-          x: this.x,
-          y: this.y,
-          width: 40,
-          height: 40,
+          x: oldShot.x,
+          y: oldShot.y,
+          width: 4,
+          height: 4,
         });
 
         // Animate layer properties
         $("#jcanvas").animateLayer(
           "shot",
           {
-            x: 150,
-            y: 150,
-            width: 100,
-            height: 50,
+            x: thisShot.x,
+            y: thisShot.y,
+            width: 10,
+            height: 10,
           },
-          1000
+          SHOT_DELAY
         );
+
+        // draw chemtrails
+        // $("#canvas").drawRect({
+        //   layer: true,
+        //   name: "chemTrails",
+        //   fillStyle: color("papaya-whip"),
+        //   x: oldShot.x,
+        //   y: oldShot.y,
+        //   width: 2,
+        //   height: 2,
+        // });
+
+        // OLD ONE
+        // ctx.beginPath();
+        // ctx.strokeStyle = color("black-coffee");
+        // ctx.lineWidth = 2;
+        // ctx.arc(thisShot.x, thisShot.y, 2, 0, 2 * Math.PI);
+        // ctx.stroke();
 
         // console.log("here");
         // $("#jcanvas").clearCanvas();
