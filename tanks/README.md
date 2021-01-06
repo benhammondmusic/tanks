@@ -33,7 +33,8 @@ A second challenge came in implementing the actual physics and math to calculate
 - Terrain generation and drawing needs to be scoped out of game.newGame() to make **Change Terrain** button operational, and to allow **New Game** button to start play on existing terrain.
 - Display explosion AFTER shot lands
 - Smaller buttons so all fit in a row with resume button
-- Make tanks fall when ground under them is destroyed. Maybe can hurt them if hitpoints are implemented?
+- Make tanks fall when ground under them is destroyed. Maybe can hurt them if hit points are implemented?
+- Flatten terrain directly below tanks.
 
 ## Cool Features In Progress:
 
@@ -41,7 +42,8 @@ A second challenge came in implementing the actual physics and math to calculate
 
 ## Future Ideas:
 
-- Add chemtrails to see last shot. Slow fade out?
+- Make mobile responsive and playable with on-screen controls to fire keyboard inputs
+- Add chem trails to see last shot. Slow fade out?
 - Make craters more jagged, more visually interesting.
 - Add computer logic for **Robot** players.
 - Utilize actual images

@@ -35,7 +35,7 @@
             <div class="modal-body" id="modal-message">What goes up, must come down.</div>
             <div class="modal-footer">
               <button type="button" class="btn btn-primary" id="resume-button" data-bs-dismiss="modal">Resume Game</button>
-              <button type="button" class="btn btn-primary" id="new-button" data-bs-dismiss="modal">New Game</button>
+              <button type="button" class="btn btn-primary" id="new-button" data-bs-dismiss="modal" tabindex="0">New Game</button>
 
               <button type="button" class="btn btn-secondary" id="change-players-button">Change Players</button>
               <button type="button" class="btn btn-success" id="change-terrain-button" disabled>Change Terrain</button>
@@ -49,10 +49,10 @@
                     <!-- disabled 0,1 until robots work -->
                     <!-- <li><button class="dropdown-item-humans" type="button" data-humans="0" disabled>0</button></li>
                     <li><button class="dropdown-item-humans" type="button" data-humans="1" disabled>1</button></li> -->
-                    <li><button class="btn btn-primary dropdown-item-humans" type="button" data-humans="2">2</button></li>
-                    <li><button class="btn btn-primary dropdown-item-humans" type="button" data-humans="3">3</button></li>
-                    <li><button class="btn btn-primary dropdown-item-humans" type="button" data-humans="4">4</button></li>
-                    <li><button class="btn btn-primary dropdown-item-humans" type="button" data-humans="5">5</button></li>
+                    <li><button class="btn btn-primary dropdown-item num-humans" type="button" data-humans="2">2</button></li>
+                    <li><button class="btn btn-primary dropdown-item num-humans" type="button" data-humans="3">3</button></li>
+                    <li><button class="btn btn-primary dropdown-item num-humans" type="button" data-humans="4">4</button></li>
+                    <li><button class="btn btn-primary dropdown-item num-humans" type="button" data-humans="5">5</button></li>
                   </ul>
                 </span>
 
@@ -61,11 +61,11 @@
                   <button class="btn btn-secondary dropdown-toggle" type="button" id="num-robots-button" data-bs-toggle="dropdown" aria-expanded="false" disabled>How Many Robots?</button>
 
                   <ul class="dropdown-menu" aria-labelledby="num-robots-button">
-                    <li><button class="dropdown-item-robots" type="button" data-robots="0">0</button></li>
-                    <li><button class="dropdown-item-robots" type="button" data-robots="1">1</button></li>
-                    <li><button class="dropdown-item-robots" type="button" data-robots="2">2</button></li>
-                    <li><button class="dropdown-item-robots" type="button" data-robots="3">3</button></li>
-                    <li><button class="dropdown-item-robots" type="button" data-robots="4">4</button></li>
+                    <li><button class="dropdown-item num-robots" type="button" data-robots="0">0</button></li>
+                    <li><button class="dropdown-item num-robots" type="button" data-robots="1">1</button></li>
+                    <li><button class="dropdown-item num-robots" type="button" data-robots="2">2</button></li>
+                    <li><button class="dropdown-item num-robots" type="button" data-robots="3">3</button></li>
+                    <li><button class="dropdown-item num-robots" type="button" data-robots="4">4</button></li>
                   </ul>
                 </span>
               </div>

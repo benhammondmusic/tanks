@@ -2,7 +2,8 @@
  tanks
   */
 
-const TEST_MODE = true;
+const TEST_MODE = false;
+// const TEST_MODE = true;
 
 const game = {
   // NEW GAME
@@ -48,7 +49,7 @@ const PLAYER_COLORS = [color("bs-purple"), color("fire-opal"), color("ruby"), co
 const TURRET_INCREMENT = 3;
 const TANK_SIZE = 20;
 const EXPLOSION_RADIUS = 40;
-const TERRAIN_BUMPS = 100;
+const TERRAIN_BUMPS = 19;
 const STEEPNESS = 1;
 const DEFAULT_NUM_HUMANS = 2;
 const DEFAULT_NUM_ROBOTS = 0;
@@ -186,7 +187,8 @@ const loadModal = function (strTitle, strMsg) {
   }
 
   $("#modal").modal("show");
-  $("#new-button").focus();
+  // $("#modal").focus();
+  $("#new-button").first().focus();
 };
 
 //////////////////////////////////////
@@ -453,50 +455,64 @@ const getWinner = function () {
 // HANDLE KEYBOARD INPUT
 // https://keycode.info/ by WES BOS useful for extracting code instead of numberic code
 const listenKeys = function (e) {
-  switch (e.code) {
-    case "ArrowLeft":
-      refreshScreen();
-      // console.log(game.currentPlayer);
-      adjustTurret(TURRET_INCREMENT * -1);
-      break;
-    case "ArrowRight":
-      refreshScreen();
-      adjustTurret(TURRET_INCREMENT);
-      break;
-    case "ArrowUp":
-      refreshScreen();
+  // when modal is open
+  if ($("#modal").hasClass("show")) {
+    switch (e.code) {
+      case "ArrowLeft":
+        refreshScreen();
+        // console.log(game.currentPlayer);
+        adjustTurret(TURRET_INCREMENT * -1);
+        break;
+      case "ArrowRight":
+        refreshScreen();
+        adjustTurret(TURRET_INCREMENT);
+        break;
+      case "Enter":
+        $("#modal").modal("hide");
+        break;
+    }
+  } else {
+    // accept keyboard game controls when modal is closed
 
-      // up arrow fine adjusts towards top of screen
-      let fineAdjustmentUp = 1;
-      if (game.tankObjects[game.currentPlayer].turret.angle > 90) {
-        fineAdjustmentUp *= -1;
-      }
-      adjustTurret(fineAdjustmentUp);
-      break;
-    case "ArrowDown":
-      refreshScreen();
-      // down arrow fine adjusts towards top of screen
-      let fineAdjustmentDown = 1;
-      if (game.tankObjects[game.currentPlayer].turret.angle < 90) {
-        fineAdjustmentDown *= -1;
-      }
-      adjustTurret(fineAdjustmentDown);
-      break;
-    case "Space":
-      refreshScreen();
-      let currentTank = game.tankObjects[game.currentPlayer];
+    switch (e.code) {
+      case "ArrowLeft":
+        refreshScreen();
+        // console.log(game.currentPlayer);
+        adjustTurret(TURRET_INCREMENT * -1);
+        break;
+      case "ArrowRight":
+        refreshScreen();
+        adjustTurret(TURRET_INCREMENT);
+        break;
+      case "ArrowUp":
+        refreshScreen();
 
-      currentTank.fire();
+        // up arrow fine adjusts towards top of screen
+        let fineAdjustmentUp = 1;
+        if (game.tankObjects[game.currentPlayer].turret.angle > 90) {
+          fineAdjustmentUp *= -1;
+        }
+        adjustTurret(fineAdjustmentUp);
+        break;
+      case "ArrowDown":
+        refreshScreen();
+        // down arrow fine adjusts towards top of screen
+        let fineAdjustmentDown = 1;
+        if (game.tankObjects[game.currentPlayer].turret.angle < 90) {
+          fineAdjustmentDown *= -1;
+        }
+        adjustTurret(fineAdjustmentDown);
+        break;
+      case "Space":
+        refreshScreen();
+        let currentTank = game.tankObjects[game.currentPlayer];
 
-      if (getWinner()) {
-        loadModal(`Player ${game.winningPlayer + 1} Is A Big Winner!`, "What Would You Like To Do?");
-
-        // return;
-      } else {
-        // game.nextPlayersTurn();
-      }
-
-      game.nextPlayersTurn();
+        currentTank.fire();
+        if (getWinner()) {
+          loadModal(`Player ${game.winningPlayer + 1} Is A Big Winner!`, "What Would You Like To Do?");
+        }
+        game.nextPlayersTurn();
+    }
   }
 };
 
@@ -530,7 +546,7 @@ const handleClick = (e) => {
   }
 
   // by .CLASS
-  if ($(e.target).hasClass("dropdown-item-humans")) {
+  if ($(e.target).hasClass("num-humans")) {
     //set number of humans
     game.numHumansAtStart = $(e.target).data("humans");
     // might have to disable this once robots can play
@@ -539,7 +555,7 @@ const handleClick = (e) => {
     $("#change-players-container").toggle();
     // close modal
     $("#modal").modal("hide");
-  } else if ($(e.target).hasClass("dropdown-item-robots")) {
+  } else if ($(e.target).hasClass("num-robots")) {
     // set number robots
     game.numRobotsAtStart = $(e.target).data("robots");
   }
