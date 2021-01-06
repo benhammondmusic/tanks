@@ -48,6 +48,8 @@ const TANK_SIZE = 20;
 const EXPLOSION_RADIUS = 40;
 const TERRAIN_BUMPS = 20;
 const STEEPNESS = 1;
+const DEFAULT_NUM_HUMANS = 2;
+const DEFAULT_NUM_ROBOTS = 0;
 
 //////////////////////////////////////
 class Bullet {
@@ -365,6 +367,8 @@ const getWinner = function () {
 // HANDLE KEYBOARD INPUT
 // https://keycode.info/ by WES BOS useful for extracting code instead of numberic code
 const listenKeys = function (e) {
+  let currentTankAngle = game.tankObjects[game.currentPlayer].turret.angle;
+
   switch (e.code) {
     case "ArrowLeft":
       refreshScreen();
@@ -373,6 +377,25 @@ const listenKeys = function (e) {
     case "ArrowRight":
       refreshScreen();
       adjustTurret(TURRET_INCREMENT);
+      break;
+    case "ArrowUp":
+      refreshScreen();
+
+      // up arrow fine adjusts towards top of screen
+      let fineAdjustmentUp = 1;
+      if (currentTankAngle > 90) {
+        fineAdjustmentUp *= -1;
+      }
+      adjustTurret(fineAdjustmentUp);
+      break;
+    case "ArrowDown":
+      refreshScreen();
+      // down arrow fine adjusts towards top of screen
+      let fineAdjustmentDown = 1;
+      if (currentTankAngle < 90) {
+        fineAdjustmentDown *= -1;
+      }
+      adjustTurret(fineAdjustmentDown);
       break;
     case "Space":
       refreshScreen();
@@ -442,7 +465,7 @@ const ctx = canvas.getContext("2d");
 
 // START GAME
 // newGame({num of humans}, {num of computer players})
-game.newGame(2, 0);
+game.newGame(DEFAULT_NUM_HUMANS, DEFAULT_NUM_ROBOTS);
 loadModal("Welcome to Tanks!", "What goes up, must come down. Take turns lobbing projectiles at one another. Adjust the angle of your shot using the arrow left and right keys, and fire using the space bar. Tanks receiving a hit are eliminated; the last tank remaining is the winner!");
 
 document.onkeydown = listenKeys;
