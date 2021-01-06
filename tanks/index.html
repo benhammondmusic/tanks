@@ -26,7 +26,7 @@
 
       <!--MODAL FOR GAME START, GAME RESET, GAME OVER-->
       <div class="modal fade" id="modal" data-bs-keyboard="true" tabindex="-1" aria-labelledby="Options" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-xl">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="modal-title">Options</h5>
@@ -34,11 +34,11 @@
             </div>
             <div class="modal-body" id="modal-message">What goes up, must come down.</div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary" id="resume-button" data-bs-dismiss="modal">Resume Game</button>
-              <button type="button" class="btn btn-primary" id="new-button" data-bs-dismiss="modal" tabindex="0">New Game</button>
+              <button type="button" class="btn btn-primary btn-sm" id="resume-button" data-bs-dismiss="modal">Resume Game</button>
+              <button type="button" class="btn-sm btn btn-primary" id="new-button" data-bs-dismiss="modal" tabindex="0">New Game</button>
 
-              <button type="button" class="btn btn-secondary" id="change-players-button">Change Players</button>
-              <button type="button" class="btn btn-success" id="change-terrain-button" disabled>Change Terrain</button>
+              <button type="button" class="btn-sm btn btn-secondary" id="change-players-button">Change Players</button>
+              <button type="button" class="btn-sm btn btn-success" id="change-terrain-button" disabled>Change Terrain</button>
 
               <!-- DIV AND BUTTONS HIDDEN TO START -->
               <div id="change-players-container">
@@ -49,10 +49,10 @@
                     <!-- disabled 0,1 until robots work -->
                     <!-- <li><button class="dropdown-item-humans" type="button" data-humans="0" disabled>0</button></li>
                     <li><button class="dropdown-item-humans" type="button" data-humans="1" disabled>1</button></li> -->
-                    <li><button class="btn btn-primary dropdown-item num-humans" type="button" data-humans="2">2</button></li>
-                    <li><button class="btn btn-primary dropdown-item num-humans" type="button" data-humans="3">3</button></li>
-                    <li><button class="btn btn-primary dropdown-item num-humans" type="button" data-humans="4">4</button></li>
-                    <li><button class="btn btn-primary dropdown-item num-humans" type="button" data-humans="5">5</button></li>
+                    <li><button class="btn-sm btn btn-primary dropdown-item num-humans" type="button" data-humans="2">2</button></li>
+                    <li><button class="btn-sm btn btn-primary dropdown-item num-humans" type="button" data-humans="3">3</button></li>
+                    <li><button class="btn-sm btn btn-primary dropdown-item num-humans" type="button" data-humans="4">4</button></li>
+                    <li><button class="btn-sm btn btn-primary dropdown-item num-humans" type="button" data-humans="5">5</button></li>
                   </ul>
                 </span>
 
@@ -76,7 +76,7 @@
     </main>
     <footer>
       <!-- options Button trigger modal -->
-      <button type="button" class="btn btn-primary" id="options">Game Options</button>
+      <button type="button" class="btn-sm btn btn-primary" id="options">Game Options</button>
     </footer>
   </body>
 </html>
