@@ -21,10 +21,10 @@ tanks
 body {
   background-color: var(--papaya-whip);
 }
-#canvas-container {
-  /* position: relative; */
-  /* left: 0px; */
-}
+/* #canvas-container {
+  position: relative; 
+   left: 0px;
+} */
 #canvas {
   border: 1px solid var(--papaya-whip);
   position: absolute;

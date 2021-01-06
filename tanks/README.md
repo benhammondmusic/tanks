@@ -31,14 +31,17 @@ A second challenge came in implementing the actual physics and math to calculate
 ## Known Bugs and Wonkiness Being Fixed:
 
 - Terrain generation and drawing needs to be scoped out of game.newGame() to make **Change Terrain** button operational, and to allow **New Game** button to start play on existing terrain.
+- Display explosion AFTER shot lands
+- Smaller buttons so all fit in a row with resume button
 
 ## Cool Features In Progress:
 
-- Animations (shots, explosions, tank destruction)
+- Animations (explosions, tank destruction)
 - Destruction of ground from missed shots.
 
 ## Future Ideas:
 
+- Add chemtrails
 - Add computer logic for **Robot** players.
 - Utilize actual images
 - Use Bézier curves for terrain instead of straight lines.

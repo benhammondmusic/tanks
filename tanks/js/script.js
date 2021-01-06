@@ -4,11 +4,6 @@
 
 const TEST_MODE = true;
 
-// TODO better animation
-// TODO smaller buttons so all fit in a row with resume button
-// TODO: add chemtrails
-// animate explosion AFTER shot lands
-
 const game = {
   // NEW GAME
   newGame: function (numHumans, numRobots) {
