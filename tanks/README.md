@@ -62,7 +62,6 @@ A second challenge came in implementing the actual physics and math to calculate
 - [Coolor.co - Color Palette Generator](http://www.coolors.co)
 - [Canvas Clock Demo](http://www.dhtmlgoodies.com/tutorials/canvas-clock/)
 - [Keycode.info by Wes Bos](https://keycode.info/)
-- https://flaviocopes.com/how-to-slow-loop-javascript/
 
 ## App Demo
 

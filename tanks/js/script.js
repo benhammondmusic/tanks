@@ -2,6 +2,8 @@
  tanks
   */
 
+const TEST_MODE = true;
+
 // TODO better animation
 // TODO smaller buttons so all fit in a row with resume button
 
@@ -174,14 +176,17 @@ function color(cssVar) {
 
 //////////////////////////////////////
 // CLEAR CANVAS
-const clearCanvas = function (ctx) {
-  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // clear canvas
+const clrCanvas = function (ctx) {
+  // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // clear canvas
+
+  // using jCanvas
+  $("#canvas").clearCanvas();
 };
 
 //////////////////////////////////////
 // REFRESH SCREEN
 const refreshScreen = function () {
-  clearCanvas(ctx);
+  clrCanvas(ctx);
   drawBackground();
   drawPlayers(ctx, game.tankObjects);
 };
@@ -488,7 +493,9 @@ const ctx = canvas.getContext("2d");
 // START GAME
 // newGame({num of humans}, {num of computer players})
 game.newGame(DEFAULT_NUM_HUMANS, DEFAULT_NUM_ROBOTS);
-loadModal("Welcome to Tanks!", "What goes up, must come down. Take turns lobbing projectiles at one another. Adjust the angle of your shot using the arrow left and right keys, and fire using the space bar. Tanks receiving a hit are eliminated; the last tank remaining is the winner!");
+if (!TEST_MODE) {
+  loadModal("Welcome to Tanks!", "What goes up, must come down. Take turns lobbing projectiles at one another. Adjust the angle of your shot using the arrow left and right keys, and fire using the space bar. Tanks receiving a hit are eliminated; the last tank remaining is the winner!");
+}
 
 // USER INPUT
 document.onkeydown = listenKeys;
