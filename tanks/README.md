@@ -41,7 +41,7 @@ A second challenge came in implementing the actual physics and math to calculate
 
 ## Future Ideas:
 
-- Add chemtrails
+- Add chemtrails to see last shot. Slow fade out?
 - Add computer logic for **Robot** players.
 - Utilize actual images
 - Use Bézier curves for terrain instead of straight lines.

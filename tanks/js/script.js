@@ -351,12 +351,20 @@ const drawPlayers = function (ctx, tankObjects) {
   for (let tank of game.tankObjects) {
     // TANK BODY
     ctx.beginPath();
-    ctx.arc(tank.x, tank.y, tank.radius, 0, 2 * Math.PI);
+    ctx.arc(tank.x, tank.y, tank.radius, Math.PI, Math.PI * 2);
     // cycle thru colors array CONSTANT for fill
     ctx.fillStyle = PLAYER_COLORS[tank.playerNumber % PLAYER_COLORS.length];
     ctx.fill();
     ctx.strokeStyle = color("papaya-whip");
     ctx.lineWidth = 3;
+    ctx.closePath();
+    ctx.stroke();
+
+    // SECOND COLOR TANK OUTLINE
+    ctx.beginPath();
+    ctx.strokeStyle = color("black-coffee");
+    ctx.arc(tank.x, tank.y, tank.radius + 4, Math.PI, Math.PI * 2);
+    ctx.closePath();
     ctx.stroke();
 
     drawTurret(tank);
@@ -369,11 +377,22 @@ const drawTurret = function (tank) {
   ctx.save();
   ctx.translate(tank.x, tank.y);
   ctx.rotate(degreesToRadians(tank.turret.angle));
+
+  // BLACK TURRET
   ctx.beginPath();
   ctx.moveTo(-1 * tank.radius, 0);
   ctx.lineTo(-1 * tank.turret.length, 0);
-  ctx.lineWidth = 5;
+  ctx.lineWidth = 6;
   ctx.stroke();
+
+  // WHITE LINE ON TURRET
+  ctx.beginPath();
+  ctx.moveTo(-1 * tank.radius, 0);
+  ctx.lineTo(-1 * tank.turret.length + 5, 0);
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = color("papaya-whip");
+  ctx.stroke();
+
   ctx.restore();
 };
 
