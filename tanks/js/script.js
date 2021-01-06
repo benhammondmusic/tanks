@@ -1,37 +1,6 @@
 /*!
  tanks
   */
-//  REQUIREMENTS:
-// TODO animate shots, explosions, tank death
-// TODO finish implement options from modal
-// TODO: fix bug where PLAY resets board/terrain. need to take terrain generation out of new game method
-
-//  WOULD BE COOL:
-// TODO: IMPLEMENT RESET BUTTON
-// TODO: use slider instead to get new num players
-// TODO: MOVE TITLE / maybe buttons? OVER CANVAS
-// TODO: randomize start tank. weight towards those in the middle since they are most in danger?
-// TODO: spreak tanks further apart
-// TODO: animate shot rather than tracing path
-// TODO: use while loop, end is collision with ground, or shot off of horiztonal screen.
-// TODO add TANK_SIZE and include SIN / COS for more accurate circle target
-// TODO maybe implement wraparound shots? ? ?
-// TODO  integrate terrain steepness%
-// TODO snow capped mountains
-// TODO: math make sure shot can go across whole screen
-// TODO: add computer logic for 1 player mode
-// -
-// TODO:Explosions
-// TODO:- Ground destroyed
-// TODO:- Utilize actual images / improve graphics: use Bézier curves for terrain
-// TODO:- Testing / edge cases / stretch goals
-// TODO:- Read me:, screenshots
-// TODO:- Demonstration
-// TODO:- Build your own level / defenses: clock add terrain node
-// TODO:- Day/night/wind
-// TODO:- Add my trees
-
-// TODO:- Fine tuned aiming
 
 const game = {
   // NEW GAME
@@ -61,7 +30,6 @@ const game = {
     }
 
     // DRAW TANKS
-    // console.log(this.tankObjects);
     drawPlayers(ctx, this.tankObjects);
   },
   nextPlayersTurn: function () {
@@ -171,14 +139,11 @@ const loadModal = function (strTitle, strMsg) {
   } else {
     $("#modal-title").text(`Tanks!`);
   }
-
+  console.log({ strMsg });
   if (strMsg) {
     $("#modal-message").text(strMsg);
-  } else {
-    $("#modal-message").hide();
   }
 
-  // console.log($("#modal"));
   $("#modal").modal("show");
 };
 
@@ -418,7 +383,7 @@ const listenKeys = function (e) {
       let currentTank = game.tankObjects[game.currentPlayer];
       currentTank.fire(); // array 0 is player 0
       if (getWinner()) {
-        loadModal(`Player ${game.winningPlayer + 1} Is A Big Winner!`);
+        loadModal(`Player ${game.winningPlayer + 1} Is A Big Winner!`, "What Would You Like To Do?");
         return;
       } else {
         game.nextPlayersTurn();
@@ -434,7 +399,10 @@ const handleClick = (e) => {
 
   // by #ID
   switch (e.target.id) {
-    case "play-button":
+    case "resume-button":
+      $("#modal").modal("hide");
+      break;
+    case "new-button":
       const prevNumHumans = game.numHumansAtStart;
       game.newGame(prevNumHumans, 0);
       break;
@@ -442,12 +410,23 @@ const handleClick = (e) => {
       // show or hide player dropdowns
       $("#change-players-container").toggle();
       break;
+    case "change-terrain-button":
+      // show or hide player dropdowns
+      // populate terrain array
+      // game.terrainArray = generateTerrain(canvas.width, canvas.height, TERRAIN_BUMPS, STEEPNESS);
+      // refreshScreen;
+      break;
+    case "options":
+      $("#resume-button").show();
+      loadModal();
+      break;
   }
 
   // by .CLASS
   if ($(e.target).hasClass("dropdown-item-humans")) {
     //set number of humans
     game.numHumansAtStart = $(e.target).data("humans");
+    // might have to disable this once robots can play
     game.newGame(game.numHumansAtStart, 0);
     // rehide player dropdown in modal for next time
     $("#change-players-container").toggle();

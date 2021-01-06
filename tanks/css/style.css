@@ -26,7 +26,8 @@ canvas {
 }
 
 /* HIDDEN BY DEFAULT */
-#change-players-container {
+#change-players-container,
+#resume-button {
   display: none;
 }
 

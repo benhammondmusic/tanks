@@ -29,10 +29,11 @@
             </div>
             <div class="modal-body" id="modal-message">What goes up, must come down.</div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary" id="play-button" data-bs-dismiss="modal">Play Game</button>
+              <button type="button" class="btn btn-primary" id="resume-button" data-bs-dismiss="modal">Resume Game</button>
+              <button type="button" class="btn btn-primary" id="new-button" data-bs-dismiss="modal">New Game</button>
 
               <button type="button" class="btn btn-secondary" id="change-players-button">Change Players</button>
-              <button type="button" class="btn btn-secondary" id="change-terrain-button">Change Terrain</button>
+              <button type="button" class="btn btn-success" id="change-terrain-button" disabled>Change Terrain</button>
 
               <!-- DIV AND BUTTONS HIDDEN TO START -->
               <div id="change-players-container">
@@ -70,7 +71,7 @@
     </main>
     <footer>
       <!-- options Button trigger modal -->
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Game Options</button>
+      <button type="button" class="btn btn-primary" id="options">Game Options</button>
     </footer>
   </body>
 </html>
