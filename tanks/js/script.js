@@ -310,11 +310,33 @@ const showExplosion = function (thisShot) {
 //////////////////////////////////////
 // DESTROY GROUND
 const destroyGround = function (thisShot) {
-  // TODO: determine y values at edges of explosion (use item drop method)
-  // TODO create new mini terrain array around the impact, starting with first edge, randomized crater ending at second edge
-  // load up terrain array, which is already sorted by x value
-  // splice crater array into terrain array
-  // replacing any existing terrain nodes that are within crater array range
+  const crater = {
+    leftEdge: { x: Math.floor(thisShot.x - EXPLOSION_RADIUS), y: 0 },
+    rightEdge: { x: Math.floor(thisShot.x + EXPLOSION_RADIUS), y: 0 },
+    terrainArray: [[]],
+  };
+
+  // set y values at X edges of explosion
+  crater.leftEdge = dropItem(crater.leftEdge);
+  crater.rightEdge = dropItem(crater.rightEdge);
+
+  // fill first node of crater terrain array
+  crater.terrainArray[0][0] = crater.leftEdge.x;
+  crater.terrainArray[0][1] = crater.leftEdge.y;
+
+  // generate crater inner shape
+  // TODO: add random jagged edges
+  crater.terrainArray.push([thisShot.x, thisShot.y + getRandomInt(TANK_SIZE, EXPLOSION_RADIUS + TANK_SIZE)]);
+
+  // fill last node of crater terrain
+  crater.terrainArray.push([crater.rightEdge.x, crater.rightEdge.y]);
+
+  // keep game terrainintact L and R of crater
+  const terrainLeftOfCrater = game.terrainArray.filter((nodeX) => nodeX[0] < crater.leftEdge.x);
+  const terrainRightOfCrater = game.terrainArray.filter((nodeX) => nodeX[0] > crater.rightEdge.x);
+
+  // insert crater terrain into remaining game terrain
+  game.terrainArray = [...terrainLeftOfCrater, ...crater.terrainArray, ...terrainRightOfCrater];
 };
 
 //////////////////////////////////////
@@ -400,7 +422,7 @@ const drawTurret = function (tank) {
 // ADJUST TURRET
 const adjustTurret = function (amount) {
   // TODO: rf send tank to adjust in a arg rather than changing
-  console.log(game.tankObjects);
+  // console.log(game.tankObjects);
   let currentTank = game.tankObjects[game.currentPlayer];
   let angle = currentTank.turret.angle + amount;
   if (angle < 0) {
@@ -438,7 +460,7 @@ const listenKeys = function (e) {
   switch (e.code) {
     case "ArrowLeft":
       refreshScreen();
-      console.log(game.currentPlayer);
+      // console.log(game.currentPlayer);
       adjustTurret(TURRET_INCREMENT * -1);
       break;
     case "ArrowRight":
