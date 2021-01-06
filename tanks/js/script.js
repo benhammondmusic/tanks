@@ -173,6 +173,7 @@ const loadModal = function (strTitle, strMsg) {
     $("#modal-message").hide();
   }
 
+  console.log($("#modal"));
   $("#modal").modal("show");
 };
 
@@ -432,9 +433,9 @@ const handleClick = (e) => {
       break;
     case "change-players-button":
       $("#change-players-container").toggle();
-      // $("#change-players-container").addClass("d-flex");
-      // $("#change-players-container").removeClass("d-none");
       break;
+    case ".dropdown-item":
+      const numHumans = e.target.break;
     // const numHumans = 3;
     // const numRobots = 0;
     // game.newGame(numHumans, numRobots);
@@ -450,6 +451,7 @@ const ctx = canvas.getContext("2d");
 // START GAME
 // newGame({num of humans}, {num of computer players})
 game.newGame(2, 0);
+loadModal("Welcome to Tanks!", "What goes up, must come down. Take turns lobbing projectiles at one another. Adjust the angle of your shot using the arrow left and right keys, and fire using the space bar. Tanks receiving a hit are eliminated; the last tank remaining is the winner!");
 
 document.onkeydown = listenKeys;
 $("body").click((e) => handleClick(e));

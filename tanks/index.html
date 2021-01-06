@@ -7,6 +7,10 @@
 
     <!-- CSS -->
     <link href="./css/style.css" rel="stylesheet" />
+    <!-- JQUERY -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- BOOTSTRAP -->
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
     <!-- JS -->
     <script defer src="js/script.js"></script>
   </head>
@@ -32,7 +36,7 @@
 
               <!-- DIV AND BUTTONS HIDDEN TO START -->
               <div id="change-players-container">
-                <div class="dropdown">
+                <span class="dropdown">
                   <button class="btn btn-secondary dropdown-toggle" type="button" id="num-humans-button" data-bs-toggle="dropdown" aria-expanded="false">How Many Humans?</button>
 
                   <ul class="dropdown-menu" aria-labelledby="num-humans-button">
@@ -42,10 +46,11 @@
                     <li><button class="dropdown-item" type="button" data-humans="3">3</button></li>
                     <li><button class="dropdown-item" type="button" data-humans="4">4</button></li>
                   </ul>
-                </div>
+                </span>
 
-                <div class="dropdown">
-                  <button class="btn btn-secondary dropdown-toggle" type="button" id="num-robots-button" data-bs-toggle="dropdown" aria-expanded="false">How Many Robots?</button>
+                <span class="dropdown">
+                  <!-- DISABLED FOR NOW UNTIL ADD ROBOT LOGIC -->
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="num-robots-button" data-bs-toggle="dropdown" aria-expanded="false" disabled>How Many Robots?</button>
 
                   <ul class="dropdown-menu" aria-labelledby="num-robots-button">
                     <li><button class="dropdown-item" type="button" data-robots="0">0</button></li>
@@ -54,7 +59,7 @@
                     <li><button class="dropdown-item" type="button" data-robots="3">3</button></li>
                     <li><button class="dropdown-item" type="button" data-robots="4">4</button></li>
                   </ul>
-                </div>
+                </span>
               </div>
             </div>
           </div>
@@ -65,9 +70,5 @@
       <!-- Button trigger modal -->
       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Game Options</button>
     </footer>
-    <!-- JQUERY -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- BOOTSTRAP -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
   </body>
 </html>
