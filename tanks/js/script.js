@@ -470,6 +470,9 @@ const listenKeys = function (e) {
       case "Enter":
         $("#modal").modal("hide");
         break;
+      case "Space":
+        $("#modal").modal("hide");
+        break;
     }
   } else {
     // accept keyboard game controls when modal is closed
@@ -512,6 +515,11 @@ const listenKeys = function (e) {
           loadModal(`Player ${game.winningPlayer + 1} Is A Big Winner!`, "What Would You Like To Do?");
         }
         game.nextPlayersTurn();
+        break;
+      case "Escape":
+        $("#resume-button").show();
+        loadModal();
+        break;
     }
   }
 };
