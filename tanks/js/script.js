@@ -50,6 +50,7 @@ const TERRAIN_BUMPS = 20;
 const STEEPNESS = 1;
 const DEFAULT_NUM_HUMANS = 2;
 const DEFAULT_NUM_ROBOTS = 0;
+const GRAVITY = 0.5;
 
 //////////////////////////////////////
 class Bullet {
@@ -85,7 +86,6 @@ class Tank {
         let tank = game.tankObjects[idx];
 
         if (Math.abs(tank.x - thisShot.x) < EXPLOSION_RADIUS && Math.abs(tank.y - thisShot.y) < EXPLOSION_RADIUS) {
-          // console.log("HIT!");
           showExplosion(thisShot);
           destroyGround(thisShot);
           hitTank = game.tankObjects[idx];
@@ -93,7 +93,6 @@ class Tank {
         }
       }
       if (hitTank) {
-        // console.log(hitTank, "hit");
         hitTank.hitpoints--;
         // remove dead tanks from the array
         game.tankObjects = game.tankObjects.filter((tank) => tank.hitpoints > 0);
@@ -117,11 +116,11 @@ class Tank {
         // sin of radians: 0 on the sides, 1 straight up
         // bullets were going backwards, so used decrement
 
-        // fire based on turret angle; -i gives gravity over time
-        thisShot.y -= TANK_SIZE * Math.sin(degreesToRadians(angle)) - i;
+        // fire based on turret angle;
+        thisShot.y -= TANK_SIZE * Math.sin(degreesToRadians(angle)) - i * GRAVITY; // i gives gravity
         thisShot.x -= TANK_SIZE * Math.cos(degreesToRadians(angle));
 
-        ctx.strokeStyle = "black";
+        ctx.strokeStyle = color("black-coffee");
         ctx.lineWidth = 2;
         ctx.stroke();
       }
@@ -139,7 +138,6 @@ const loadModal = function (strTitle, strMsg) {
   } else {
     $("#modal-title").text(`Tanks!`);
   }
-  console.log({ strMsg });
   if (strMsg) {
     $("#modal-message").text(strMsg);
   }
@@ -260,7 +258,6 @@ const showExplosion = function (thisShot) {
 //////////////////////////////////////
 // DESTROY GROUND
 const destroyGround = function (thisShot) {
-  // console.log("DESTROY GROUND");
   // TODO: determine y values at edges of explosion (use item drop method)
   // TODO create new mini terrain array around the impact, starting with first edge, randomized crater ending at second edge
   // load up terrain array, which is already sorted by x value
@@ -289,11 +286,9 @@ const offX = function (aPoint) {
   let shotOffX = false;
   if (aPoint.x < 0) {
     shotOffX = true;
-    // console.log("off left");
   }
   if (aPoint.x > canvas.width) {
     shotOffX = true;
-    // console.log("off right");
   }
   return shotOffX;
 };
@@ -414,11 +409,10 @@ const listenKeys = function (e) {
 //////////////////////////////////////
 // HANDLE CLICK
 const handleClick = (e) => {
-  console.log(e.target);
-
   // by #ID
   switch (e.target.id) {
     case "resume-button":
+      $("#resume-button").hide();
       $("#modal").modal("hide");
       break;
     case "new-button":
