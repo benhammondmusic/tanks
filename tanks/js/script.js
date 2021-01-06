@@ -8,7 +8,7 @@ const game = {
     // initialize players
     this.numHumans = numHumans;
     this.numRobots = numRobots;
-    // remembered after tanks die so new game can have same number players
+    // values for after tanks die so new game can have same number players
     this.numHumansAtStart = numHumans;
     this.numRobotsAtStart = numRobots;
     this.currentPlayer = 0;
@@ -38,7 +38,6 @@ const game = {
       this.currentPlayer = 0; // player 0 after last player
     }
     $("#canvas").css("border", `1px dashed ${PLAYER_COLORS[this.currentPlayer]}`);
-    // console.log(this.currentPlayer, "new current player");
   },
 };
 
@@ -117,7 +116,6 @@ class Tank {
         // bullets were going backwards, so used decrement
 
         // fire based on turret angle; -i gives gravity over time
-        // TODO adjust spacing if not animating every frame
         thisShot.y -= TANK_SIZE * Math.sin(degreesToRadians(angle)) - i;
         thisShot.x -= TANK_SIZE * Math.cos(degreesToRadians(angle));
 
@@ -132,7 +130,7 @@ class Tank {
 //////////////////////////////////////
 // LOAD MODAL
 // loadModal(stringTitle, stringMessage)
-// resume message will be appended if game is in progress
+// resume button will be displayed if game is in progress
 const loadModal = function (strTitle, strMsg) {
   if (strTitle) {
     $("#modal-title").text(strTitle);
@@ -150,7 +148,7 @@ const loadModal = function (strTitle, strMsg) {
 //////////////////////////////////////
 // COLOR
 // takes css variable name, prepends double dashes and returns HEX
-// needs functional decl to access CSS colors above
+// needs functional decl to access CSS colors at top
 function color(cssVar) {
   return getComputedStyle(document.documentElement).getPropertyValue(`--${cssVar}`);
 }
@@ -235,7 +233,6 @@ const defineTerrain = function () {
 //////////////////////////////////////
 // SHOW EXPLOSION
 const showExplosion = function (thisShot) {
-  // console.log("EXPLOSION!");
   ctx.lineWidth = 1;
 
   // first set of circles
@@ -309,8 +306,8 @@ const drawPlayers = function (ctx, tankObjects) {
     // cycle thru colors array CONSTANT for fill
     ctx.fillStyle = PLAYER_COLORS[tank.playerNumber % PLAYER_COLORS.length];
     ctx.fill();
-    ctx.strokeStyle = "black";
-    ctx.lineWidth = 5;
+    ctx.strokeStyle = color("papaya-whip");
+    ctx.lineWidth = 3;
     ctx.stroke();
 
     drawTurret(tank);
@@ -366,7 +363,6 @@ const getWinner = function () {
 
 //////////////////////////////////////
 // HANDLE KEYBOARD INPUT
-// https://stackoverflow.com/questions/5597060/detecting-arrow-key-presses-in-javascript
 // https://keycode.info/ by WES BOS useful for extracting code instead of numberic code
 const listenKeys = function (e) {
   switch (e.code) {
@@ -451,5 +447,3 @@ loadModal("Welcome to Tanks!", "What goes up, must come down. Take turns lobbing
 
 document.onkeydown = listenKeys;
 $("body").click((e) => handleClick(e));
-
-// TODO MAP MOUSE INPUT TO CORRESPONDING KEY BINDINGS

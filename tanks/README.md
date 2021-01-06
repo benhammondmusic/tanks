@@ -57,8 +57,13 @@ A second challenge came in implementing the actual physics and math to calculate
 - Build your own level: click on screen to add terrain nodes. Place your own tanks like in Settlers of Catan.
 - Add Day/Night displays, with limited visibility.
 - Add wind to buffet shots around horizontally. Trees could indicate wind-direction and velocity.
+- Add mouse functionality for game-play.
 
 ## Resources
+
+- [Coolor.co - Color Palette Generator](http://www.coolors.co)
+- [Canvas Clock Demo](http://www.dhtmlgoodies.com/tutorials/canvas-clock/)
+- [Keycode.info by Wes Bos](https://keycode.info/)
 
 ## App Demo
 
