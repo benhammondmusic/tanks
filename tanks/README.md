@@ -32,14 +32,18 @@ A second challenge came in implementing the actual physics and math to calculate
 
 - Terrain generation and drawing needs to be scoped out of game.newGame() to make **Change Terrain** button operational, and to allow **New Game** button to start play on existing terrain.
 - Need to make sure shot can go across entire screen
+- Angle adjustment units too large; need fine-tuned option
 
 ## Cool Features In Progress:
 
 - Animations (shots, explosions, tank destruction)
+- Destruction of ground from missed shots.
 
 ## Future Ideas:
 
 - Add computer logic for **Robot** players.
+- Utilize actual images
+- Use Bézier curves for terrain instead of straight lines.
 - Use slider(s) under **Change Players** button
 - Place titles, graphics, etc on top of canvas
 - Randomize starting player. Weight towards those in the middle since they are most in danger?
@@ -50,18 +54,9 @@ A second challenge came in implementing the actual physics and math to calculate
 - Keep running tally of player wins; allow names for players. Allow custom tank objects.
 - Add snow capped mountains
 - Add Trees
-
-- -Explosions
-  -- Ground destroyed
-  -- Utilize actual images / improve graphics: use Bézier curves for terrain
-  -- Testing / edge cases / stretch goals
-  -- Read me:, screenshots
-  -- Demonstration
-  -- Build your own level / defenses: clock add terrain node
-  -- Day/night/wind
-  -- Add my trees
-
-  -- Fine tuned aiming
+- Build your own level: click on screen to add terrain nodes. Place your own tanks like in Settlers of Catan.
+- Add Day/Night displays, with limited visibility.
+- Add wind to buffet shots around horizontally. Trees could indicate wind-direction and velocity.
 
 ## Resources
 
