@@ -2,6 +2,9 @@
  tanks
   */
 
+// TODO better animation
+// TODO smaller buttons so all fit in a row with resume button
+
 const game = {
   // NEW GAME
   newGame: function (numHumans, numRobots) {
@@ -109,8 +112,7 @@ class Tank {
       } else if (offX(thisShot)) {
         break;
       } else {
-        ctx.beginPath();
-        ctx.arc(thisShot.x, thisShot.y, 2, 0, 2 * Math.PI);
+        const oldShot = { x: thisShot.x, y: thisShot.y };
 
         // 0-180 degrees = 0 to PI radians
         // sin of radians: 0 on the sides, 1 straight up
@@ -120,9 +122,26 @@ class Tank {
         thisShot.y -= TANK_SIZE * Math.sin(degreesToRadians(angle)) - i * GRAVITY; // i gives gravity
         thisShot.x -= TANK_SIZE * Math.cos(degreesToRadians(angle));
 
+        // draw new shot
+        ctx.beginPath();
         ctx.strokeStyle = color("black-coffee");
         ctx.lineWidth = 2;
+        ctx.arc(thisShot.x, thisShot.y, 2, 0, 2 * Math.PI);
         ctx.stroke();
+
+        // slowly erase last shot
+        const list = [1, 2, 3, 4];
+        const eraseLastShot = async () => {
+          await sleep(1000);
+
+          ctx.beginPath();
+          ctx.strokeStyle = color("opal");
+          ctx.arc(oldShot.x, oldShot.y, 2, 0, 2 * Math.PI);
+          ctx.lineWidth = 3;
+          ctx.stroke();
+        };
+
+        eraseLastShot();
       }
     }
   }
@@ -178,6 +197,12 @@ const getRandomInt = function (low, high) {
 function degreesToRadians(degrees) {
   return (Math.PI / 180) * degrees;
 }
+
+//////////////////////////////////////
+// https://flaviocopes.com/how-to-slow-loop-javascript/
+const sleep = (milliseconds) => {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+};
 
 //////////////////////////////////////
 // generate random elevation ground and sky
