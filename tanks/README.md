@@ -31,7 +31,6 @@ A second challenge came in implementing the actual physics and math to calculate
 ## Known Bugs and Wonkiness Being Fixed:
 
 - Terrain generation and drawing needs to be scoped out of game.newGame() to make **Change Terrain** button operational, and to allow **New Game** button to start play on existing terrain.
-- Need to make sure shot can go across entire screen
 
 ## Cool Features In Progress:
 

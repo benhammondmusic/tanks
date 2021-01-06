@@ -395,7 +395,10 @@ const listenKeys = function (e) {
     case "Space":
       refreshScreen();
       let currentTank = game.tankObjects[game.currentPlayer];
-      currentTank.fire(); // array 0 is player 0
+
+      // window.requestAnimationFrame(currentTank.fire);
+      currentTank.fire();
+
       if (getWinner()) {
         loadModal(`Player ${game.winningPlayer + 1} Is A Big Winner!`, "What Would You Like To Do?");
         return;
@@ -462,5 +465,13 @@ const ctx = canvas.getContext("2d");
 game.newGame(DEFAULT_NUM_HUMANS, DEFAULT_NUM_ROBOTS);
 loadModal("Welcome to Tanks!", "What goes up, must come down. Take turns lobbing projectiles at one another. Adjust the angle of your shot using the arrow left and right keys, and fire using the space bar. Tanks receiving a hit are eliminated; the last tank remaining is the winner!");
 
+// USER INPUT
 document.onkeydown = listenKeys;
 $("body").click((e) => handleClick(e));
+
+// // ANIMATION
+// function mainLoop() {
+//   refreshScreen();
+//   window.requestAnimationFrame(mainLoop);
+// }
+// mainLoop();
