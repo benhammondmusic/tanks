@@ -19,7 +19,12 @@
   <body class="d-flex flex-column align-items-center">
     <header><h2>TANKS!</h2></header>
     <main class="d-flex flex-column align-items-center justify-content-center">
-      <canvas id="canvas"></canvas>
+      <div id="canvas-container">
+        <canvas id="canvas"></canvas>
+        <canvas id="jcanvas"></canvas>
+      </div>
+      <!-- <canvas id="canvas"></canvas>
+      <canvas id="jcanvas"></canvas> -->
 
       <!--MODAL FOR GAME START, GAME RESET, GAME OVER-->
       <div class="modal fade" id="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="Options" aria-hidden="true">

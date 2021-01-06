@@ -131,18 +131,34 @@ class Tank {
         ctx.arc(thisShot.x, thisShot.y, 2, 0, 2 * Math.PI);
         ctx.stroke();
 
-        // // slowly erase last shot
-        // const list = [1, 2, 3, 4];
-        // const eraseLastShot = async () => {
-        //   await sleep(1000);
+        // using jCanvas
+        // Create and draw a rectangle layer
+        $("#jcanvas").drawRect({
+          layer: true,
+          name: "shot",
+          fillStyle: color("black-coffee"),
+          x: this.x,
+          y: this.y,
+          width: 40,
+          height: 40,
+        });
 
-        //   ctx.beginPath();
-        //   ctx.strokeStyle = color("opal");
-        //   ctx.arc(oldShot.x, oldShot.y, 2, 0, 2 * Math.PI);
-        //   ctx.lineWidth = 3;
-        //   ctx.stroke();
-        // };
-        // eraseLastShot();
+        // Animate layer properties
+        $("#jcanvas").animateLayer(
+          "shot",
+          {
+            x: 150,
+            y: 150,
+            width: 100,
+            height: 50,
+          },
+          1000
+        );
+
+        // console.log("here");
+        // $("#jcanvas").clearCanvas();
+
+        // refreshScreen();
       }
     }
   }
@@ -487,9 +503,14 @@ const handleClick = (e) => {
 
 /// SCREEN LOAD
 const canvas = document.querySelector("#canvas");
-canvas.height = 600;
-canvas.width = canvas.height * 2;
+canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
 const ctx = canvas.getContext("2d");
+
+const jcanvas = document.querySelector("#jcanvas");
+jcanvas.height = window.innerHeight;
+jcanvas.width = window.innerWidth;
+// const ctx = canvas.getContext("2d");
 
 // START GAME
 // newGame({num of humans}, {num of computer players})
@@ -501,10 +522,3 @@ if (!TEST_MODE) {
 // USER INPUT
 document.onkeydown = listenKeys;
 $("body").click((e) => handleClick(e));
-
-// // ANIMATION
-// function mainLoop() {
-//   refreshScreen();
-//   window.requestAnimationFrame(mainLoop);
-// }
-// mainLoop();
