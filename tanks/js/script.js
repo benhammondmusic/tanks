@@ -1,9 +1,21 @@
 /*!
  tanks
   */
+// GAME CONSTANTS
+const PLAYER_COLORS = [color("bs-purple"), color("fire-opal"), color("ruby"), color("papaya-whip"), color("mantis"), color("magic-mint2")];
+const TURRET_INCREMENT = 3;
+const TANK_SIZE = 20;
+const EXPLOSION_RADIUS = 40;
+const TERRAIN_BUMPS = 15;
+const STEEPNESS = 1;
+const DEFAULT_NUM_HUMANS = 2;
+const DEFAULT_NUM_ROBOTS = 0;
+const GRAVITY = 0.04;
+const SHOT_DELAY = 0.2;
+const X_BOOSTER = 1.5;
 
-const TEST_MODE = false;
-// const TEST_MODE = true;
+// const TEST_MODE = false;
+const TEST_MODE = true;
 
 const game = {
   // NEW GAME
@@ -44,19 +56,6 @@ const game = {
   },
 };
 
-// GAME CONSTANTS
-const PLAYER_COLORS = [color("bs-purple"), color("fire-opal"), color("ruby"), color("papaya-whip"), color("mantis"), color("magic-mint2")];
-const TURRET_INCREMENT = 3;
-const TANK_SIZE = 20;
-const EXPLOSION_RADIUS = 40;
-const TERRAIN_BUMPS = 19;
-const STEEPNESS = 1;
-const DEFAULT_NUM_HUMANS = 2;
-const DEFAULT_NUM_ROBOTS = 0;
-const GRAVITY = 0.04;
-const SHOT_DELAY = 0.2;
-const X_BOOSTER = 1.5;
-
 //////////////////////////////////////
 class Bullet {
   constructor(x, y) {
@@ -81,7 +80,7 @@ class Tank {
   // tank methods
   fire() {
     let angle = this.turret.angle;
-    const thisShot = new Bullet(this.x - Math.cos(degreesToRadians(angle)) * (this.turret.length + this.radius), this.y - Math.sin(degreesToRadians(angle)) * (this.turret.length + this.radius));
+    const thisShot = new Bullet(this.x - Math.cos(degreesToRadians(angle)) * EXPLOSION_RADIUS * 1.5, this.y - Math.sin(degreesToRadians(angle)) * EXPLOSION_RADIUS * 1.5);
 
     let hitTank = null;
 
@@ -90,8 +89,11 @@ class Tank {
       // cycle through tanks and check if explosion hit them
       for (let idx in game.tankObjects) {
         let tank = game.tankObjects[idx];
-
-        if (Math.abs(tank.x - thisShot.x) < EXPLOSION_RADIUS && Math.abs(tank.y - thisShot.y) < EXPLOSION_RADIUS) {
+        console.log(tank);
+        let xProx = Math.abs(tank.x - thisShot.x);
+        let yProx = Math.abs(tank.y - thisShot.y);
+        console.log({ xProx }, { yProx });
+        if (xProx < EXPLOSION_RADIUS && yProx < EXPLOSION_RADIUS) {
           showExplosion(thisShot);
           destroyGround(thisShot);
           hitTank = game.tankObjects[idx];
@@ -109,6 +111,7 @@ class Tank {
       // if no tanks were hit above, check for ground collision
       else if (hitGround(thisShot)) {
         showExplosion(thisShot);
+        console.log(thisShot, "after explosion");
         destroyGround(thisShot);
         break;
         // check if shot went off screen horizontally.
@@ -133,7 +136,7 @@ class Tank {
           height: 4,
         });
 
-        // Animate layer properties
+        // // Animate layer properties
         $("#jcanvas").animateLayer(
           "shot",
           {
@@ -202,10 +205,10 @@ function color(cssVar) {
 //////////////////////////////////////
 // CLEAR CANVAS
 const clrCanvas = function (ctx) {
-  // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // clear canvas
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // clear canvas
 
   // using jCanvas
-  $("#canvas").clearCanvas();
+  // $("#canvas").clearCanvas();
 };
 
 //////////////////////////////////////
@@ -266,11 +269,19 @@ const defineTerrain = function () {
   ctx.beginPath();
 
   let previousPoint = game.terrainArray[0];
+  // console.log(previousPoint);
   let nextPoint = [];
 
   // random hills
   for (let i = 0; i < game.terrainArray.length; i++) {
     ctx.lineTo(game.terrainArray[i][0], game.terrainArray[i][1]);
+
+    // ATTEMPT CURVED GROUND, WAS GETTING WEIRD
+    // const ctrlX = game.terrainArray[i][0] - EXPLOSION_RADIUS;
+    // const ctrlY = game.terrainArray[i][1] - TANK_SIZE;
+    // const endX = game.terrainArray[i][0];
+    // const endY = game.terrainArray[i][1];
+    // ctx.quadraticCurveTo(ctrlX, ctrlY, endX, endY);
   }
   // connect polygon
   ctx.lineTo(canvas.width, canvas.height); // to bottom right corner
@@ -281,26 +292,71 @@ const defineTerrain = function () {
 //////////////////////////////////////
 // SHOW EXPLOSION
 const showExplosion = function (thisShot) {
-  ctx.lineWidth = 1;
+  // using jCanvas
+  // draw static shape
+  $("#jcanvas").drawPolygon({
+    layer: true,
+    name: "explosion",
+    fillStyle: color("fire-opal"),
+    strokeStyle: color("papaya-whip"),
+    strokeWidth: 1,
+  });
 
-  // first set of circles
-  ctx.beginPath();
-  ctx.lineWidth = 1;
-  for (let i = 0; i < EXPLOSION_RADIUS; i += EXPLOSION_RADIUS / 24) {
-    ctx.stroke();
-    ctx.strokeStyle = color("papaya-whip");
-    ctx.arc(thisShot.x, thisShot.y, i + EXPLOSION_RADIUS / 40, 0, 2 * Math.PI);
-  }
-  ctx.stroke();
+  // set explosion values based on shot position
+  $("#jcanvas")
+    .setLayer("explosion", {
+      radius: TANK_SIZE,
+      x: thisShot.x,
+      y: thisShot.y,
+      sides: 3,
+    })
+    .drawLayers();
 
-  // other color alternate circles
-  ctx.beginPath();
-  ctx.lineWidth = 3;
-  for (let i = 0; i < EXPLOSION_RADIUS; i += EXPLOSION_RADIUS / 16) {
-    ctx.strokeStyle = color("fire-opal");
-    ctx.arc(thisShot.x, thisShot.y, i, degreesToRadians(getRandomInt(0, 360)), degreesToRadians(getRandomInt(0, 360)));
-  }
-  ctx.stroke();
+  // console.log(thisShot);
+
+  // Animate layer properties
+  $("#jcanvas").animateLayer(
+    "explosion",
+    {
+      radius: EXPLOSION_RADIUS * 3,
+      // x: "+=1",
+      sides: 7,
+      concavity: 0.9,
+    },
+    "fast",
+    function (layer) {
+      // Callback function
+      $(this).animateLayer(
+        layer,
+        {
+          radius: 0,
+          rotate: 360,
+        },
+        "slow",
+        "swing"
+      );
+    }
+  );
+
+  // OLD STATIC CODE BELOW WHICH HAD STOPPED WORKING
+  // ctx.lineWidth = 1;
+  // // first set of circles
+  // ctx.beginPath();
+  // ctx.lineWidth = 1;
+  // for (let i = 0; i < EXPLOSION_RADIUS; i += EXPLOSION_RADIUS / 24) {
+  //   ctx.stroke();
+  //   ctx.strokeStyle = color("papaya-whip");
+  //   ctx.arc(thisShot.x, thisShot.y, i + EXPLOSION_RADIUS / 40, 0, 2 * Math.PI);
+  // }
+  // ctx.stroke();
+  // // other color alternate circles
+  // ctx.beginPath();
+  // ctx.lineWidth = 3;
+  // for (let i = 0; i < EXPLOSION_RADIUS; i += EXPLOSION_RADIUS / 16) {
+  //   ctx.strokeStyle = color("fire-opal");
+  //   ctx.arc(thisShot.x, thisShot.y, i, degreesToRadians(getRandomInt(0, 360)), degreesToRadians(getRandomInt(0, 360)));
+  // }
+  // ctx.stroke();
 };
 
 //////////////////////////////////////
@@ -319,10 +375,19 @@ const destroyGround = function (thisShot) {
   // fill first node of crater terrain array
   crater.terrainArray[0][0] = crater.leftEdge.x;
   crater.terrainArray[0][1] = crater.leftEdge.y;
+  // dig deep
+  crater.terrainArray.push([crater.leftEdge.x + 1, crater.leftEdge.y + EXPLOSION_RADIUS]);
 
   // generate crater inner shape
   // TODO: add random jagged edges
+  //
+  // for (let i = 0; i<1;i++){
+
+  // }
   crater.terrainArray.push([thisShot.x, thisShot.y + getRandomInt(TANK_SIZE, EXPLOSION_RADIUS + TANK_SIZE)]);
+
+  // dig deep
+  crater.terrainArray.push([crater.rightEdge.x - 1, crater.rightEdge.y + EXPLOSION_RADIUS]);
 
   // fill last node of crater terrain
   crater.terrainArray.push([crater.rightEdge.x, crater.rightEdge.y]);
@@ -468,7 +533,13 @@ const listenKeys = function (e) {
         adjustTurret(TURRET_INCREMENT);
         break;
       case "Enter":
-        $("#modal").modal("hide");
+        if (getWinner()) {
+          $("#resume-button").hide();
+          $("#new-button").click();
+        } else {
+          $("#resume-button").show();
+        }
+        loadModal();
         break;
       case "Space":
         $("#modal").modal("hide");
@@ -517,7 +588,12 @@ const listenKeys = function (e) {
         game.nextPlayersTurn();
         break;
       case "Escape":
-        $("#resume-button").show();
+        if (getWinner()) {
+          $("#resume-button").hide();
+          $("#new-button").click();
+        } else {
+          $("#resume-button").show();
+        }
         loadModal();
         break;
     }

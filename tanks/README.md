@@ -32,7 +32,6 @@ A second challenge came in implementing the actual physics and math to calculate
 
 - Terrain generation and drawing needs to be scoped out of game.newGame() to make **Change Terrain** button operational, and to allow **New Game** button to start play on existing terrain.
 - Display explosion AFTER shot lands
-- Smaller buttons so all fit in a row with resume button
 - Make tanks fall when ground under them is destroyed. Maybe can hurt them if hit points are implemented?
 - Flatten terrain directly below tanks.
 
@@ -54,7 +53,8 @@ A second challenge came in implementing the actual physics and math to calculate
 - Spread tanks further apart, rather than evenly spaced.
 - Improve shot detection to account for tank size, explosion size **as circles**
 - Allow shots off screen horizontally to wrap back from other side?
-- Integrate terrain steepness? Increase as games go on?
+- Allow shots that hit bottom of screen (where ground has been destroyed to bounce)
+- Integrate terrain steepness? Increase as gameplay continues in multiple rounds?
 - Keep running tally of player wins; allow names for players. Allow custom tank objects.
 - Add snow capped mountains
 - Add Trees
