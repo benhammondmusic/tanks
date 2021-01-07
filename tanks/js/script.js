@@ -3,7 +3,7 @@
   */
 // GAME CONSTANTS
 const PLAYER_COLORS = [color("bs-purple"), color("fire-opal"), color("ruby"), color("papaya-whip"), color("mantis"), color("magic-mint2")];
-const TURRET_INCREMENT = 3;
+const TURRET_INCREMENT = 1;
 const TANK_SIZE = 20;
 const EXPLOSION_RADIUS = 40;
 const TERRAIN_BUMPS = 15;
@@ -547,16 +547,40 @@ const listenKeys = function (e) {
     }
   } else {
     // accept keyboard game controls when modal is closed
-
     switch (e.code) {
       case "ArrowLeft":
-        refreshScreen();
-        // console.log(game.currentPlayer);
-        adjustTurret(TURRET_INCREMENT * -1);
+        // USE KEYDROWN.JS LIBRARY FOR SPEEDING UP WHEN KEY HELD
+        kd.LEFT.down(function () {
+          refreshScreen();
+          adjustTurret((-1 * TURRET_INCREMENT) / 2);
+        });
+
+        kd.LEFT.up(function () {
+          kd.stop();
+        });
+
+        kd.run(function () {
+          kd.tick();
+        });
+        // refreshScreen();
+        // adjustTurret(TURRET_INCREMENT);
         break;
       case "ArrowRight":
-        refreshScreen();
-        adjustTurret(TURRET_INCREMENT);
+        // USE KEYDROWN.JS LIBRARY FOR SPEEDING UP WHEN KEY HELD
+        kd.RIGHT.down(function () {
+          refreshScreen();
+          adjustTurret(TURRET_INCREMENT / 2);
+        });
+
+        kd.RIGHT.up(function () {
+          kd.stop();
+        });
+
+        kd.run(function () {
+          kd.tick();
+        });
+        // refreshScreen();
+        // adjustTurret(TURRET_INCREMENT);
         break;
       case "ArrowUp":
         refreshScreen();
