@@ -35,6 +35,9 @@ Animation was also problematic; converting my static drawing loops into smooth a
 - Terrain generation and drawing needs to be scoped out of game.newGame() to make **Change Terrain** button operational, and to allow **New Game** button to start play on existing terrain.
 - **Display explosion AFTER shot lands**
 - Modal flashes the Resume button on initial closure
+- Tank colors change when number of players reduced during multiplayer mode
+- Animation timing in general
+- Mobile resizing / zooming / clicking
 
 ## Future Ideas:
 
