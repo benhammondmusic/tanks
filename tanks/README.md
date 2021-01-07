@@ -37,7 +37,7 @@ Animation was also problematic; converting my static drawing loops into smooth a
 - Make tanks fall when ground under them is destroyed. Maybe can hurt them if hit points are implemented?
 - Flatten terrain directly below tanks.
 - Modal flashes the Resume button on initial closure
--
+- Screen wiggles horizontally. Maybe box-model issues?
 
 ## Future Ideas:
 
@@ -75,7 +75,7 @@ Animation was also problematic; converting my static drawing loops into smooth a
 
 - [Coolor.co - Color Palette Generator](http://www.coolors.co) - Make pretty colors that works together
 - [Canvas Clock Demo](http://www.dhtmlgoodies.com/tutorials/canvas-clock/) - Tells time.
-- [Keycode.info by Wes Bos](https://keycode.info/) - App to get keycodes
+- [Keycode.info by Wes Bos](https://keycode.info/) - App to get key codes
 
 ## External Libraries
 
