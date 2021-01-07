@@ -6,7 +6,7 @@
 
 /* FORCE LANDSCAPE ON MOBILE with PLEASEROTATE.JS */
 PleaseRotateOptions = {
-  message: "Please Rotate Your Device",
+  message: "Please Rotate Your Device And Then Reload Page",
 };
 
 $(window).on("orientationchange", function (e) {
