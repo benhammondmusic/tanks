@@ -3,15 +3,16 @@
   */
 // GAME CONSTANTS
 const PLAYER_COLORS = [color("bs-purple"), color("fire-opal"), color("ruby"), color("papaya-whip"), color("mantis"), color("magic-mint2")];
-const TURRET_INCREMENT = 1;
+const TURRET_INCREMENT = 0.5;
 const TANK_SIZE = 20;
 const EXPLOSION_RADIUS = 40;
+const EXPLOSION_DELAY = 750;
 const TERRAIN_BUMPS = 15;
 const STEEPNESS = 1;
 const DEFAULT_NUM_HUMANS = 2;
 const DEFAULT_NUM_ROBOTS = 0;
 const GRAVITY = 0.04;
-const SHOT_DELAY = 0.2;
+const SHOT_DELAY = 0.05;
 const X_BOOSTER = 1.5;
 
 const TEST_MODE = false;
@@ -89,10 +90,8 @@ class Tank {
       // cycle through tanks and check if explosion hit them
       for (let idx in game.tankObjects) {
         let tank = game.tankObjects[idx];
-        // console.log(tank);
         let xProx = Math.abs(tank.x - thisShot.x);
         let yProx = Math.abs(tank.y - thisShot.y);
-        // console.log({ xProx }, { yProx });
         if (xProx < EXPLOSION_RADIUS && yProx < EXPLOSION_RADIUS) {
           showExplosion(thisShot);
           destroyGround(thisShot);
@@ -147,7 +146,11 @@ class Tank {
             width: 10,
             height: 10,
           },
-          SHOT_DELAY
+          SHOT_DELAY,
+          function (layer) {
+            // Callback function
+            // console.log("after shot move");
+          }
         );
       }
     }
@@ -281,37 +284,42 @@ const showExplosion = function (thisShot) {
     strokeWidth: 1,
   });
 
-  // set explosion values based on shot position
+  // reset explosion values based on shot position
   $("#jcanvas")
     .setLayer("explosion", {
       radius: TANK_SIZE,
       x: thisShot.x,
       y: thisShot.y,
       sides: 3,
+      rotate: 20,
+      concavity: 0.99,
     })
     .drawLayers();
 
-  // console.log(thisShot);
+  // DELAY EXPLOSION ANIMATION BASED ON HOW UP TURRET IS (higher shots take longer)
+  // TODO: better to delay this until shot has hit something. should fix
+  let turretUpness = Math.sin(degreesToRadians(game.tankObjects[game.currentPlayer].turret.angle)); // range 0-1
+  $("#jcanvas").delayLayer("explosion", turretUpness * EXPLOSION_DELAY);
 
-  // Animate layer properties
+  // GROW
   $("#jcanvas").animateLayer(
     "explosion",
     {
       radius: EXPLOSION_RADIUS * 3,
-      // x: "+=1",
       sides: 7,
       concavity: 0.9,
     },
     "fast",
     function (layer) {
-      // Callback function
+      // Callback function: SHRINK
       $(this).animateLayer(
         layer,
         {
           radius: 0,
           rotate: 360,
+          concavity: 0.7,
         },
-        "slow",
+        EXPLOSION_DELAY * 2,
         "swing"
       );
     }
@@ -518,7 +526,7 @@ const listenKeys = function (e) {
         // USE KEYDROWN.JS LIBRARY FOR SPEEDING UP WHEN KEY HELD
         kd.LEFT.down(function () {
           refreshScreen();
-          adjustTurret((-1 * TURRET_INCREMENT) / 2);
+          adjustTurret(-1 * TURRET_INCREMENT);
         });
 
         kd.LEFT.up(function () {
@@ -528,14 +536,12 @@ const listenKeys = function (e) {
         kd.run(function () {
           kd.tick();
         });
-        // refreshScreen();
-        // adjustTurret(TURRET_INCREMENT);
         break;
       case "ArrowRight":
         // USE KEYDROWN.JS LIBRARY FOR SPEEDING UP WHEN KEY HELD
         kd.RIGHT.down(function () {
           refreshScreen();
-          adjustTurret(TURRET_INCREMENT / 2);
+          adjustTurret(TURRET_INCREMENT);
         });
 
         kd.RIGHT.up(function () {
@@ -545,8 +551,6 @@ const listenKeys = function (e) {
         kd.run(function () {
           kd.tick();
         });
-        // refreshScreen();
-        // adjustTurret(TURRET_INCREMENT);
         break;
       case "ArrowUp":
         refreshScreen();
