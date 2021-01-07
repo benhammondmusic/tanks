@@ -14,8 +14,8 @@ const GRAVITY = 0.04;
 const SHOT_DELAY = 0.2;
 const X_BOOSTER = 1.5;
 
-// const TEST_MODE = false;
-const TEST_MODE = true;
+const TEST_MODE = false;
+// const TEST_MODE = true;
 
 const game = {
   // NEW GAME
