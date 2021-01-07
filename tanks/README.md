@@ -31,45 +31,59 @@ A second challenge came in implementing the actual physics and math to calculate
 ## Known Bugs and Wonkiness Being Fixed:
 
 - Terrain generation and drawing needs to be scoped out of game.newGame() to make **Change Terrain** button operational, and to allow **New Game** button to start play on existing terrain.
-- Display explosion AFTER shot lands
+- **Display explosion AFTER shot lands**
 - Make tanks fall when ground under them is destroyed. Maybe can hurt them if hit points are implemented?
 - Flatten terrain directly below tanks.
 
 ## Cool Features In Progress:
 
-- Animations (explosions, tank destruction)
+- More animations (tank destruction)
 
 ## Future Ideas:
 
-- Make mobile responsive and playable with on-screen controls to fire keyboard inputs
+### Graphics
+
 - Add chem trails to see last shot. Slow fade out?
-- Make craters more jagged, more visually interesting.
-- Add computer logic for **Robot** players.
+- Make craters more jagged, more visually interesting (color?).
 - Utilize actual images
-- Use Bézier curves for terrain instead of straight lines.
-- Use slider(s) under **Change Players** button
-- Place titles, graphics, etc on top of canvas
+- Use some Bézier/Quadratic curves for terrain instead of all straight lines.
+- Place titles, scores etc on top of canvas
+- Add snow capped mountains
+- Add Trees
+
+### Responsiveness / UI
+
+- Make mobile responsive and playable with on-screen controls to fire keyboard inputs
+- Use slider(s) under Change Players button
+- Add mouse functionality for game-play.
+
+### Logic / Game Play
+
+- **Add computer logic for Robot players.**
 - Randomize starting player. Weight towards those in the middle since they are most in danger?
 - Spread tanks further apart, rather than evenly spaced.
-- Improve shot detection to account for tank size, explosion size **as circles**
 - Allow shots off screen horizontally to wrap back from other side?
 - Allow shots that hit bottom of screen (where ground has been destroyed to bounce)
 - Integrate terrain steepness? Increase as gameplay continues in multiple rounds?
 - Keep running tally of player wins; allow names for players. Allow custom tank objects.
-- Add snow capped mountains
-- Add Trees
 - Build your own level: click on screen to add terrain nodes. Place your own tanks like in Settlers of Catan.
 - Add Day/Night displays, with limited visibility.
 - Add wind to buffet shots around horizontally. Trees could indicate wind-direction and velocity.
-- Add mouse functionality for game-play.
 
 ## Resources
 
-- [Coolor.co - Color Palette Generator](http://www.coolors.co)
-- [Canvas Clock Demo](http://www.dhtmlgoodies.com/tutorials/canvas-clock/)
-- [Keycode.info by Wes Bos](https://keycode.info/)
+- [Coolor.co - Color Palette Generator](http://www.coolors.co) - Make pretty colors that works together
+- [Canvas Clock Demo](http://www.dhtmlgoodies.com/tutorials/canvas-clock/) - Tells time.
+- [Keycode.info by Wes Bos](https://keycode.info/) - App to get keycodes
+
+## External Libraries
+
+- [KeyDrown.JS](https://jeremyckahn.github.io/keydrown/) - Library to speed up user held keys
+- [jCanvas](https://projects.calebevans.me/jcanvas/) - Library to use jQuery on HTML Canvas (easier animations)
 
 ## App Demo
 
-- [Play Game](http://www.benhammondmusic.com/tanks/)
+<!-- - [Play Game](http://www.benhammondmusic.com/tanks/) -->
+
+- [Play Game on GitHub Pages](https://benhammondmusic.github.io/tanks)
 - [Source Code on GitHub](https://github.com/benhammondmusic/benhammondmusic.github.io/tree/main/tanks)
