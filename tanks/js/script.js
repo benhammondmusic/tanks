@@ -98,6 +98,7 @@ class Tank {
         if (xProx < EXPLOSION_RADIUS && yProx < EXPLOSION_RADIUS) {
           showExplosion(thisShot);
           destroyGround(thisShot);
+          dropNearbyTanks(thisShot);
           hitTank = game.tankObjects[idx];
           break;
         }
@@ -111,11 +112,11 @@ class Tank {
         refreshScreen();
         break;
       }
-      // if no tanks were hit above, check for ground collision
+      // if no tanks were hit, check for ground collision
       else if (hitGround(thisShot)) {
         showExplosion(thisShot);
-        // console.log(thisShot, "after explosion");
         destroyGround(thisShot);
+        dropNearbyTanks(thisShot);
         break;
         // explode if went off screen horizontally.
       } else if (offX(thisShot)) {
@@ -278,9 +279,6 @@ const defineTerrain = function () {
 // SHOW EXPLOSION
 const showExplosion = function (thisShot) {
   // using jCanvas
-
-  $("#jcanvas").stopLayer("explosion", true);
-
   // draw static shape
   $("#jcanvas").drawPolygon({
     layer: true,
@@ -291,6 +289,7 @@ const showExplosion = function (thisShot) {
   });
 
   // reset explosion values based on shot position
+  $("#jcanvas").stopLayer("explosion", true);
   $("#jcanvas")
     .setLayer("explosion", {
       radius: TANK_SIZE,
@@ -374,6 +373,16 @@ const destroyGround = function (thisShot) {
   // insert crater terrain into remaining game terrain
   game.terrainArray = [...terrainLeftOfCrater, ...crater.terrainArray, ...terrainRightOfCrater];
 
+  refreshScreen();
+};
+
+//////////////////////////////////////
+// DROP NEARBY TANKS
+const dropNearbyTanks = function (thisShot) {
+  // TODO: optimized by only checking nearby tanks rather than all tanks
+  for (let tank of game.tankObjects) {
+    tank.redropSelf();
+  }
   refreshScreen();
 };
 
