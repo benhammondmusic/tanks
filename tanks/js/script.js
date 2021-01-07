@@ -2,6 +2,11 @@
  TANKS! Ben Hammond
   */
 
+/* FORCE LANDSCAPE ON MOBILE with PLEASEROTATE.JS */
+PleaseRotateOptions = {
+  forcePortrait: true, // if you would prefer to force portrait mode
+};
+
 // const TEST_MODE = false;
 const TEST_MODE = true;
 

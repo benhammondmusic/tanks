@@ -56,3 +56,13 @@ body {
 #nav-title {
   /* display: inline; */
 }
+
+/* FOR PLEASE ROTATE SCREEN */
+#pleaserotate-graphic {
+  fill: var(--opal);
+}
+
+#pleaserotate-backdrop {
+  color: var(--opal);
+  background-color: var(--black-coffee);
+}
