@@ -2,10 +2,20 @@
  TANKS! Ben Hammond
   */
 
+// TODO destroy ground after explosion animation finishes
+
 /* FORCE LANDSCAPE ON MOBILE with PLEASEROTATE.JS */
 PleaseRotateOptions = {
   forcePortrait: true, // if you would prefer to force portrait mode
 };
+
+$(window).on("orientationchange", function (e) {
+  $.mobile.changePage(window.location.href, {
+    allowSamePageTransition: true,
+    transition: "none",
+    reloadPage: true,
+  });
+});
 
 // const TEST_MODE = false;
 const TEST_MODE = true;
