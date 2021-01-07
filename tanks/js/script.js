@@ -6,7 +6,7 @@
 
 /* FORCE LANDSCAPE ON MOBILE with PLEASEROTATE.JS */
 PleaseRotateOptions = {
-  forcePortrait: true, // if you would prefer to force portrait mode
+  message: "Please Rotate Your Device",
 };
 
 $(window).on("orientationchange", function (e) {
