@@ -35,14 +35,13 @@ Animation was also problematic; converting my static drawing loops into smooth a
 - Terrain generation and drawing needs to be scoped out of game.newGame() to make **Change Terrain** button operational, and to allow **New Game** button to start play on existing terrain.
 - **Display explosion AFTER shot lands**
 - Make tanks fall when ground under them is destroyed. Maybe can hurt them if hit points are implemented?
-- Flatten terrain directly below tanks.
 - Modal flashes the Resume button on initial closure
-- Screen wiggles horizontally. Maybe box-model issues?
 
 ## Future Ideas:
 
 ### Graphics
 
+- Flatten terrain directly below tanks.
 - More animations (tank destruction)
 - Add chem trails to see last shot. Slow fade out?
 - Make craters more jagged, more visually interesting (color?).

@@ -21,19 +21,14 @@ tanks
 body {
   background-color: var(--papaya-whip);
 }
-/* #canvas-container {
-  position: relative; 
-   left: 0px;
-} */
+
 #canvas {
-  border: 1px solid var(--papaya-whip);
   position: absolute;
   left: 0px;
   top: 0px;
   z-index: 0;
 }
 #jcanvas {
-  border: 1px solid var(--papaya-whip);
   position: absolute;
   left: 0px;
   top: 0px;
@@ -45,11 +40,3 @@ body {
 #resume-button {
   display: none;
 }
-
-/* BOOTSTRAP OVERRIDES */
-/* .dropdown-menu {
-  background-color: transparent;
-} */
-/* .dropdown .dropdown-menu {
-  background-color: transparent;
-} */

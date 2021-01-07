@@ -52,7 +52,7 @@ const game = {
     if (this.currentPlayer >= this.numHumans + this.numRobots) {
       this.currentPlayer = 0; // player 0 after last player
     }
-    $("#canvas").css("border", `1px dashed ${PLAYER_COLORS[this.currentPlayer]}`);
+    // $("#canvas").css("border", `1px dashed ${PLAYER_COLORS[this.currentPlayer]}`);
   },
 };
 
@@ -149,29 +149,6 @@ class Tank {
           },
           SHOT_DELAY
         );
-
-        // draw chemtrails
-        // $("#canvas").drawRect({
-        //   layer: true,
-        //   name: "chemTrails",
-        //   fillStyle: color("papaya-whip"),
-        //   x: oldShot.x,
-        //   y: oldShot.y,
-        //   width: 2,
-        //   height: 2,
-        // });
-
-        // OLD ONE
-        // ctx.beginPath();
-        // ctx.strokeStyle = color("black-coffee");
-        // ctx.lineWidth = 2;
-        // ctx.arc(thisShot.x, thisShot.y, 2, 0, 2 * Math.PI);
-        // ctx.stroke();
-
-        // console.log("here");
-        // $("#jcanvas").clearCanvas();
-
-        // refreshScreen();
       }
     }
   }
@@ -339,26 +316,6 @@ const showExplosion = function (thisShot) {
       );
     }
   );
-
-  // OLD STATIC CODE BELOW WHICH HAD STOPPED WORKING
-  // ctx.lineWidth = 1;
-  // // first set of circles
-  // ctx.beginPath();
-  // ctx.lineWidth = 1;
-  // for (let i = 0; i < EXPLOSION_RADIUS; i += EXPLOSION_RADIUS / 24) {
-  //   ctx.stroke();
-  //   ctx.strokeStyle = color("papaya-whip");
-  //   ctx.arc(thisShot.x, thisShot.y, i + EXPLOSION_RADIUS / 40, 0, 2 * Math.PI);
-  // }
-  // ctx.stroke();
-  // // other color alternate circles
-  // ctx.beginPath();
-  // ctx.lineWidth = 3;
-  // for (let i = 0; i < EXPLOSION_RADIUS; i += EXPLOSION_RADIUS / 16) {
-  //   ctx.strokeStyle = color("fire-opal");
-  //   ctx.arc(thisShot.x, thisShot.y, i, degreesToRadians(getRandomInt(0, 360)), degreesToRadians(getRandomInt(0, 360)));
-  // }
-  // ctx.stroke();
 };
 
 //////////////////////////////////////
@@ -377,7 +334,7 @@ const destroyGround = function (thisShot) {
   // fill first node of crater terrain array
   crater.terrainArray[0][0] = crater.leftEdge.x;
   crater.terrainArray[0][1] = crater.leftEdge.y;
-  // dig deep
+  // dig deep left side
   crater.terrainArray.push([crater.leftEdge.x + 1, crater.leftEdge.y + EXPLOSION_RADIUS]);
 
   // generate crater inner shape
@@ -386,9 +343,11 @@ const destroyGround = function (thisShot) {
   // for (let i = 0; i<1;i++){
 
   // }
+
+  // random center depth
   crater.terrainArray.push([thisShot.x, thisShot.y + getRandomInt(TANK_SIZE, EXPLOSION_RADIUS + TANK_SIZE)]);
 
-  // dig deep
+  // dig deep right side
   crater.terrainArray.push([crater.rightEdge.x - 1, crater.rightEdge.y + EXPLOSION_RADIUS]);
 
   // fill last node of crater terrain
@@ -520,17 +479,18 @@ const getWinner = function () {
 
 //////////////////////////////////////
 // HANDLE KEYBOARD INPUT
-// https://keycode.info/ by WES BOS useful for extracting code instead of numberic code
+// https://keycode.info/ by WES BOS useful for extracting codes
 const listenKeys = function (e) {
   // when modal is open
   if ($("#modal").hasClass("show")) {
     switch (e.code) {
       case "ArrowLeft":
+        e.preventDefault();
         refreshScreen();
-        // console.log(game.currentPlayer);
         adjustTurret(TURRET_INCREMENT * -1);
         break;
       case "ArrowRight":
+        e.preventDefault();
         refreshScreen();
         adjustTurret(TURRET_INCREMENT);
         break;
