@@ -693,7 +693,7 @@ jcanvas.width = window.innerWidth;
 // newGame({num of humans}, {num of computer players})
 game.newGame(DEFAULT_NUM_HUMANS, DEFAULT_NUM_ROBOTS);
 if (!TEST_MODE) {
-  loadModal("Welcome to Tanks!", "What goes up, must come down. Take turns lobbing projectiles at one another. Adjust the angle of your shot using the arrow left and right keys, and fire using the space bar. Tanks receiving a hit are eliminated; the last tank remaining is the winner!");
+  loadModal("Welcome to Tanks!", "What goes up, must come down. Take turns lobbing projectiles at one another. Adjust the angle of your shot quickly using the arrow left and right keys, and fine tune using up and down. Fire using the space bar. Tanks receiving a hit are eliminated; the last tank remaining is the winner!");
 }
 
 // USER INPUT
