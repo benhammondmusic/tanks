@@ -1,22 +1,24 @@
 /*!
- tanks
+ TANKS! Ben Hammond
   */
+
+// const TEST_MODE = false;
+const TEST_MODE = true;
+
 // GAME CONSTANTS
 const PLAYER_COLORS = [color("bs-purple"), color("fire-opal"), color("ruby"), color("papaya-whip"), color("mantis"), color("magic-mint2")];
 const TURRET_INCREMENT = 0.5;
 const TANK_SIZE = 20;
 const EXPLOSION_RADIUS = 40;
 const EXPLOSION_DELAY = 750;
-const TERRAIN_BUMPS = 15;
+const TERRAIN_BUMPS = 20;
 const STEEPNESS = 1;
-const DEFAULT_NUM_HUMANS = 2;
+let DEFAULT_NUM_HUMANS = 2;
+if (TEST_MODE) DEFAULT_NUM_HUMANS = 6;
 const DEFAULT_NUM_ROBOTS = 0;
 const GRAVITY = 0.04;
 const SHOT_DELAY = 0.05;
 const X_BOOSTER = 1.5;
-
-const TEST_MODE = false;
-// const TEST_MODE = true;
 
 const game = {
   // NEW GAME
@@ -379,9 +381,12 @@ const destroyGround = function (thisShot) {
 //////////////////////////////////////
 // DROP NEARBY TANKS
 const dropNearbyTanks = function (thisShot) {
-  // TODO: optimized by only checking nearby tanks rather than all tanks
+  // TODO: optimize by only checking nearby tanks rather than all tanks
+
+  // redrop all tanks
   for (let tank of game.tankObjects) {
     tank.redropSelf();
+    console.log("drop every tank", tank);
   }
   refreshScreen();
 };

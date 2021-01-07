@@ -34,7 +34,6 @@ Animation was also problematic; converting my static drawing loops into smooth a
 
 - Terrain generation and drawing needs to be scoped out of game.newGame() to make **Change Terrain** button operational, and to allow **New Game** button to start play on existing terrain.
 - **Display explosion AFTER shot lands**
-- Make tanks fall when ground under them is destroyed. Maybe can hurt them if hit points are implemented?
 - Modal flashes the Resume button on initial closure
 
 ## Future Ideas:
@@ -42,7 +41,7 @@ Animation was also problematic; converting my static drawing loops into smooth a
 ### Graphics
 
 - Flatten terrain directly below tanks.
-- More animations (tank destruction)
+- More animations (tank destruction, tank dropping into place)
 - Add chem trails to see last shot. Slow fade out?
 - Make craters more jagged, more visually interesting (color?).
 - Utilize actual images
@@ -60,6 +59,7 @@ Animation was also problematic; converting my static drawing loops into smooth a
 ### Logic / Game Play
 
 - **Add computer logic for Robot players.**
+- Give tanks more than 1 starting hitpoint; require multiple shots to kill, damage based on shot proximity. Falling could harm tank as well.
 - Randomize starting player. Weight towards those in the middle since they are most in danger?
 - Spread tanks further apart, rather than evenly spaced.
 - Allow shots off screen horizontally to wrap back from other side?
