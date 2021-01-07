@@ -34,9 +34,17 @@ body {
   top: 0px;
   z-index: 1;
 }
+.navbar {
+  z-index: 1000;
+}
 
 /* HIDDEN BY DEFAULT */
 #change-players-container,
 #resume-button {
   display: none;
+}
+
+.btn-toolbar,
+.navbar {
+  background: transparent !important;
 }

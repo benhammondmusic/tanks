@@ -622,6 +622,16 @@ const listenKeys = function (e) {
 const handleClick = (e) => {
   // by #ID
   switch (e.target.id) {
+    case "up-button":
+      break;
+    case "down-button":
+      break;
+    case "left-button":
+      break;
+    case "right-button":
+      break;
+    case "fire-button":
+      break;
     case "resume-button":
       $("#resume-button").hide();
       $("#modal").modal("hide");

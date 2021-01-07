@@ -19,7 +19,30 @@
     <script defer src="js/script.js"></script>
   </head>
   <body class="d-flex flex-column align-items-center">
-    <header><h2>TANKS!</h2></header>
+    <header>
+      <nav class="navbar navbar-light bg-light">
+        <form class="container-fluid justify-content-start">
+          <!-- FLOATING TRANSPARENT ON-SCREEN BUTTONS FOR MOBILE/MOUSE GAMEPLAY -->
+          <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+            <div class="btn-group me-2" role="group" aria-label="Adjust angle group">
+              <button id="button-left" type="button" class="btn btn-outline-success">&leftarrow;</button>
+              <button id="button-right" type="button" class="btn btn-outline-success">&rightarrow;</button>
+              <button id="button-up" type="button" class="btn btn-outline-success">&uparrow;</button>
+              <button id="button-down" type="button" class="btn btn-outline-success">&downarrow;</button>
+            </div>
+            <div class="btn-group me-2" role="group" aria-label="Fire group">
+              <button id="button-fire" type="button" class="btn btn-outline-danger">Shoot!</button>
+              <!-- <button id="button-" type="button" class="btn btn-outline-danger">Shoot Far!!</button> -->
+            </div>
+
+            <div class="btn-group me-2" role="group" aria-label="Options group">
+              <!-- options Button trigger modal -->
+              <button type="button" class="btn-sm btn btn-outline-primary" id="options">Game Options</button>
+            </div>
+          </div>
+        </form>
+      </nav>
+    </header>
     <main class="d-flex flex-column align-items-center justify-content-center">
       <div id="canvas-container">
         <canvas id="canvas"></canvas>
@@ -81,9 +104,6 @@
         </div>
       </div>
     </main>
-    <footer>
-      <!-- options Button trigger modal -->
-      <button type="button" class="btn-sm btn btn-primary" id="options">Game Options</button>
-    </footer>
+    <footer></footer>
   </body>
 </html>
