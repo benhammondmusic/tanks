@@ -78,6 +78,9 @@ class Tank {
       length: TANK_SIZE * 3,
     };
   }
+  redropSelf() {
+    this.y = dropItem(this).y;
+  }
   // tank methods
   fire() {
     let angle = this.turret.angle;
@@ -275,6 +278,9 @@ const defineTerrain = function () {
 // SHOW EXPLOSION
 const showExplosion = function (thisShot) {
   // using jCanvas
+
+  $("#jcanvas").stopLayer("explosion", true);
+
   // draw static shape
   $("#jcanvas").drawPolygon({
     layer: true,
