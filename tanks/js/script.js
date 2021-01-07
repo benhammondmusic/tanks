@@ -540,7 +540,7 @@ const listenKeys = function (e) {
       $("body").html(`<div style="width:100%;height:0;padding-bottom:71%;position:relative;"><iframe src="https://giphy.com/embed/kFgzrTt798d2w" width="100%" height="100%" style="position:absolute" frameBorder="0" allowFullScreen></iframe></div><p><a href="https://benhammondmusic.github.io/tanks">Never Gonna Give You Up</a></p>`);
     }
   } else {
-    // accept keyboard game controls when modal is closed
+    // keyboard ctrls
     switch (e.code) {
       case "ArrowLeft":
         // USE KEYDROWN.JS LIBRARY FOR SPEEDING UP WHEN KEY HELD
@@ -573,33 +573,13 @@ const listenKeys = function (e) {
         });
         break;
       case "ArrowUp":
-        refreshScreen();
-
-        // up arrow fine adjusts towards top of screen
-        let fineAdjustmentUp = 1;
-        if (game.tankObjects[game.currentPlayer].turret.angle > 90) {
-          fineAdjustmentUp *= -1;
-        }
-        adjustTurret(fineAdjustmentUp);
+        $("#up-button").click();
         break;
       case "ArrowDown":
-        refreshScreen();
-        // down arrow fine adjusts towards top of screen
-        let fineAdjustmentDown = 1;
-        if (game.tankObjects[game.currentPlayer].turret.angle < 90) {
-          fineAdjustmentDown *= -1;
-        }
-        adjustTurret(fineAdjustmentDown);
+        $("#down-button").click();
         break;
       case "Space":
-        refreshScreen();
-        let currentTank = game.tankObjects[game.currentPlayer];
-
-        currentTank.fire();
-        if (getWinner()) {
-          loadModal(`Player ${game.winningPlayer + 1} Is A Big Winner!`, "What Would You Like To Do?");
-        }
-        game.nextPlayersTurn();
+        $("#fire-button").click();
         break;
       case "Escape":
         if (getWinner()) {
@@ -623,14 +603,40 @@ const handleClick = (e) => {
   // by #ID
   switch (e.target.id) {
     case "up-button":
+      // up arrow fine adjusts towards top of screen
+      refreshScreen();
+      let fineAdjustmentUp = 1;
+      if (game.tankObjects[game.currentPlayer].turret.angle > 90) {
+        fineAdjustmentUp *= -1;
+      }
+      adjustTurret(fineAdjustmentUp);
       break;
     case "down-button":
+      refreshScreen();
+      // down arrow fine adjusts turret lower on whichever side it's on
+      let fineAdjustmentDown = 1;
+      if (game.tankObjects[game.currentPlayer].turret.angle < 90) {
+        fineAdjustmentDown *= -1;
+      }
+      adjustTurret(fineAdjustmentDown);
       break;
     case "left-button":
+      refreshScreen();
+      adjustTurret(-1 * 10 * TURRET_INCREMENT);
       break;
     case "right-button":
+      refreshScreen();
+      adjustTurret(9 * TURRET_INCREMENT);
       break;
     case "fire-button":
+      refreshScreen();
+      let currentTank = game.tankObjects[game.currentPlayer];
+
+      currentTank.fire();
+      if (getWinner()) {
+        loadModal(`Player ${game.winningPlayer + 1} Is A Big Winner!`, "What Would You Like To Do?");
+      }
+      game.nextPlayersTurn();
       break;
     case "resume-button":
       $("#resume-button").hide();
