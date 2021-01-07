@@ -621,8 +621,10 @@ const handleClick = (e) => {
       adjustTurret(fineAdjustmentDown);
       break;
     case "left-button":
+      let mouseIsUp = false;
       refreshScreen();
       adjustTurret(-1 * 10 * TURRET_INCREMENT);
+
       break;
     case "right-button":
       refreshScreen();

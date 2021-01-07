@@ -44,7 +44,15 @@ body {
   display: none;
 }
 
-.btn-toolbar,
 .navbar {
   background: transparent !important;
+}
+
+#fire-button,
+#options,
+#nav-title {
+  font-family: "Big Shoulders Stencil Text", cursive;
+}
+#nav-title {
+  /* display: inline; */
 }

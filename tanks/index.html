@@ -4,7 +4,9 @@
     <title>Tanks!</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous" />
-
+    <!-- GOOGLE FONT -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Text:wght@900&display=swap" rel="stylesheet" />
     <!-- CSS -->
     <link href="./css/style.css" rel="stylesheet" />
     <!-- JQUERY -->
@@ -22,6 +24,7 @@
     <header>
       <nav class="navbar navbar-light bg-light">
         <form class="container-fluid justify-content-start">
+          <span id="nav-title" class="navbar-brand"> TANKS! </span>
           <!-- FLOATING TRANSPARENT ON-SCREEN BUTTONS FOR MOBILE/MOUSE GAMEPLAY -->
           <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
             <div class="btn-group me-2" role="group" aria-label="Adjust angle group">
@@ -37,7 +40,7 @@
 
             <div class="btn-group me-2" role="group" aria-label="Options group">
               <!-- options Button trigger modal -->
-              <button type="button" class="btn-sm btn btn-outline-primary" id="options">Game Options</button>
+              <button type="button" class="btn btn-outline-primary" id="options">Game Options</button>
             </div>
           </div>
         </form>
