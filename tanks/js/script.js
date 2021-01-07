@@ -89,10 +89,10 @@ class Tank {
       // cycle through tanks and check if explosion hit them
       for (let idx in game.tankObjects) {
         let tank = game.tankObjects[idx];
-        console.log(tank);
+        // console.log(tank);
         let xProx = Math.abs(tank.x - thisShot.x);
         let yProx = Math.abs(tank.y - thisShot.y);
-        console.log({ xProx }, { yProx });
+        // console.log({ xProx }, { yProx });
         if (xProx < EXPLOSION_RADIUS && yProx < EXPLOSION_RADIUS) {
           showExplosion(thisShot);
           destroyGround(thisShot);
@@ -106,16 +106,18 @@ class Tank {
         game.tankObjects = game.tankObjects.filter((tank) => tank.hitpoints > 0);
         // TODO: this needs to decrement either computers or humans
         game.numHumans--;
+        refreshScreen();
         break;
       }
       // if no tanks were hit above, check for ground collision
       else if (hitGround(thisShot)) {
         showExplosion(thisShot);
-        console.log(thisShot, "after explosion");
+        // console.log(thisShot, "after explosion");
         destroyGround(thisShot);
         break;
-        // check if shot went off screen horizontally.
+        // explode if went off screen horizontally.
       } else if (offX(thisShot)) {
+        showExplosion(thisShot);
         break;
       } else {
         const oldShot = { x: thisShot.x, y: thisShot.y };
@@ -545,6 +547,10 @@ const listenKeys = function (e) {
         $("#modal").modal("hide");
         break;
     }
+
+    if (game.tankObjects.length < 1) {
+      $("body").html(`<div style="width:100%;height:0;padding-bottom:71%;position:relative;"><iframe src="https://giphy.com/embed/kFgzrTt798d2w" width="100%" height="100%" style="position:absolute" frameBorder="0" allowFullScreen></iframe></div><p><a href="https://benhammondmusic.github.io/tanks">Never Gonna Give You Up</a></p>`);
+    }
   } else {
     // accept keyboard game controls when modal is closed
     switch (e.code) {
@@ -620,6 +626,9 @@ const listenKeys = function (e) {
         }
         loadModal();
         break;
+    }
+    if (game.tankObjects.length < 1) {
+      $("body").html(`<div style="width:100%;height:0;padding-bottom:71%;position:relative;"><iframe src="https://giphy.com/embed/kFgzrTt798d2w" width="100%" height="100%" style="position:absolute" frameBorder="0" allowFullScreen></iframe></div><p><a href="https://benhammondmusic.github.io/tanks">Never Gonna Give You Up</a></p>`);
     }
   }
 };

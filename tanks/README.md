@@ -20,7 +20,7 @@ Players take turns lobbing projectiles; anyone sustaining a hit is destroyed. La
 
 ## Approach:
 
-As a kid Tank Wars was an early favorite, and the simple yet compelling game play seemed perfect for my first JS project. Some initial googling of simple games introduced me to HTML Canvas as a well supported, well documented way to animate shapes in the browser. It was important for me to get started quickly with a simple version, while also having the ability to make the game more complex and detailed if time allowed.
+As a kid Tank Wars was an early favorite, and the simple yet compelling game play seemed perfect for my first JS project. Some initial googling of simple games introduced me to HTML Canvas as a well supported, well documented way to draw shapes and lines in the browser. It was important for me to get started quickly with a simple version, while also having the ability to make the game more complex and detailed if time allowed.
 
 ## Challenges:
 
@@ -28,21 +28,22 @@ One of the first challenges was simply learning HTML Canvas itself; some ideas t
 
 A second challenge came in implementing the actual physics and math to calculate a projectile's path. While fairly straightforward and well documented in high-school course websites, it took some work translating the physics (gravitational vertical acceleration) and trigonometry (SIN, COSIN) speak into my computer code.
 
+Animation was also problematic; converting my static drawing loops into smooth animations was important for gameplay but eluded me. jCanvas proved to be a helpful library for using jQuery methods to create, manipulate, and importantly animate things drawn with HTML Canvas.
+
 ## Known Bugs and Wonkiness Being Fixed:
 
 - Terrain generation and drawing needs to be scoped out of game.newGame() to make **Change Terrain** button operational, and to allow **New Game** button to start play on existing terrain.
 - **Display explosion AFTER shot lands**
 - Make tanks fall when ground under them is destroyed. Maybe can hurt them if hit points are implemented?
 - Flatten terrain directly below tanks.
-
-## Cool Features In Progress:
-
-- More animations (tank destruction)
+- Modal flashes the Resume button on initial closure
+-
 
 ## Future Ideas:
 
 ### Graphics
 
+- More animations (tank destruction)
 - Add chem trails to see last shot. Slow fade out?
 - Make craters more jagged, more visually interesting (color?).
 - Utilize actual images
