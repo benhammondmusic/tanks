@@ -2,7 +2,7 @@
  TANKS! Ben Hammond
   */
 
-// TODO destroy ground after explosion animation finishes
+// TODO destroy ground *after* explosion animation finishes
 
 /* FORCE LANDSCAPE ON MOBILE with PLEASEROTATE.JS */
 PleaseRotateOptions = {
@@ -21,7 +21,7 @@ $(window).on("orientationchange", function (e) {
 const TEST_MODE = true;
 
 // GAME CONSTANTS
-const PLAYER_COLORS = [color("bs-purple"), color("fire-opal"), color("ruby"), color("papaya-whip"), color("mantis"), color("magic-mint2")];
+const PLAYER_COLORS = [color("fire-opal"), color("papaya-whip"), color("ruby"), color("black-coffee")];
 const TURRET_INCREMENT = 0.5;
 const TANK_SIZE = 20;
 const EXPLOSION_RADIUS = 40;
@@ -113,7 +113,7 @@ class Tank {
         let xProx = Math.abs(tank.x - thisShot.x);
         let yProx = Math.abs(tank.y - thisShot.y);
         if (xProx < EXPLOSION_RADIUS && yProx < EXPLOSION_RADIUS) {
-          showExplosion(thisShot);
+          showExplosion(thisShot, 2000);
           destroyGround(thisShot);
           dropNearbyTanks(thisShot);
           hitTank = game.tankObjects[idx];
@@ -131,13 +131,13 @@ class Tank {
       }
       // if no tanks were hit, check for ground collision
       else if (hitGround(thisShot)) {
-        showExplosion(thisShot);
+        showExplosion(thisShot, 100);
         destroyGround(thisShot);
         dropNearbyTanks(thisShot);
         break;
         // explode if went off screen horizontally.
       } else if (offX(thisShot)) {
-        showExplosion(thisShot);
+        showExplosion(thisShot, 500);
         break;
       } else {
         const oldShot = { x: thisShot.x, y: thisShot.y };
@@ -294,7 +294,7 @@ const defineTerrain = function () {
 
 //////////////////////////////////////
 // SHOW EXPLOSION
-const showExplosion = function (thisShot) {
+const showExplosion = function (thisShot, size) {
   // using jCanvas
   // draw static shape
   $("#jcanvas").drawPolygon({
@@ -313,7 +313,7 @@ const showExplosion = function (thisShot) {
       x: thisShot.x,
       y: thisShot.y,
       sides: 3,
-      rotate: 20,
+      rotate: getRandomInt(size, size * 2) - size, // spins in either direction
       concavity: 0.99,
     })
     .drawLayers();
@@ -327,7 +327,7 @@ const showExplosion = function (thisShot) {
   $("#jcanvas").animateLayer(
     "explosion",
     {
-      radius: EXPLOSION_RADIUS * 3,
+      radius: EXPLOSION_RADIUS + size / 3,
       sides: 7,
       concavity: 0.9,
     },
@@ -338,7 +338,7 @@ const showExplosion = function (thisShot) {
         layer,
         {
           radius: 0,
-          rotate: 360,
+          rotate: getRandomInt(size, size * 2) - size, // spins in either direction
           concavity: 0.7,
         },
         EXPLOSION_DELAY * 2,
@@ -401,7 +401,7 @@ const dropNearbyTanks = function (thisShot) {
   // redrop all tanks
   for (let tank of game.tankObjects) {
     tank.redropSelf();
-    console.log("drop every tank", tank);
+    // console.log("drop every tank", tank);
   }
   refreshScreen();
 };

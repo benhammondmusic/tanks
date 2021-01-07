@@ -35,6 +35,7 @@ Animation was also problematic; converting my static drawing loops into smooth a
 - Terrain generation and drawing needs to be scoped out of game.newGame() to make **Change Terrain** button operational, and to allow **New Game** button to start play on existing terrain.
 - **Display explosion AFTER shot lands**
 - Modal flashes the Resume button on initial closure
+- In multiplayer the next tank in line is skipped when current tank fires a killing shot
 - Tank colors change when number of players reduced during multiplayer mode
 - Animation timing in general
 - Mobile resizing / zooming / clicking
@@ -43,8 +44,9 @@ Animation was also problematic; converting my static drawing loops into smooth a
 
 ### Graphics
 
+- Visually indicate current player's turn
 - Flatten terrain directly below tanks.
-- More animations (tank destruction, tank dropping into place)
+- More animations (tank dropping down into place)
 - Add chem trails to see last shot. Slow fade out?
 - Make craters more jagged, more visually interesting (color?).
 - Utilize actual images

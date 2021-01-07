@@ -63,3 +63,50 @@ body {
   color: var(--opal);
   background-color: var(--black-coffee);
 }
+
+/* BOOTSTRAP OVERRIDES */
+.btn-success:hover,
+.btn-primary:hover,
+.btn-secondary:hover,
+.btn-danger:hover {
+  background-color: var(--papaya-whip);
+}
+.btn-outline-success,
+.btn-success:hover {
+  border-color: var(--ruby);
+  color: var(--ruby);
+}
+.btn-success,
+.btn-outline-success:hover {
+  background-color: var(--ruby);
+}
+
+.btn-outline-danger,
+.btn-danger:hover {
+  border-color: var(--fire-opal);
+  color: var(--fire-opal);
+}
+.btn-danger,
+.btn-outline-danger:hover {
+  background-color: var(--fire-opal);
+}
+
+.btn-outline-primary,
+.btn-primary:hover {
+  border-color: var(--black-coffee);
+  color: var(--black-coffee);
+}
+.btn-primary,
+.btn-outline-primary:hover {
+  background-color: var(--black-coffee);
+}
+
+.btn-outline-secondary,
+.btn-secondary:hover {
+  border-color: var(--fire-opal);
+  color: var(--fire-opal);
+}
+.btn-secondary,
+.btn-outline-secondary:hover {
+  background-color: var(--fire-opal);
+}
