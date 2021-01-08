@@ -51,7 +51,7 @@ Animation was also problematic; converting my static drawing loops into smooth a
 - Make craters more jagged, more visually interesting (color?).
 - Utilize actual images
 - Use some Bézier/Quadratic curves for terrain instead of all straight lines.
-- Place titles, scores etc on top of canvas
+- Place titles, scores, guide to keyboard controls etc in navbar (drop downs?)
 - Add snow capped mountains
 - Add Trees
 
