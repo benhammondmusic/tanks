@@ -17,11 +17,11 @@ PleaseRotateOptions = {
 //   });
 // });
 
-// const TEST_MODE = false;
-const TEST_MODE = true;
+const TEST_MODE = false;
+// const TEST_MODE = true;
 
 // GAME CONSTANTS
-const PLAYER_COLORS = [color("fire-opal"), color("papaya-whip"), color("ruby"), color("black-coffee"), `#56EBC3`, `#EBC356`, `#97EB55`, `#55E2EB`, `#A955EB`, `#B8D81E`, `#1ED89B`, `#3E1ED8`, `#1DD75B`, `#1DD7D7`, `#D3E1FD`];
+const PLAYER_COLORS = [color("fire-opal"), color("ruby"), color("black-coffee"), `#56EBC3`, `#EBC356`, `#97EB55`, color("papaya-whip"), `#55E2EB`, `#A955EB`, `#B8D81E`, `#1ED89B`, `#3E1ED8`, `#1DD75B`, `#1DD7D7`, `#D3E1FD`];
 
 const TURRET_INCREMENT = 0.5;
 const TANK_SIZE = 20;
@@ -71,7 +71,8 @@ const game = {
     if (this.currentPlayer >= this.numHumans + this.numRobots) {
       this.currentPlayer = 0; // player 0 after last player
     }
-    // $("#canvas").css("border", `1px dashed ${PLAYER_COLORS[this.currentPlayer]}`);
+    $("#nav-text").css("color", PLAYER_COLORS[this.currentPlayer]);
+    $("#nav-text").text(`READY PLAYER ${this.currentPlayer + 1}`);
   },
 };
 
@@ -87,7 +88,8 @@ class Bullet {
 class Tank {
   constructor(x, playerNumber) {
     this.x = x;
-    this.y = dropItem(this).y; // lower from sky until contacts terrain shape
+    this.y = 0;
+    this.dropSelf(); // lower from sky until contacts terrain shape
     this.radius = TANK_SIZE;
     this.playerNumber = playerNumber; // there is a player 0
     this.hitpoints = 1;
@@ -96,7 +98,7 @@ class Tank {
       length: TANK_SIZE * 3,
     };
   }
-  redropSelf() {
+  dropSelf() {
     this.y = dropItem(this).y;
   }
   // tank methods
@@ -190,7 +192,21 @@ const loadModal = function (strTitle, strMsg) {
     $("#modal-title").text(`Tanks!`);
   }
   if (strMsg) {
-    $("#modal-message").text(strMsg);
+    $("#modal-message").html(strMsg);
+  } else {
+    $("#modal-message").html(
+      `
+      <p><em>What goes up, must come down.</em></p>
+      <p>Take turns adjusting your turret angle and lobbing projectiles at one another. Tanks receiving a hit are eliminated; the last tank remaining is the winner!</p>
+      <ul>
+      <li>&leftarrow; &rightarrow;: Quickly Adjust Angle </li>
+      <li>&uparrow; &downarrow;: Precisely Adjust Angle</li>
+      <li> SPACE BAR : FIRE!
+      <li> ESC KEY : OPTIONS
+      </ul>
+      
+      `
+    );
   }
 
   $("#modal").modal("show");
@@ -401,7 +417,7 @@ const dropNearbyTanks = function (thisShot) {
 
   // redrop all tanks
   for (let tank of game.tankObjects) {
-    tank.redropSelf();
+    tank.dropSelf();
     // console.log("drop every tank", tank);
   }
   refreshScreen();
@@ -411,13 +427,50 @@ const dropNearbyTanks = function (thisShot) {
 // DROP ITEM
 // detects top edge of terrain, sets that y value and returns the item
 const dropItem = function (item) {
-  item.y = 0;
+  item.startY = item.y;
   for (let i = 0; i < canvas.height; i++) {
     item.y++;
     if (hitGround(item)) {
       break;
     }
   }
+
+  // ATTEMPT TO ANIMATE TANKS DROPPING INTO PLACE
+  // let startY = item.startY;
+  // let endY = item.y;
+  // // animate drop if it's a tank
+  // if (item instanceof Tank) {
+  //   $("#jcanvas").stopLayer(`dropTank${item.playerNumber}`);
+
+  //   $("#jcanvas")
+  //     .drawArc({
+  //       layer: true,
+  //       name: `dropTank${item.playerNumber}`,
+  //       fillStyle: "#c33",
+  //       x: item.x,
+  //       y: startY,
+  //       // y: 0,
+  //       radius: TANK_SIZE,
+  //     })
+  //     .animateLayer(
+  //       `dropTank${item.playerNumber}`,
+  //       {
+  //         y: endY,
+  //       },
+  //       {
+  //         // duration: 10,
+  //         step: function (now, fx, layer) {
+  //           // do something for each step of the animation
+  //           // console.log(layer.y, "y");
+  //           // console.log(now);
+  //         },
+  //         complete: function (layer) {
+  //           // still do something at end of animation
+  //         },
+  //       }
+  //     );
+  // }
+
   return item;
 };
 
@@ -711,7 +764,7 @@ jcanvas.width = window.innerWidth;
 // newGame({num of humans}, {num of computer players})
 game.newGame(DEFAULT_NUM_HUMANS, DEFAULT_NUM_ROBOTS);
 if (!TEST_MODE) {
-  loadModal("Welcome to Tanks!", "What goes up, must come down. Take turns lobbing projectiles at one another. Adjust the angle of your shot quickly using the arrow left and right keys, and fine tune using up and down. Fire using the space bar. Tanks receiving a hit are eliminated; the last tank remaining is the winner!");
+  loadModal();
 }
 
 // USER INPUT

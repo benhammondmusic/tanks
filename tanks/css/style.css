@@ -56,8 +56,15 @@ body {
 
 #fire-button,
 #options,
-#nav-title {
-  font-family: "Big Shoulders Stencil Text", cursive;
+#nav-title,
+#nav-text,
+#modal-title,
+.btn {
+  /* font-family: "Big Shoulders Stencil Text", cursive; */
+  font-family: "Allerta Stencil", sans-serif;
+}
+#nav-text {
+  text-shadow: 2px 2px 5px var(--papaya-whip);
 }
 
 /* FOR PLEASE ROTATE SCREEN */
@@ -105,6 +112,7 @@ body {
 .btn-primary,
 .btn-outline-primary:hover {
   background-color: var(--black-coffee);
+  color: var(--papaya-whip);
 }
 
 .btn-outline-secondary,
