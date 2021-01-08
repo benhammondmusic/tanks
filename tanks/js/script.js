@@ -189,7 +189,7 @@ const loadModal = function (strTitle, strMsg) {
   if (strTitle) {
     $("#modal-title").text(strTitle);
   } else {
-    $("#modal-title").text(`Tanks!`);
+    $("#modal-title").text(`Tanks! by benhammond.tech`);
   }
   if (strMsg) {
     $("#modal-message").html(strMsg);

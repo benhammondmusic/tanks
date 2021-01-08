@@ -51,7 +51,10 @@ body {
 }
 
 .navbar {
-  background: transparent !important;
+  /* background: transparent !important; */
+  /* background: var(--papaya-whip) !important; */
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 
 #fire-button,
