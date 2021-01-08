@@ -21,7 +21,7 @@ const TEST_MODE = false;
 // const TEST_MODE = true;
 
 // GAME CONSTANTS
-const PLAYER_COLORS = [color("fire-opal"), color("ruby"), color("black-coffee"), `#56EBC3`, `#EBC356`, `#97EB55`, color("papaya-whip"), `#55E2EB`, `#A955EB`, `#B8D81E`, `#1ED89B`, `#3E1ED8`, `#1DD75B`, `#1DD7D7`, `#D3E1FD`];
+const PLAYER_COLORS = [`#56EBC3`, `#A955EB`, `#97EB55`, `#55E2EB`, `#B8D81E`, `#EBC356`, `#1ED89B`, `#3E1ED8`, `#1DD75B`, `#1DD7D7`, `#D3E1FD`, color("papaya-whip"), color("fire-opal"), color("ruby"), color("black-coffee")];
 
 const TURRET_INCREMENT = 0.5;
 const TANK_SIZE = 20;
@@ -278,7 +278,10 @@ const drawBackground = function () {
   ctx.fillStyle = color("opal");
   ctx.fill();
 
+  // BUILD GROUND SHAPE
   defineTerrain();
+
+  // THEN DRAW IT
   ctx.fillStyle = color("black-coffee");
   ctx.fill();
 };
@@ -427,7 +430,7 @@ const dropNearbyTanks = function (thisShot) {
 // DROP ITEM
 // detects top edge of terrain, sets that y value and returns the item
 const dropItem = function (item) {
-  item.startY = item.y;
+  // item.startY = item.y;
   for (let i = 0; i < canvas.height; i++) {
     item.y++;
     if (hitGround(item)) {
