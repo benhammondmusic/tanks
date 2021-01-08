@@ -17,6 +17,12 @@ PleaseRotateOptions = {
 //   });
 // });
 
+// SET GAME MODE
+const ALLOW_ROBOTS = false;
+if (!ALLOW_ROBOTS) {
+  $("#num-robots-button").hide();
+}
+
 const TEST_MODE = false;
 // const TEST_MODE = true;
 
@@ -45,8 +51,11 @@ const game = {
     // values for after tanks die so new game can have same number players
     this.numHumansAtStart = numHumans;
     this.numRobotsAtStart = numRobots;
-    this.currentPlayer = 0;
+    this.currentPlayerIdx = 0;
     this.winningPlayer = null;
+
+    // set dom button to show number of current players at game-start
+    $("#num-players-display").text(`: ${this.numHumansAtStart + this.numRobotsAtStart} Players`);
 
     // populate terrain array
     this.terrainArray = generateTerrain(canvas.width, canvas.height, TERRAIN_BUMPS, STEEPNESS);
@@ -67,12 +76,14 @@ const game = {
     drawPlayers(ctx, this.tankObjects);
   },
   nextPlayersTurn: function () {
-    this.currentPlayer += 1; // rotate turns
-    if (this.currentPlayer >= this.numHumans + this.numRobots) {
-      this.currentPlayer = 0; // player 0 after last player
+    // cycle thrugh remaing tanks in array
+
+    this.currentPlayerIdx += 1;
+    if (this.currentPlayerIdx >= this.tankObjects.length) {
+      this.currentPlayerIdx = 0;
     }
-    $("#nav-text").css("color", PLAYER_COLORS[this.currentPlayer]);
-    $("#nav-text").text(`READY PLAYER ${this.currentPlayer + 1}`);
+
+    setPlayerDisplay(this.tankObjects[this.currentPlayerIdx].playerNumber);
   },
 };
 
@@ -90,8 +101,9 @@ class Tank {
     this.x = x;
     this.y = 0;
     this.dropSelf(); // lower from sky until contacts terrain shape
+    this.color = PLAYER_COLORS[playerNumber % PLAYER_COLORS.length]; // cycle around options using % if num players bigger than color array
     this.radius = TANK_SIZE;
-    this.playerNumber = playerNumber; // there is a player 0
+    this.playerNumber = playerNumber; // NOTE: there is a player 0, but all player numbers displayed to USER are +1
     this.hitpoints = 1;
     this.turret = {
       angle: getRandomInt(180 - (playerNumber / game.numHumans + game.numRobots) * 180, 180 - ((playerNumber + 1) / (game.numHumans + game.numRobots)) * 180),
@@ -180,6 +192,12 @@ class Tank {
     }
   }
 }
+
+//
+const setPlayerDisplay = function (playerNum) {
+  $("#nav-text").css("color", PLAYER_COLORS[playerNum]);
+  $("#nav-text").text(`READY PLAYER ${playerNum + 1}`);
+};
 
 //////////////////////////////////////
 // LOAD MODAL
@@ -340,7 +358,7 @@ const showExplosion = function (thisShot, size) {
 
   // DELAY EXPLOSION ANIMATION BASED ON HOW UP TURRET IS (higher shots take longer)
   // TODO: better to delay this until shot has hit something. should fix
-  let turretUpness = Math.sin(degreesToRadians(game.tankObjects[game.currentPlayer].turret.angle)); // range 0-1
+  let turretUpness = Math.sin(degreesToRadians(game.tankObjects[game.currentPlayerIdx].turret.angle)); // range 0-1
   $("#jcanvas").delayLayer("explosion", turretUpness * EXPLOSION_DELAY);
 
   // GROW
@@ -498,17 +516,19 @@ const drawPlayers = function (ctx, tankObjects) {
     // TANK BODY
     ctx.beginPath();
     ctx.arc(tank.x, tank.y, tank.radius, Math.PI, Math.PI * 2);
-    // cycle thru colors array CONSTANT for fill
-    ctx.fillStyle = PLAYER_COLORS[tank.playerNumber % PLAYER_COLORS.length];
+    // TANK BODY COLOR
+    ctx.fillStyle = tank.color;
     ctx.fill();
+    // LIGHT OUTLINE
     ctx.strokeStyle = color("papaya-whip");
     ctx.lineWidth = 3;
     ctx.closePath();
     ctx.stroke();
 
-    // SECOND COLOR TANK OUTLINE
+    // SECOND DARK OUTLINE
     ctx.beginPath();
     ctx.strokeStyle = color("black-coffee");
+
     ctx.arc(tank.x, tank.y, tank.radius + 4, Math.PI, Math.PI * 2);
     ctx.closePath();
     ctx.stroke();
@@ -547,7 +567,7 @@ const drawTurret = function (tank) {
 const adjustTurret = function (amount) {
   // TODO: rf send tank to adjust in a arg rather than changing
   // console.log(game.tankObjects);
-  let currentTank = game.tankObjects[game.currentPlayer];
+  let currentTank = game.tankObjects[game.currentPlayerIdx];
   let angle = currentTank.turret.angle + amount;
   if (angle < 0) {
     angle = 180;
@@ -678,7 +698,7 @@ const handleClick = (e) => {
       // up arrow fine adjusts towards top of screen
       refreshScreen();
       let fineAdjustmentUp = 1;
-      if (game.tankObjects[game.currentPlayer].turret.angle > 90) {
+      if (game.tankObjects[game.currentPlayerIdx].turret.angle > 90) {
         fineAdjustmentUp *= -1;
       }
       adjustTurret(fineAdjustmentUp);
@@ -687,13 +707,13 @@ const handleClick = (e) => {
       refreshScreen();
       // down arrow fine adjusts turret lower on whichever side it's on
       let fineAdjustmentDown = 1;
-      if (game.tankObjects[game.currentPlayer].turret.angle < 90) {
+      if (game.tankObjects[game.currentPlayerIdx].turret.angle < 90) {
         fineAdjustmentDown *= -1;
       }
       adjustTurret(fineAdjustmentDown);
       break;
     case "left-button":
-      let mouseIsUp = false;
+      // let mouseIsUp = false;
       refreshScreen();
       adjustTurret(-1 * 10 * TURRET_INCREMENT);
 
@@ -704,13 +724,15 @@ const handleClick = (e) => {
       break;
     case "fire-button":
       refreshScreen();
-      let currentTank = game.tankObjects[game.currentPlayer];
-
+      let currentTank = game.tankObjects[game.currentPlayerIdx];
+      game.nextPlayersTurn();
       currentTank.fire();
       if (getWinner()) {
         loadModal(`Player ${game.winningPlayer + 1} Is A Big Winner!`, "What Would You Like To Do?");
+      } else {
+        //
       }
-      game.nextPlayersTurn();
+
       break;
     case "resume-button":
       $("#resume-button").hide();
@@ -724,12 +746,12 @@ const handleClick = (e) => {
       // show or hide player dropdowns
       $("#change-players-container").toggle();
       break;
-    case "change-terrain-button":
-      // show or hide player dropdowns
-      // populate terrain array
-      // game.terrainArray = generateTerrain(canvas.width, canvas.height, TERRAIN_BUMPS, STEEPNESS);
-      // refreshScreen;
-      break;
+    // case "change-terrain-button":
+    // show or hide player dropdowns
+    // populate terrain array
+    // game.terrainArray = generateTerrain(canvas.width, canvas.height, TERRAIN_BUMPS, STEEPNESS);
+    // refreshScreen;
+    // break;
     case "options":
       $("#resume-button").show();
       loadModal();
