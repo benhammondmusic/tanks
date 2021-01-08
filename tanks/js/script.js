@@ -21,7 +21,8 @@ $(window).on("orientationchange", function (e) {
 const TEST_MODE = true;
 
 // GAME CONSTANTS
-const PLAYER_COLORS = [color("fire-opal"), color("papaya-whip"), color("ruby"), color("black-coffee")];
+const PLAYER_COLORS = [color("fire-opal"), color("papaya-whip"), color("ruby"), color("black-coffee"), `#56EBC3`, `#EBC356`, `#97EB55`, `#55E2EB`, `#A955EB`, `#B8D81E`, `#1ED89B`, `#3E1ED8`, `#1DD75B`, `#1DD7D7`, `#D3E1FD`];
+
 const TURRET_INCREMENT = 0.5;
 const TANK_SIZE = 20;
 const EXPLOSION_RADIUS = 40;
