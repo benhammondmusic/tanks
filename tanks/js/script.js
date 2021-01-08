@@ -9,13 +9,13 @@ PleaseRotateOptions = {
   message: "Please Rotate Your Device And Then Reload Page",
 };
 
-$(window).on("orientationchange", function (e) {
-  $.mobile.changePage(window.location.href, {
-    allowSamePageTransition: true,
-    transition: "none",
-    reloadPage: true,
-  });
-});
+// $(window).on("orientationchange", function (e) {
+//   $.mobile.changePage(window.location.href, {
+//     allowSamePageTransition: true,
+//     transition: "none",
+//     reloadPage: true,
+//   });
+// });
 
 // const TEST_MODE = false;
 const TEST_MODE = true;
@@ -717,3 +717,11 @@ if (!TEST_MODE) {
 // USER INPUT
 document.onkeydown = listenKeys;
 $("body").click((e) => handleClick(e));
+// REDRAW GAME IF USER RESIZES WINDOW
+$(window).resize(function () {
+  // console.log($(window).width(), $(window).height());
+  // canvas.height = jcanvas.height = $(window).height();
+  // canvas.width = jcanvas.width = $(window).width();
+  // game.newGame(game.numHumansAtStart, game.numRobotsAtStart);
+  location.reload(true);
+});
