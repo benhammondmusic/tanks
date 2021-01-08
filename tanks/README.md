@@ -28,14 +28,15 @@ One of the first challenges was simply learning HTML Canvas itself; some ideas t
 
 A second challenge came in implementing the actual physics and math to calculate a projectile's path. While fairly straightforward and well documented in high-school course websites, it took some work translating the physics (gravitational vertical acceleration) and trigonometry (SIN, COSIN) speak into my computer code.
 
-Animation was also problematic; converting my static drawing loops into smooth animations was important for gameplay but eluded me. jCanvas proved to be a helpful library for using jQuery methods to create, manipulate, and importantly animate things drawn with HTML Canvas.
+Animation was also problematic; converting my static drawing loops into smooth animations was important for gameplay but eluded me. jCanvas proved to be a helpful library for using jQuery methods to create, manipulate, and importantly animate things drawn with HTML Canvas. I decided to overlay two canvas elements: the first with static background images I'd already made with traditional canvas, and the second with animations using the jCanvas library.
 
 ## Known Bugs and Wonkiness Being Fixed:
 
+- Need to refactor and separate graphics from logic... they are too intertwined.
 - Terrain generation and drawing needs to be scoped out of game.newGame() to make **Change Terrain** button operational, and to allow **New Game** button to start play on existing terrain.
-- **Display explosion AFTER shot lands**
+- Display explosion AFTER shot lands
 - Modal flashes the Resume button on initial closure
-- In multiplayer the next tank in line is skipped when current tank fires a killing shot
+- In multiplayer, sometimes the next tank in line is skipped when current tank fires a killing shot
 - Tank colors change when number of players reduced during multiplayer mode
 - Animation timing in general
 - Mobile resizing / zooming / clicking
@@ -44,22 +45,19 @@ Animation was also problematic; converting my static drawing loops into smooth a
 
 ### Graphics
 
-- Visually indicate current player's turn
 - Flatten terrain directly below tanks.
 - More animations (tank dropping down into place)
 - Add chem trails to see last shot. Slow fade out?
 - Make craters more jagged, more visually interesting (color?).
 - Utilize actual images
 - Use some Bézier/Quadratic curves for terrain instead of all straight lines.
-- Place titles, scores, guide to keyboard controls etc in navbar (drop downs?)
 - Add snow capped mountains
 - Add Trees
 
 ### Responsiveness / UI
 
 - Make mobile responsive and playable with on-screen controls to fire keyboard inputs
-- Use slider(s) under Change Players button
-- Add mouse functionality for game-play.
+- Add touch functionality for better mobile game-play.
 
 ### Logic / Game Play
 
