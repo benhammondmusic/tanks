@@ -87,7 +87,7 @@ body {
 }
 #nav-title,
 #nav-text {
-  font-size: 1.5em !important;
+  font-size: 1.2em !important;
   text-shadow: 1px 1px var(--middle-green);
 }
 
