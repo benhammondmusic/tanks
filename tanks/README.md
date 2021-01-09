@@ -43,10 +43,9 @@ Animation was also problematic; converting my static drawing loops into smooth a
 
 ## Future Ideas:
 
-- Install instructions (must use chrome with JavaScript. Better with keyboard)
-- Set max shot deltaX deltaY based on screen size
+- Adjust max shot deltaX deltaY based on screen size (better game play if bullet isn't above screen very much)
 - Split button on new-game to change num players
-- Save num players at start into local storage so game refresh will be same number players
+- Save current number of players at game start into local storage so game refresh with the same
 
 ### Graphics
 
@@ -88,6 +87,10 @@ Animation was also problematic; converting my static drawing loops into smooth a
 
 - [KeyDrown.JS](https://jeremyckahn.github.io/keydrown/) - Library to speed up user held keys
 - [jCanvas](https://projects.calebevans.me/jcanvas/) - Library to use jQuery on HTML Canvas (easier animations)
+
+## Install Instructions
+
+- Visit the link below and play in Chrome browser with javascript enabled. Works best on a desktop computer using the keyboard, but limited mouse/touch integration also allows game play via mobile and other devices.
 
 ## App Demo
 

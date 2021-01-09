@@ -127,3 +127,7 @@ body {
 .btn-outline-secondary:hover {
   background-color: var(--fire-opal);
 }
+
+#modal {
+  opacity: 0.8 !important;
+}

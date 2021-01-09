@@ -2,39 +2,28 @@
  TANKS! Ben Hammond
   */
 
-// TODO destroy ground *after* explosion animation finishes
-
 /* FORCE LANDSCAPE ON MOBILE with PLEASEROTATE.JS */
 PleaseRotateOptions = {
   message: "Please Rotate Your Device And Then Reload Page",
 };
 
-// $(window).on("orientationchange", function (e) {
-//   $.mobile.changePage(window.location.href, {
-//     allowSamePageTransition: true,
-//     transition: "none",
-//     reloadPage: true,
-//   });
-// });
-
-// SET GAME MODE
+// SET GAME MODES
 const ALLOW_ROBOTS = false;
 if (!ALLOW_ROBOTS) {
   $("#num-robots-button").hide();
 }
-
 const TEST_MODE = false;
 // const TEST_MODE = true;
 
 // GAME CONSTANTS
 const PLAYER_COLORS = [`#56EBC3`, `#A955EB`, `#97EB55`, `#55E2EB`, `#B8D81E`, `#EBC356`, `#1ED89B`, `#3E1ED8`, `#1DD75B`, `#1DD7D7`, `#D3E1FD`, color("papaya-whip"), color("fire-opal"), color("ruby"), color("black-coffee")];
-
 const TURRET_INCREMENT = 0.5;
-const TANK_SIZE = 20;
-const EXPLOSION_RADIUS = 40;
+const TANK_SIZE = 25;
+const EXPLOSION_RADIUS = 50;
 const EXPLOSION_DELAY = 750;
 const TERRAIN_BUMPS = 20;
 const STEEPNESS = 1;
+const HORIZON_DEPTH = 0.25; // 0-1
 let DEFAULT_NUM_HUMANS = 2;
 if (TEST_MODE) DEFAULT_NUM_HUMANS = 6;
 const DEFAULT_NUM_ROBOTS = 0;
@@ -279,7 +268,7 @@ const generateTerrain = function (width, height, numSlopes, steepnessPercent) {
   const arr = [];
 
   for (let i = 0; i <= numSlopes; i++) {
-    arr[i] = [width * (i / numSlopes), getRandomInt(height * 0.55, height)];
+    arr[i] = [width * (i / numSlopes), getRandomInt(height * HORIZON_DEPTH, height)];
   }
   // in case of 0 slopes
   if (numSlopes === 0) {
