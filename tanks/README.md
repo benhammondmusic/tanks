@@ -1,13 +1,16 @@
-# Tanks!
+# Tanks! by benhammond.tech
 
 ## Concept:
 
 _"What goes up must come down..."_
-**Blood, Sweat & Tears**
 
 Players take turns lobbing projectiles; anyone sustaining a hit is destroyed. Last one standing wins!
 
-## Wireframes:
+## Screenshot:
+
+![Screenshot showing a tank exploding in multiplayer mode](./screenshot.png)
+
+## Initial Wireframe:
 
 ![Initial Hand Drawn Wireframe](./wireframe.jpg)
 
@@ -36,15 +39,11 @@ Animation was also problematic; converting my static drawing loops into smooth a
 - Terrain generation and drawing needs to be scoped out of game.newGame() to make **Change Terrain** button operational, and to allow **New Game** button to start play on existing terrain.
 - Display explosion AFTER shot lands
 - Modal flashes the Resume button on ENTER initial screen. ENTER functionality in general.
-- In multiplayer, sometimes the next tank in line is skipped when current tank fires a killing shot to the tank to the left (and maybe other cases)
 - Animation timing in general
 - Mobile resizing / zooming / clicking. Disable double tap to zoom, etc.
+- Refactor my hack fix for the **kill left - skip right** bug.
 
 ## Future Ideas:
-
-- Adjust max shot deltaX deltaY based on screen size (better game play if bullet isn't above screen very much)
-- Split button on new-game to change num players
-- Save current number of players at game start into local storage so game refresh with the same
 
 ### Graphics
 
@@ -59,12 +58,15 @@ Animation was also problematic; converting my static drawing loops into smooth a
 
 ### Responsiveness / UI
 
-- Make mobile responsive and playable with on-screen controls to fire keyboard inputs
+- Split bootstrap button on new-game to change num players.
+- Make mobile responsive and playable with on-screen controls to fire keyboard inputs.
 - Add touch functionality for better mobile game-play.
+- Save current number of players at game start into local storage so game refresh with the same.
 
 ### Logic / Game Play
 
 - **Add computer logic for Robot players.**
+- Adjust max shot deltaX deltaY based on screen size (better game play if bullet isn't above screen very much)
 - Give tanks more than 1 starting hitpoint; require multiple shots to kill, damage based on shot proximity. Falling could harm tank as well.
 - Randomize starting player. Weight towards those in the middle since they are most in danger?
 - Spread tanks further apart, rather than evenly spaced.

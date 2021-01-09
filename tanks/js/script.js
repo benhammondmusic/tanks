@@ -12,8 +12,8 @@ const ALLOW_ROBOTS = false;
 if (!ALLOW_ROBOTS) {
   $("#num-robots-button").hide();
 }
-// const TEST_MODE = false;
-const TEST_MODE = true;
+const TEST_MODE = false;
+// const TEST_MODE = true;
 
 // GAME CONSTANTS
 const PLAYER_COLORS = [`#56EBC3`, `#A955EB`, `#97EB55`, `#55E2EB`, `#B8D81E`, `#EBC356`, `#1ED89B`, `#3E1ED8`, `#1DD75B`, `#1DD7D7`, `#D3E1FD`, color("papaya-whip"), color("fire-opal"), color("ruby"), color("black-coffee")];
@@ -189,9 +189,12 @@ class Tank {
   }
 }
 
-//
+// show user current player
 const setPlayerDisplay = function (playerNum) {
   $("#nav-text").css("color", PLAYER_COLORS[playerNum]);
+  $(".navbar").css("border-bottom", `7px solid ${PLAYER_COLORS[playerNum]}`);
+  $(".navbar").css("border-left", `7px solid ${PLAYER_COLORS[playerNum]}`);
+  $(".navbar").css("border-right", `7px solid ${PLAYER_COLORS[playerNum]}`);
   $("#nav-text").text(`READY PLAYER ${playerNum + 1}`);
 };
 

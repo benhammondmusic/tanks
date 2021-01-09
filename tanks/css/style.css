@@ -50,37 +50,39 @@ body {
   display: none;
 }
 
-.navbar {
-  /* background: transparent !important; */
-  /* background: var(--papaya-whip) !important; */
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-}
-
 #fire-button,
 #options,
 #nav-title,
 #nav-text,
 #modal-title,
 .btn {
-  /* font-family: "Big Shoulders Stencil Text", cursive; */
   font-family: "Allerta Stencil", sans-serif;
-}
-#nav-text {
-  text-shadow: 2px 2px 5px var(--papaya-whip);
 }
 
 /* FOR PLEASE ROTATE SCREEN */
 #pleaserotate-graphic {
   fill: var(--opal);
 }
-
 #pleaserotate-backdrop {
   color: var(--opal);
   background-color: var(--black-coffee);
 }
 
 /* BOOTSTRAP OVERRIDES */
+
+.navbar {
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-bottom: 10px solid var(--black-coffee);
+  border-left: 10px solid var(--black-coffee);
+  border-right: 10px solid var(--black-coffee);
+}
+#nav-title,
+#nav-text {
+  font-size: 1.5em !important;
+  text-shadow: 1px 1px var(--middle-green);
+}
+
 .btn-success:hover,
 .btn-primary:hover,
 .btn-secondary:hover,
@@ -129,5 +131,5 @@ body {
 }
 
 #modal {
-  opacity: 0.8 !important;
+  opacity: 0.9 !important;
 }
