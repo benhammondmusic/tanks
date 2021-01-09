@@ -83,7 +83,7 @@ Animation was also problematic; converting my static drawing loops into smooth a
 - [Coolor.co - Color Palette Generator](http://www.coolors.co) - Make pretty colors that works together
 - [Canvas Clock Demo](http://www.dhtmlgoodies.com/tutorials/canvas-clock/) - Tells time.
 - [Keycode.info by Wes Bos](https://keycode.info/) - App to get key codes
-- [Goodfon.com Free Sunset Wallpaper](https://www.goodfon.com/)
+- [Goodfon.com](https://www.goodfon.com/) - Free Sunset Wallpaper
 
 ## External Libraries
 
