@@ -27,7 +27,7 @@ const HORIZON_DEPTH = 0.25; // 0-1
 let DEFAULT_NUM_HUMANS = 2;
 if (TEST_MODE) DEFAULT_NUM_HUMANS = 6;
 const DEFAULT_NUM_ROBOTS = 0;
-const GRAVITY = 0.04;
+const GRAVITY = 0.06;
 const SHOT_DELAY = 0.05;
 const X_BOOSTER = 1.5;
 
@@ -127,8 +127,8 @@ class Tank {
       if (hitTank) {
         hitTank.hitpoints--;
 
-        // HACK fixes bug where killing a tank to the left makes turn skip the next tank to the right
-        if (hitTank.playerNumber < this.playerNumber) {
+        // HACK fixes bug where killing self or a tank to the left makes turn skip the next tank to the right
+        if (hitTank.playerNumber <= this.playerNumber) {
           console.log("kill left neighbor / skip right neighbor bug");
           game.currentPlayerIdx--;
         }
