@@ -12,8 +12,8 @@ const ALLOW_ROBOTS = false;
 if (!ALLOW_ROBOTS) {
   $("#num-robots-button").hide();
 }
-const TEST_MODE = false;
-// const TEST_MODE = true;
+// const TEST_MODE = false;
+const TEST_MODE = true;
 
 // GAME CONSTANTS
 const PLAYER_COLORS = [`#56EBC3`, `#A955EB`, `#97EB55`, `#55E2EB`, `#B8D81E`, `#EBC356`, `#1ED89B`, `#3E1ED8`, `#1DD75B`, `#1DD7D7`, `#D3E1FD`, color("papaya-whip"), color("fire-opal"), color("ruby"), color("black-coffee")];
@@ -66,13 +66,12 @@ const game = {
   },
   nextPlayersTurn: function () {
     // cycle thrugh remaing tanks in array
-
-    this.currentPlayerIdx += 1;
-    if (this.currentPlayerIdx >= this.tankObjects.length) {
-      this.currentPlayerIdx = 0;
+    let nextPlayerIdx = this.currentPlayerIdx + 1;
+    if (nextPlayerIdx >= this.tankObjects.length) {
+      nextPlayerIdx = 0;
     }
-
-    console.log(this.tankObjects);
+    this.currentPlayerIdx = nextPlayerIdx;
+    // console.log(this.tankObjects);
     setPlayerDisplay(this.tankObjects[this.currentPlayerIdx].playerNumber);
   },
 };
@@ -112,7 +111,7 @@ class Tank {
 
     // shot placements
     for (let i = 0; i < canvas.height * 10; i += 10) {
-      // cycle through tanks and check if explosion hit them
+      // cycle through tanks and check if explosion hit each
       for (let idx in game.tankObjects) {
         let tank = game.tankObjects[idx];
         let xProx = Math.abs(tank.x - thisShot.x);
@@ -127,11 +126,18 @@ class Tank {
       }
       if (hitTank) {
         hitTank.hitpoints--;
+
+        // HACK fixes bug where killing a tank to the left makes turn skip the next tank to the right
+        if (hitTank.playerNumber < this.playerNumber) {
+          console.log("kill left neighbor / skip right neighbor bug");
+          game.currentPlayerIdx--;
+        }
+
         // remove dead tanks from the array
         const livingTanks = game.tankObjects.filter((tank) => tank.hitpoints > 0);
         game.tankObjects = livingTanks;
         // TODO: this needs to decrement either computers or humans
-        game.numHumans--;
+        // game.numHumans--;
         refreshScreen();
         break;
       }
@@ -176,7 +182,6 @@ class Tank {
           SHOT_DELAY,
           function (layer) {
             // Callback function
-            // console.log("after shot move");
           }
         );
       }
@@ -301,7 +306,6 @@ const defineTerrain = function () {
   ctx.beginPath();
 
   let previousPoint = game.terrainArray[0];
-  // console.log(previousPoint);
   let nextPoint = [];
 
   // random hills
@@ -430,7 +434,6 @@ const dropNearbyTanks = function (thisShot) {
   // redrop all tanks
   for (let tank of game.tankObjects) {
     tank.dropSelf();
-    // console.log("drop every tank", tank);
   }
   refreshScreen();
 };
@@ -503,7 +506,7 @@ const offX = function (aPoint) {
 //////////////////////////////////////
 // DRAW PLAYERS
 const drawPlayers = function (ctx, tankObjects) {
-  for (let tank of game.tankObjects) {
+  for (let tank of tankObjects) {
     // TANK BODY
     ctx.beginPath();
     ctx.arc(tank.x, tank.y, tank.radius, Math.PI, Math.PI * 2);
@@ -557,7 +560,6 @@ const drawTurret = function (tank) {
 // ADJUST TURRET
 const adjustTurret = function (amount) {
   // TODO: rf send tank to adjust in a arg rather than changing
-  // console.log(game.tankObjects);
   let currentTank = game.tankObjects[game.currentPlayerIdx];
   let angle = currentTank.turret.angle + amount;
   if (angle < 0) {
@@ -618,10 +620,6 @@ const listenKeys = function (e) {
         $("#modal").modal("hide");
         break;
     }
-
-    if (game.tankObjects.length < 1) {
-      $("body").html(`<div style="width:100%;height:0;padding-bottom:71%;position:relative;"><iframe src="https://giphy.com/embed/kFgzrTt798d2w" width="100%" height="100%" style="position:absolute" frameBorder="0" allowFullScreen></iframe></div><p><a href="https://benhammondmusic.github.io/tanks">Never Gonna Give You Up</a></p>`);
-    }
   } else {
     // keyboard ctrls
     switch (e.code) {
@@ -674,9 +672,6 @@ const listenKeys = function (e) {
         loadModal();
         break;
     }
-    if (game.tankObjects.length < 1) {
-      $("body").html(`<div style="width:100%;height:0;padding-bottom:71%;position:relative;"><iframe src="https://giphy.com/embed/kFgzrTt798d2w" width="100%" height="100%" style="position:absolute" frameBorder="0" allowFullScreen></iframe></div><p><a href="https://benhammondmusic.github.io/tanks">Never Gonna Give You Up</a></p>`);
-    }
   }
 };
 
@@ -721,7 +716,11 @@ const handleClick = (e) => {
       if (getWinner()) {
         loadModal(`Player ${game.winningPlayer + 1} Is A Big Winner!`, "What Would You Like To Do?");
       } else {
+        // console.log({ currentTank }, "before turn change");
+        // console.log(game.currentPlayerIdx, "game currPlayIdx");
         game.nextPlayersTurn();
+        // console.log({ currentTank }, "after turn change");
+        // console.log(game.currentPlayerIdx, "game currPlayIdx");
       }
 
       break;

@@ -36,10 +36,9 @@ Animation was also problematic; converting my static drawing loops into smooth a
 - Terrain generation and drawing needs to be scoped out of game.newGame() to make **Change Terrain** button operational, and to allow **New Game** button to start play on existing terrain.
 - Display explosion AFTER shot lands
 - Modal flashes the Resume button on ENTER initial screen. ENTER functionality in general.
-- In multiplayer, sometimes the next tank in line is skipped when current tank fires a killing shot
-- Tank colors change when number of players reduced during multiplayer mode
+- In multiplayer, sometimes the next tank in line is skipped when current tank fires a killing shot to the tank to the left (and maybe other cases)
 - Animation timing in general
-- Mobile resizing / zooming / clicking
+- Mobile resizing / zooming / clicking. Disable double tap to zoom, etc.
 
 ## Future Ideas:
 
