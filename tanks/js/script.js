@@ -2,11 +2,6 @@
  TANKS! Ben Hammond
   */
 
-/* FORCE LANDSCAPE ON MOBILE with PLEASEROTATE.JS */
-PleaseRotateOptions = {
-  message: "Please Rotate Your Device And Then Reload Page",
-};
-
 // SET GAME MODES
 const ALLOW_ROBOTS = false;
 if (!ALLOW_ROBOTS) {
@@ -30,6 +25,11 @@ const DEFAULT_NUM_ROBOTS = 0;
 const GRAVITY = 0.06;
 const SHOT_DELAY = 0.05;
 const X_BOOSTER = 1.5;
+
+/* FORCE LANDSCAPE ON MOBILE with PLEASEROTATE.JS */
+PleaseRotateOptions = {
+  message: "Please Rotate Your Device And Then Reload Page",
+};
 
 const game = {
   // NEW GAME
@@ -141,7 +141,6 @@ class Tank {
         const livingTanks = game.tankObjects.filter((tank) => tank.hitpoints > 0);
         game.tankObjects = livingTanks;
         // TODO: this needs to decrement either computers or humans
-        // game.numHumans--;
         refreshScreen();
         break;
       }
@@ -231,7 +230,6 @@ const loadModal = function (strTitle, strMsg) {
   }
 
   $("#modal").modal("show");
-  // $("#modal").focus();
   $("#new-button").first().focus();
 };
 
@@ -247,9 +245,6 @@ function color(cssVar) {
 // CLEAR CANVAS
 const clrCanvas = function (ctx) {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // clear canvas
-
-  // using jCanvas
-  // $("#canvas").clearCanvas();
 };
 
 //////////////////////////////////////
@@ -319,12 +314,6 @@ const loadClouds = function () {
 //////////////////////////////////////
 // draws  stored terrain array
 const drawBackground = function () {
-  // SKY
-  // ctx.beginPath();
-  // ctx.rect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  // ctx.fillStyle = color("opal");
-  // ctx.fill();
-
   // Add SHADOWS TO EVERYTHING ON #CANVAS
   ctx.shadowColor = color("black-coffee");
   ctx.shadowBlur = 10;
@@ -350,13 +339,6 @@ const defineTerrain = function () {
   // random hills
   for (let i = 0; i < game.terrainArray.length; i++) {
     ctx.lineTo(game.terrainArray[i][0], game.terrainArray[i][1]);
-
-    // ATTEMPT CURVED GROUND, WAS GETTING WEIRD
-    // const ctrlX = game.terrainArray[i][0] - EXPLOSION_RADIUS;
-    // const ctrlY = game.terrainArray[i][1] - TANK_SIZE;
-    // const endX = game.terrainArray[i][0];
-    // const endY = game.terrainArray[i][1];
-    // ctx.quadraticCurveTo(ctrlX, ctrlY, endX, endY);
   }
   // connect polygon
   ctx.lineTo(canvas.width, canvas.height); // to bottom right corner
@@ -445,11 +427,6 @@ const destroyGround = function (thisShot) {
 
   // generate crater inner shape
   // TODO: add random jagged edges
-  //
-  // for (let i = 0; i<1;i++){
-
-  // }
-
   // random center depth
   crater.terrainArray.push([thisShot.x, thisShot.y + getRandomInt(TANK_SIZE, EXPLOSION_RADIUS + TANK_SIZE)]);
 
@@ -492,42 +469,6 @@ const dropItem = function (item) {
       break;
     }
   }
-
-  // ATTEMPT TO ANIMATE TANKS DROPPING INTO PLACE
-  // let startY = item.startY;
-  // let endY = item.y;
-  // // animate drop if it's a tank
-  // if (item instanceof Tank) {
-  //   $("#jcanvas").stopLayer(`dropTank${item.playerNumber}`);
-
-  //   $("#jcanvas")
-  //     .drawArc({
-  //       layer: true,
-  //       name: `dropTank${item.playerNumber}`,
-  //       fillStyle: "#c33",
-  //       x: item.x,
-  //       y: startY,
-  //       // y: 0,
-  //       radius: TANK_SIZE,
-  //     })
-  //     .animateLayer(
-  //       `dropTank${item.playerNumber}`,
-  //       {
-  //         y: endY,
-  //       },
-  //       {
-  //         // duration: 10,
-  //         step: function (now, fx, layer) {
-  //           // do something for each step of the animation
-  //           // console.log(layer.y, "y");
-  //           // console.log(now);
-  //         },
-  //         complete: function (layer) {
-  //           // still do something at end of animation
-  //         },
-  //       }
-  //     );
-  // }
 
   return item;
 };
@@ -760,12 +701,7 @@ const handleClick = (e) => {
       if (getWinner()) {
         loadModal(`Player ${game.winningPlayer + 1} Is A Big Winner!`, "What Would You Like To Do?");
       } else {
-        // console.log({ currentTank }, "before turn change");
-        // console.log(game.currentPlayerIdx, "game currPlayIdx");
         game.nextPlayersTurn();
-
-        // console.log({ currentTank }, "after turn change");
-        // console.log(game.currentPlayerIdx, "game currPlayIdx");
       }
 
       break;
@@ -781,12 +717,7 @@ const handleClick = (e) => {
       // show or hide player dropdowns
       $("#change-players-container").toggle();
       break;
-    // case "change-terrain-button":
-    // show or hide player dropdowns
-    // populate terrain array
-    // game.terrainArray = generateTerrain(canvas.width, canvas.height, TERRAIN_BUMPS, STEEPNESS);
-    // refreshScreen;
-    // break;
+
     case "options":
       $("#resume-button").show();
       loadModal();
@@ -818,7 +749,6 @@ const ctx = canvas.getContext("2d");
 const jcanvas = document.querySelector("#jcanvas");
 jcanvas.height = window.innerHeight;
 jcanvas.width = window.innerWidth;
-// const ctx = canvas.getContext("2d");
 
 // START GAME
 // newGame({num of humans}, {num of computer players})
@@ -832,9 +762,5 @@ document.onkeydown = listenKeys;
 $("body").click((e) => handleClick(e));
 // REDRAW GAME IF USER RESIZES WINDOW
 $(window).resize(function () {
-  // console.log($(window).width(), $(window).height());
-  // canvas.height = jcanvas.height = $(window).height();
-  // canvas.width = jcanvas.width = $(window).width();
-  // game.newGame(game.numHumansAtStart, game.numRobotsAtStart);
   location.reload(true);
 });
