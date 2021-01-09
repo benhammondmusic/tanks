@@ -25,9 +25,15 @@ tanks
 }
 
 body {
-  background-color: var(--papaya-whip);
+  /* background-color: var(--papaya-whip); */
+  background-color: transparent !important;
 }
-
+#canvasClouds {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: -1;
+}
 #canvas {
   position: absolute;
   left: 0px;
@@ -76,6 +82,8 @@ body {
   border-bottom: 10px solid var(--black-coffee);
   border-left: 10px solid var(--black-coffee);
   border-right: 10px solid var(--black-coffee);
+
+  /* background-color: transparent !important; */
 }
 #nav-title,
 #nav-text {

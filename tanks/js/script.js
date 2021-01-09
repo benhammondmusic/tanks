@@ -43,6 +43,7 @@ const game = {
     this.currentPlayerIdx = 0;
     this.winningPlayer = null;
 
+    clrCanvas(ctx);
     // set dom button to show number of current players at game-start
     $("#num-players-display").text(`: ${this.numHumansAtStart + this.numRobotsAtStart} Players`);
 
@@ -50,6 +51,8 @@ const game = {
     this.terrainArray = generateTerrain(canvas.width, canvas.height, TERRAIN_BUMPS, STEEPNESS);
 
     // DRAW SKY AND GROUND
+
+    loadClouds();
     drawBackground();
 
     // CREATE / RECREATE TANK OBJECTS
@@ -61,6 +64,8 @@ const game = {
       this.tankObjects.push(tank);
     }
 
+    setPlayerDisplay(this.tankObjects[this.currentPlayerIdx].playerNumber);
+
     // DRAW TANKS
     drawPlayers(ctx, this.tankObjects);
   },
@@ -71,7 +76,6 @@ const game = {
       nextPlayerIdx = 0;
     }
     this.currentPlayerIdx = nextPlayerIdx;
-    // console.log(this.tankObjects);
     setPlayerDisplay(this.tankObjects[this.currentPlayerIdx].playerNumber);
   },
 };
@@ -218,8 +222,8 @@ const loadModal = function (strTitle, strMsg) {
       <ul>
       <li>&leftarrow; &rightarrow;: Quickly Adjust Angle </li>
       <li>&uparrow; &downarrow;: Precisely Adjust Angle</li>
-      <li> SPACE BAR : FIRE!
-      <li> ESC KEY : OPTIONS
+      <li> SPACE BAR: FIRE!
+      <li> ESC KEY: OPTIONS
       </ul>
       
       `
@@ -287,13 +291,45 @@ const generateTerrain = function (width, height, numSlopes, steepnessPercent) {
 };
 
 //////////////////////////////////////
-// draws sky and stored terrain array
+// loads cloud image as persistent backdrop behind mountains
+const loadClouds = function () {
+  var canvasClouds = document.getElementById("canvasClouds");
+  canvasClouds.height = window.innerHeight;
+  canvasClouds.width = window.innerWidth;
+  var ctxClouds = canvasClouds.getContext("2d");
+  var img = new Image();
+  img.src = "../clouds.jpg";
+  img.onload = function () {
+    var pattern = ctxClouds.createPattern(img, "repeat");
+    ctxClouds.fillStyle = pattern;
+    ctxClouds.fillRect(0 - game.tankObjects.length * 40, 0, canvas.width + game.tankObjects.length * 40, canvas.height);
+  };
+
+  $("canvas").drawText({
+    fillStyle: color("papaya-whip"),
+    strokeStyle: color("papaya-whip"),
+    strokeWidth: 1,
+    x: canvas.width - 90,
+    y: 15,
+    fontSize: 16,
+    fontFamily: "Verdana, sans-serif",
+    text: "benhammond.tech",
+  });
+};
+//////////////////////////////////////
+// draws  stored terrain array
 const drawBackground = function () {
   // SKY
-  ctx.beginPath();
-  ctx.rect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  ctx.fillStyle = color("opal");
-  ctx.fill();
+  // ctx.beginPath();
+  // ctx.rect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  // ctx.fillStyle = color("opal");
+  // ctx.fill();
+
+  // Add SHADOWS TO EVERYTHING ON #CANVAS
+  ctx.shadowColor = color("black-coffee");
+  ctx.shadowBlur = 10;
+  ctx.shadowOffsetX = 4;
+  ctx.shadowOffsetY = 6;
 
   // BUILD GROUND SHAPE
   defineTerrain();
@@ -339,6 +375,10 @@ const showExplosion = function (thisShot, size) {
     fillStyle: color("fire-opal"),
     strokeStyle: color("papaya-whip"),
     strokeWidth: 1,
+    shadowColor: "#EBC356",
+    shadowBlur: 15,
+    shadowX: -2,
+    shadowY: -2,
   });
 
   // reset explosion values based on shot position
@@ -524,6 +564,7 @@ const drawPlayers = function (ctx, tankObjects) {
 
     // SECOND DARK OUTLINE
     ctx.beginPath();
+
     ctx.strokeStyle = color("black-coffee");
 
     ctx.arc(tank.x, tank.y, tank.radius + 4, Math.PI, Math.PI * 2);
@@ -722,6 +763,7 @@ const handleClick = (e) => {
         // console.log({ currentTank }, "before turn change");
         // console.log(game.currentPlayerIdx, "game currPlayIdx");
         game.nextPlayersTurn();
+
         // console.log({ currentTank }, "after turn change");
         // console.log(game.currentPlayerIdx, "game currPlayIdx");
       }

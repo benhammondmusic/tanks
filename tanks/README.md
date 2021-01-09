@@ -6,11 +6,11 @@ _"What goes up must come down..."_
 
 Players take turns lobbing projectiles; anyone sustaining a hit is destroyed. Last one standing wins!
 
-## Screenshot:
+## Screenshots/Wireframe:
+
+![Textured screenshot showing a sunset background and a bullet exploding in multiplayer mode](./screenshot-textured.png)
 
 ![Screenshot showing a tank exploding in multiplayer mode](./screenshot.png)
-
-## Initial Wireframe:
 
 ![Initial Hand Drawn Wireframe](./wireframe.jpg)
 
@@ -83,6 +83,7 @@ Animation was also problematic; converting my static drawing loops into smooth a
 - [Coolor.co - Color Palette Generator](http://www.coolors.co) - Make pretty colors that works together
 - [Canvas Clock Demo](http://www.dhtmlgoodies.com/tutorials/canvas-clock/) - Tells time.
 - [Keycode.info by Wes Bos](https://keycode.info/) - App to get key codes
+- [Goodfon.com Free Sunset Wallpaper](https://www.goodfon.com/)
 
 ## External Libraries
 
