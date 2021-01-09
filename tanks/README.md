@@ -87,8 +87,9 @@ Animation was also problematic; converting my static drawing loops into smooth a
 
 ## External Libraries
 
-- [KeyDrown.JS](https://jeremyckahn.github.io/keydrown/) - Library to speed up user held keys
-- [jCanvas](https://projects.calebevans.me/jcanvas/) - Library to use jQuery on HTML Canvas (easier animations)
+- [KeyDrown.JS](https://jeremyckahn.github.io/keydrown/) - Library to speed up user held keys.
+- [jCanvas.JS](https://projects.calebevans.me/jcanvas/) - Library to use jQuery on HTML Canvas (easier animations).
+- [PleaseRotate.JS](https://www.robscanlon.com/pleaserotate/) - Library to politely ask user to rotate phone to landscape.
 
 ## Install Instructions
 
