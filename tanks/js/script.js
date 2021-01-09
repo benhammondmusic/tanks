@@ -302,7 +302,7 @@ const loadClouds = function () {
   img.onload = function () {
     var pattern = ctxClouds.createPattern(img, "repeat");
     ctxClouds.fillStyle = pattern;
-    ctxClouds.fillRect(0 - game.tankObjects.length * 40, 0, canvas.width + game.tankObjects.length * 40, canvas.height);
+    ctxClouds.fillRect(0, 0, canvas.width, canvas.height);
   };
 
   $("canvas").drawText({
