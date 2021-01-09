@@ -732,7 +732,6 @@ const handleClick = (e) => {
     game.newGame(game.numHumansAtStart, 0);
     // rehide player dropdown in modal for next time
     $("#change-players-container").toggle();
-    // close modal
     $("#modal").modal("hide");
   } else if ($(e.target).hasClass("num-robots")) {
     // set number robots
@@ -751,7 +750,6 @@ jcanvas.height = window.innerHeight;
 jcanvas.width = window.innerWidth;
 
 // START GAME
-// newGame({num of humans}, {num of computer players})
 game.newGame(DEFAULT_NUM_HUMANS, DEFAULT_NUM_ROBOTS);
 if (!TEST_MODE) {
   loadModal();

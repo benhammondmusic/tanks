@@ -8,10 +8,13 @@ Players take turns lobbing projectiles; anyone sustaining a hit is destroyed. La
 
 ## Screenshots/Wireframe:
 
+_Most Recent Screenshot_
 ![Textured screenshot showing a sunset background and a bullet exploding in multiplayer mode](./screenshot-textured.png)
 
+_Progress Screenshot_
 ![Screenshot showing a tank exploding in multiplayer mode](./screenshot.png)
 
+_Initial Wireframe_
 ![Initial Hand Drawn Wireframe](./wireframe.jpg)
 
 ## Tech:
