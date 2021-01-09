@@ -83,6 +83,7 @@ const game = {
       this.currentPlayerIdx = 0;
     }
 
+    console.log(this.tankObjects);
     setPlayerDisplay(this.tankObjects[this.currentPlayerIdx].playerNumber);
   },
 };
@@ -138,7 +139,8 @@ class Tank {
       if (hitTank) {
         hitTank.hitpoints--;
         // remove dead tanks from the array
-        game.tankObjects = game.tankObjects.filter((tank) => tank.hitpoints > 0);
+        const livingTanks = game.tankObjects.filter((tank) => tank.hitpoints > 0);
+        game.tankObjects = livingTanks;
         // TODO: this needs to decrement either computers or humans
         game.numHumans--;
         refreshScreen();
@@ -725,12 +727,12 @@ const handleClick = (e) => {
     case "fire-button":
       refreshScreen();
       let currentTank = game.tankObjects[game.currentPlayerIdx];
-      game.nextPlayersTurn();
+
       currentTank.fire();
       if (getWinner()) {
         loadModal(`Player ${game.winningPlayer + 1} Is A Big Winner!`, "What Would You Like To Do?");
       } else {
-        //
+        game.nextPlayersTurn();
       }
 
       break;
