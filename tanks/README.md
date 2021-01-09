@@ -92,7 +92,7 @@ Animation was also problematic; converting my static drawing loops into smooth a
 
 ## Install Instructions
 
-- Visit the link below and play in Chrome browser with javascript enabled. Works best on a desktop computer using the keyboard, but limited mouse/touch integration also allows game play via mobile and other devices.
+- Visit the link below and play in Chrome browser with javascript enabled. Safari seems to work as well. Works best on a desktop computer using the keyboard, but limited mouse/touch integration also allows game play via mobile and other devices.
 
 ## App Demo
 
