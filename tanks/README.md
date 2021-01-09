@@ -43,6 +43,11 @@ Animation was also problematic; converting my static drawing loops into smooth a
 
 ## Future Ideas:
 
+- Install instructions (must use chrome with JavaScript. Better with keyboard)
+- Set max shot deltaX deltaY based on screen size
+- Split button on new-game to change num players
+- Save num players at start into local storage so game refresh will be same number players
+
 ### Graphics
 
 - Flatten terrain directly below tanks.
