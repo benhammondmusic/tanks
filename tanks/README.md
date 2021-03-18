@@ -17,13 +17,13 @@ Players take turns lobbing projectiles; anyone sustaining a hit is destroyed. La
 ## Tech:
 
     - HTML
-    - CSS / BOOTSTRAP
+    - CSS / Bootstrap
     - JavaScript / jQuery
-    - HTML Canvas
+    - HTML Canvas / jCanvas
 
 ## Approach:
 
-As a kid Tank Wars was an early favorite, and the simple yet compelling game play seemed perfect for my first JS project. Some initial googling of simple games introduced me to HTML Canvas as a well supported, well documented way to draw shapes and lines in the browser. It was important for me to get started quickly with a simple version, while also having the ability to make the game more complex and detailed if time allowed.
+As a kid Tank Wars was an early favorite, and the simple yet compelling game play seemed perfect for my first JS project. Some initial googling of simple games introduced me to HTML Canvas as a well supported, thoroughly documented way to draw shapes and lines in the browser. It was important for me to get started quickly with a simple version, while also having the ability to make the game more complex and detailed if time allowed.
 
 ## Challenges:
 
