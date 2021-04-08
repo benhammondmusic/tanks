@@ -293,7 +293,7 @@ const loadClouds = function () {
   canvasClouds.width = window.innerWidth;
   var ctxClouds = canvasClouds.getContext('2d');
   var img = new Image();
-  img.src = 'https://github.com/benhammondmusic/tanks/blob/main/clouds.jpg?raw=true';
+  img.src = 'https://raw.githubusercontent.com/benhammondmusic/tanks/main/clouds.jpg';
   img.onload = function () {
     var pattern = ctxClouds.createPattern(img, 'repeat');
     ctxClouds.fillStyle = pattern;
