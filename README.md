@@ -1,5 +1,7 @@
 # Tanks! by benhammond.tech
 
+> [Play the Game!](https://tanks-js.netlify.app/)
+
 ## Concept:
 
 _"What goes up must come down..."_
