@@ -1,14 +1,120 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ben Hammond GitHub Projects</title>
+    <meta name="viewport" id="viewport" content="minimum-scale=1.0,maximum-scale=1.0,initial-scale=1.0" />
+
+    <title>Tanks!</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous" />
+    <!-- GOOGLE FONT -->
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Text:wght@600&display=swap" rel="stylesheet" /> -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Allerta+Stencil&display=swap" rel="stylesheet" />
+    <!-- CSS -->
+    <link href="./css/style.css" rel="stylesheet" />
+    <!-- JQUERY -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- BOOTSTRAP -->
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <!-- JCANVAS ANIMATION LIBRARY -->
+    <script src="js/jcanvas.min.js"></script>
+    <!-- KEYDROWN LIBRARY DETECT HELD KEYS (for fast angle changes)-->
+    <script src="js/keydrown.min.js"></script>
+    <!-- PLEASE ROTATE JS LIBRARY -->
+    <script src="js/pleaserotate.min.js"></script>
+    <!-- JS -->
+    <script defer src="js/script.js"></script>
   </head>
-  <body>
-    Ben Hammond - Project Deployments
-    <ul>
-      <li><a href="./tanks">Tanks!</a></li>
-    </ul>
+  <body class="d-flex flex-column align-items-center">
+    <header>
+      <nav class="navbar navbar-light bg-light">
+        <form class="container-fluid justify-content-start">
+          <span id="nav-title" class="navbar-brand">TANKS!</span>
+          <!-- FLOATING ON-SCREEN BUTTONS FOR MOBILE/MOUSE GAMEPLAY -->
+          <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+            <div class="btn-group me-2" role="group" aria-label="Adjust angle group">
+              <button id="left-button" type="button" class="btn btn-outline-success">&leftarrow;</button>
+              <button id="right-button" type="button" class="btn btn-outline-success">&rightarrow;</button>
+              <button id="up-button" type="button" class="btn btn-outline-success">&uparrow;</button>
+              <button id="down-button" type="button" class="btn btn-outline-success">&downarrow;</button>
+            </div>
+            <div class="btn-group me-2" role="group" aria-label="Fire group">
+              <button id="fire-button" type="button" class="btn btn-outline-danger">SPACE BAR: FIRE!</button>
+              <!-- <button id="button-" type="button" class="btn btn-outline-danger">Shoot Far!!</button> -->
+            </div>
+
+            <div class="btn-group me-2" role="group" aria-label="Options group">
+              <!-- options Button trigger modal -->
+              <button type="button" class="btn btn-outline-primary" id="options">ESC: OPTIONS</button>
+            </div>
+          </div>
+          <span id="nav-text" class="navbar-text">READY PLAYER 1</span>
+        </form>
+      </nav>
+    </header>
+    <main class="d-flex flex-column align-items-center justify-content-center">
+      <div id="canvas-container">
+        <canvas id="canvasClouds"></canvas>
+        <canvas id="canvas"></canvas>
+        <canvas id="jcanvas"></canvas>
+      </div>
+
+      <!--MODAL FOR GAME START, GAME RESET, GAME OVER-->
+      <div class="modal fade" id="modal" data-bs-keyboard="true" tabindex="-1" aria-labelledby="Options" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modal-title">Options</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modal-message"></div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary btn-sm" id="resume-button" data-bs-dismiss="modal">Resume Game</button>
+              <button type="button" class="btn-sm btn btn-primary" id="new-button" data-bs-dismiss="modal" tabindex="0">New Game <span id="num-players-display"></span></button>
+
+              <button type="button" class="btn-sm btn btn-secondary" id="change-players-button">Change Players</button>
+              <!-- <button type="button" class="btn-sm btn btn-success" id="change-terrain-button" disabled>Change Terrain</button> -->
+
+              <!-- DIV AND BUTTONS HIDDEN TO START -->
+              <div id="change-players-container">
+                <!-- <label for="customRange3" class="form-label">How Many Humans</label>
+                <input type="range" class="form-range" min="2" max="10" step="01" id="" /> -->
+
+                <span class="dropdown">
+                  <button class="btn btn-warning dropdown-toggle" type="button" id="num-humans-button" data-bs-toggle="dropdown" aria-expanded="false">How Many Humans?</button>
+
+                  <ul class="dropdown-menu" aria-labelledby="num-humans-button">
+                    <!-- disabled 0,1 until robots work -->
+                    <!-- <li><button class="dropdown-item-humans" type="button" data-humans="0" disabled>0</button></li>
+                    <li><button class="dropdown-item-humans" type="button" data-humans="1" disabled>1</button></li> -->
+                    <li><button class="btn-sm btn btn-primary dropdown-item num-humans" type="button" data-humans="2">2</button></li>
+                    <li><button class="btn-sm btn btn-primary dropdown-item num-humans" type="button" data-humans="3">3</button></li>
+                    <li><button class="btn-sm btn btn-primary dropdown-item num-humans" type="button" data-humans="4">4</button></li>
+                    <li><button class="btn-sm btn btn-primary dropdown-item num-humans" type="button" data-humans="5">5</button></li>
+                    <li><button class="btn-sm btn btn-primary dropdown-item num-humans" type="button" data-humans="6">6</button></li>
+                    <li><button class="btn-sm btn btn-primary dropdown-item num-humans" type="button" data-humans="13">Too Many</button></li>
+                  </ul>
+                </span>
+
+                <span class="dropdown">
+                  <!-- HIDDEN FOR NOW UNTIL ADD ROBOT LOGIC -->
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="num-robots-button" data-bs-toggle="dropdown" aria-expanded="false">How Many Robots?</button>
+
+                  <ul class="dropdown-menu" aria-labelledby="num-robots-button">
+                    <li><button class="dropdown-item num-robots" type="button" data-robots="0">0</button></li>
+                    <li><button class="dropdown-item num-robots" type="button" data-robots="1">1</button></li>
+                    <li><button class="dropdown-item num-robots" type="button" data-robots="2">2</button></li>
+                    <li><button class="dropdown-item num-robots" type="button" data-robots="3">3</button></li>
+                    <li><button class="dropdown-item num-robots" type="button" data-robots="4">4</button></li>
+                  </ul>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer></footer>
   </body>
 </html>

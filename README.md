@@ -38,6 +38,7 @@ Animation was also problematic; converting my static drawing loops into smooth a
 
 ## Known Bugs and Wonkiness Being Fixed:
 
+- Stretch cloud image to fill screen regardless of screen width
 - Need to refactor and separate graphics from logic... they are too intertwined.
 - Terrain generation and drawing needs to be scoped out of game.newGame() to make **Change Terrain** button.operational, and to allow **New Game** button to start play on existing terrain.
 - Display explosion _after_ shot lands.
