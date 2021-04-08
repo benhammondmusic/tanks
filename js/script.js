@@ -5,13 +5,13 @@
 // SET GAME MODES
 const ALLOW_ROBOTS = false;
 if (!ALLOW_ROBOTS) {
-  $("#num-robots-button").hide();
+  $('#num-robots-button').hide();
 }
 const TEST_MODE = false;
 // const TEST_MODE = true;
 
 // GAME CONSTANTS
-const PLAYER_COLORS = [`#56EBC3`, `#A955EB`, `#97EB55`, `#55E2EB`, `#B8D81E`, `#EBC356`, `#1ED89B`, `#3E1ED8`, `#1DD75B`, `#1DD7D7`, `#D3E1FD`, color("papaya-whip"), color("fire-opal"), color("ruby"), color("black-coffee")];
+const PLAYER_COLORS = [`#56EBC3`, `#A955EB`, `#97EB55`, `#55E2EB`, `#B8D81E`, `#EBC356`, `#1ED89B`, `#3E1ED8`, `#1DD75B`, `#1DD7D7`, `#D3E1FD`, color('papaya-whip'), color('fire-opal'), color('ruby'), color('black-coffee')];
 const TURRET_INCREMENT = 0.5;
 const TANK_SIZE = 25;
 const EXPLOSION_RADIUS = 50;
@@ -28,7 +28,7 @@ const X_BOOSTER = 1.5;
 
 /* FORCE LANDSCAPE ON MOBILE with PLEASEROTATE.JS */
 PleaseRotateOptions = {
-  message: "Please Rotate Your Device And Then Reload Page",
+  message: 'Please Rotate Your Device And Then Reload Page',
 };
 
 const game = {
@@ -45,7 +45,7 @@ const game = {
 
     clrCanvas(ctx);
     // set dom button to show number of current players at game-start
-    $("#num-players-display").text(`: ${this.numHumansAtStart + this.numRobotsAtStart} Players`);
+    $('#num-players-display').text(`: ${this.numHumansAtStart + this.numRobotsAtStart} Players`);
 
     // populate terrain array
     this.terrainArray = generateTerrain(canvas.width, canvas.height, TERRAIN_BUMPS, STEEPNESS);
@@ -133,7 +133,7 @@ class Tank {
 
         // HACK fixes bug where killing self or a tank to the left makes turn skip the next tank to the right
         if (hitTank.playerNumber <= this.playerNumber) {
-          console.log("kill left neighbor / skip right neighbor bug");
+          console.log('kill left neighbor / skip right neighbor bug');
           game.currentPlayerIdx--;
         }
 
@@ -163,10 +163,10 @@ class Tank {
 
         // using jCanvas
         // start at old bullet spot, animate to new bullet spot
-        $("#jcanvas").drawRect({
+        $('#jcanvas').drawRect({
           layer: true,
-          name: "shot",
-          fillStyle: color("black-coffee"),
+          name: 'shot',
+          fillStyle: color('black-coffee'),
           x: oldShot.x,
           y: oldShot.y,
           width: 4,
@@ -174,8 +174,8 @@ class Tank {
         });
 
         // // Animate layer properties
-        $("#jcanvas").animateLayer(
-          "shot",
+        $('#jcanvas').animateLayer(
+          'shot',
           {
             x: thisShot.x,
             y: thisShot.y,
@@ -194,11 +194,11 @@ class Tank {
 
 // show user current player
 const setPlayerDisplay = function (playerNum) {
-  $("#nav-text").css("color", PLAYER_COLORS[playerNum]);
-  $(".navbar").css("border-bottom", `7px solid ${PLAYER_COLORS[playerNum]}`);
-  $(".navbar").css("border-left", `7px solid ${PLAYER_COLORS[playerNum]}`);
-  $(".navbar").css("border-right", `7px solid ${PLAYER_COLORS[playerNum]}`);
-  $("#nav-text").text(`READY PLAYER ${playerNum + 1}`);
+  $('#nav-text').css('color', PLAYER_COLORS[playerNum]);
+  $('.navbar').css('border-bottom', `7px solid ${PLAYER_COLORS[playerNum]}`);
+  $('.navbar').css('border-left', `7px solid ${PLAYER_COLORS[playerNum]}`);
+  $('.navbar').css('border-right', `7px solid ${PLAYER_COLORS[playerNum]}`);
+  $('#nav-text').text(`READY PLAYER ${playerNum + 1}`);
 };
 
 //////////////////////////////////////
@@ -207,14 +207,14 @@ const setPlayerDisplay = function (playerNum) {
 // resume button will be displayed if game is in progress
 const loadModal = function (strTitle, strMsg) {
   if (strTitle) {
-    $("#modal-title").text(strTitle);
+    $('#modal-title').text(strTitle);
   } else {
-    $("#modal-title").text(`Tanks! by benhammond.tech`);
+    $('#modal-title').text(`Tanks! by benhammond.tech`);
   }
   if (strMsg) {
-    $("#modal-message").html(strMsg);
+    $('#modal-message').html(strMsg);
   } else {
-    $("#modal-message").html(
+    $('#modal-message').html(
       `
       <p><em>What goes up, must come down.</em></p>
       <p>Take turns adjusting your turret angle and lobbing projectiles at one another. Tanks receiving a hit are eliminated; the last tank remaining is the winner!</p>
@@ -229,8 +229,8 @@ const loadModal = function (strTitle, strMsg) {
     );
   }
 
-  $("#modal").modal("show");
-  $("#new-button").first().focus();
+  $('#modal').modal('show');
+  $('#new-button').first().focus();
 };
 
 //////////////////////////////////////
@@ -288,34 +288,34 @@ const generateTerrain = function (width, height, numSlopes, steepnessPercent) {
 //////////////////////////////////////
 // loads cloud image as persistent backdrop behind mountains
 const loadClouds = function () {
-  var canvasClouds = document.getElementById("canvasClouds");
+  var canvasClouds = document.getElementById('canvasClouds');
   canvasClouds.height = window.innerHeight;
   canvasClouds.width = window.innerWidth;
-  var ctxClouds = canvasClouds.getContext("2d");
+  var ctxClouds = canvasClouds.getContext('2d');
   var img = new Image();
-  img.src = "http://www.benhammondmusic.com/tanks/clouds.jpg";
+  img.src = '../clouds.jpg';
   img.onload = function () {
-    var pattern = ctxClouds.createPattern(img, "repeat");
+    var pattern = ctxClouds.createPattern(img, 'repeat');
     ctxClouds.fillStyle = pattern;
     ctxClouds.fillRect(0, 0, canvas.width, canvas.height);
   };
 
-  $("canvas").drawText({
-    fillStyle: color("papaya-whip"),
-    strokeStyle: color("papaya-whip"),
+  $('canvas').drawText({
+    fillStyle: color('papaya-whip'),
+    strokeStyle: color('papaya-whip'),
     strokeWidth: 1,
     x: canvas.width - 90,
     y: 15,
     fontSize: 16,
-    fontFamily: "Verdana, sans-serif",
-    text: "benhammond.tech",
+    fontFamily: 'Verdana, sans-serif',
+    text: 'benhammond.tech',
   });
 };
 //////////////////////////////////////
 // draws  stored terrain array
 const drawBackground = function () {
   // Add SHADOWS TO EVERYTHING ON #CANVAS
-  ctx.shadowColor = color("black-coffee");
+  ctx.shadowColor = color('black-coffee');
   ctx.shadowBlur = 10;
   ctx.shadowOffsetX = 4;
   ctx.shadowOffsetY = 6;
@@ -324,7 +324,7 @@ const drawBackground = function () {
   defineTerrain();
 
   // THEN DRAW IT
-  ctx.fillStyle = color("black-coffee");
+  ctx.fillStyle = color('black-coffee');
   ctx.fill();
 };
 
@@ -351,22 +351,22 @@ const defineTerrain = function () {
 const showExplosion = function (thisShot, size) {
   // using jCanvas
   // draw static shape
-  $("#jcanvas").drawPolygon({
+  $('#jcanvas').drawPolygon({
     layer: true,
-    name: "explosion",
-    fillStyle: color("fire-opal"),
-    strokeStyle: color("papaya-whip"),
+    name: 'explosion',
+    fillStyle: color('fire-opal'),
+    strokeStyle: color('papaya-whip'),
     strokeWidth: 1,
-    shadowColor: "#EBC356",
+    shadowColor: '#EBC356',
     shadowBlur: 15,
     shadowX: -2,
     shadowY: -2,
   });
 
   // reset explosion values based on shot position
-  $("#jcanvas").stopLayer("explosion", true);
-  $("#jcanvas")
-    .setLayer("explosion", {
+  $('#jcanvas').stopLayer('explosion', true);
+  $('#jcanvas')
+    .setLayer('explosion', {
       radius: TANK_SIZE,
       x: thisShot.x,
       y: thisShot.y,
@@ -379,17 +379,17 @@ const showExplosion = function (thisShot, size) {
   // DELAY EXPLOSION ANIMATION BASED ON HOW UP TURRET IS (higher shots take longer)
   // TODO: better to delay this until shot has hit something. should fix
   let turretUpness = Math.sin(degreesToRadians(game.tankObjects[game.currentPlayerIdx].turret.angle)); // range 0-1
-  $("#jcanvas").delayLayer("explosion", turretUpness * EXPLOSION_DELAY);
+  $('#jcanvas').delayLayer('explosion', turretUpness * EXPLOSION_DELAY);
 
   // GROW
-  $("#jcanvas").animateLayer(
-    "explosion",
+  $('#jcanvas').animateLayer(
+    'explosion',
     {
       radius: EXPLOSION_RADIUS + size / 3,
       sides: 7,
       concavity: 0.9,
     },
-    "fast",
+    'fast',
     function (layer) {
       // Callback function: SHRINK
       $(this).animateLayer(
@@ -400,7 +400,7 @@ const showExplosion = function (thisShot, size) {
           concavity: 0.7,
         },
         EXPLOSION_DELAY * 2,
-        "swing"
+        'swing'
       );
     }
   );
@@ -498,7 +498,7 @@ const drawPlayers = function (ctx, tankObjects) {
     ctx.fillStyle = tank.color;
     ctx.fill();
     // LIGHT OUTLINE
-    ctx.strokeStyle = color("papaya-whip");
+    ctx.strokeStyle = color('papaya-whip');
     ctx.lineWidth = 3;
     ctx.closePath();
     ctx.stroke();
@@ -506,7 +506,7 @@ const drawPlayers = function (ctx, tankObjects) {
     // SECOND DARK OUTLINE
     ctx.beginPath();
 
-    ctx.strokeStyle = color("black-coffee");
+    ctx.strokeStyle = color('black-coffee');
 
     ctx.arc(tank.x, tank.y, tank.radius + 4, Math.PI, Math.PI * 2);
     ctx.closePath();
@@ -535,7 +535,7 @@ const drawTurret = function (tank) {
   ctx.moveTo(-1 * tank.radius, 0);
   ctx.lineTo(-1 * tank.turret.length + 5, 0);
   ctx.lineWidth = 2;
-  ctx.strokeStyle = color("papaya-whip");
+  ctx.strokeStyle = color('papaya-whip');
   ctx.stroke();
 
   ctx.restore();
@@ -580,35 +580,35 @@ const getWinner = function () {
 // https://keycode.info/ by WES BOS useful for extracting codes
 const listenKeys = function (e) {
   // when modal is open
-  if ($("#modal").hasClass("show")) {
+  if ($('#modal').hasClass('show')) {
     switch (e.code) {
-      case "ArrowLeft":
+      case 'ArrowLeft':
         e.preventDefault();
         refreshScreen();
         adjustTurret(TURRET_INCREMENT * -1);
         break;
-      case "ArrowRight":
+      case 'ArrowRight':
         e.preventDefault();
         refreshScreen();
         adjustTurret(TURRET_INCREMENT);
         break;
-      case "Enter":
+      case 'Enter':
         if (getWinner()) {
-          $("#resume-button").hide();
-          $("#new-button").click();
+          $('#resume-button').hide();
+          $('#new-button').click();
         } else {
-          $("#resume-button").show();
+          $('#resume-button').show();
         }
         loadModal();
         break;
-      case "Space":
-        $("#modal").modal("hide");
+      case 'Space':
+        $('#modal').modal('hide');
         break;
     }
   } else {
     // keyboard ctrls
     switch (e.code) {
-      case "ArrowLeft":
+      case 'ArrowLeft':
         // USE KEYDROWN.JS LIBRARY FOR SPEEDING UP WHEN KEY HELD
         kd.LEFT.down(function () {
           refreshScreen();
@@ -623,7 +623,7 @@ const listenKeys = function (e) {
           kd.tick();
         });
         break;
-      case "ArrowRight":
+      case 'ArrowRight':
         // USE KEYDROWN.JS LIBRARY FOR SPEEDING UP WHEN KEY HELD
         kd.RIGHT.down(function () {
           refreshScreen();
@@ -638,21 +638,21 @@ const listenKeys = function (e) {
           kd.tick();
         });
         break;
-      case "ArrowUp":
-        $("#up-button").click();
+      case 'ArrowUp':
+        $('#up-button').click();
         break;
-      case "ArrowDown":
-        $("#down-button").click();
+      case 'ArrowDown':
+        $('#down-button').click();
         break;
-      case "Space":
-        $("#fire-button").click();
+      case 'Space':
+        $('#fire-button').click();
         break;
-      case "Escape":
+      case 'Escape':
         if (getWinner()) {
-          $("#resume-button").hide();
-          $("#new-button").click();
+          $('#resume-button').hide();
+          $('#new-button').click();
         } else {
-          $("#resume-button").show();
+          $('#resume-button').show();
         }
         loadModal();
         break;
@@ -665,7 +665,7 @@ const listenKeys = function (e) {
 const handleClick = (e) => {
   // by #ID
   switch (e.target.id) {
-    case "up-button":
+    case 'up-button':
       // up arrow fine adjusts towards top of screen
       refreshScreen();
       let fineAdjustmentUp = 1;
@@ -674,7 +674,7 @@ const handleClick = (e) => {
       }
       adjustTurret(fineAdjustmentUp);
       break;
-    case "down-button":
+    case 'down-button':
       refreshScreen();
       // down arrow fine adjusts turret lower on whichever side it's on
       let fineAdjustmentDown = 1;
@@ -683,69 +683,69 @@ const handleClick = (e) => {
       }
       adjustTurret(fineAdjustmentDown);
       break;
-    case "left-button":
+    case 'left-button':
       // let mouseIsUp = false;
       refreshScreen();
       adjustTurret(-1 * 10 * TURRET_INCREMENT);
 
       break;
-    case "right-button":
+    case 'right-button':
       refreshScreen();
       adjustTurret(9 * TURRET_INCREMENT);
       break;
-    case "fire-button":
+    case 'fire-button':
       refreshScreen();
       let currentTank = game.tankObjects[game.currentPlayerIdx];
 
       currentTank.fire();
       if (getWinner()) {
-        loadModal(`Player ${game.winningPlayer + 1} Is A Big Winner!`, "What Would You Like To Do?");
+        loadModal(`Player ${game.winningPlayer + 1} Is A Big Winner!`, 'What Would You Like To Do?');
       } else {
         game.nextPlayersTurn();
       }
 
       break;
-    case "resume-button":
-      $("#resume-button").hide();
-      $("#modal").modal("hide");
+    case 'resume-button':
+      $('#resume-button').hide();
+      $('#modal').modal('hide');
       break;
-    case "new-button":
+    case 'new-button':
       const prevNumHumans = game.numHumansAtStart;
       game.newGame(prevNumHumans, 0);
       break;
-    case "change-players-button":
+    case 'change-players-button':
       // show or hide player dropdowns
-      $("#change-players-container").toggle();
+      $('#change-players-container').toggle();
       break;
 
-    case "options":
-      $("#resume-button").show();
+    case 'options':
+      $('#resume-button').show();
       loadModal();
       break;
   }
 
   // by .CLASS
-  if ($(e.target).hasClass("num-humans")) {
+  if ($(e.target).hasClass('num-humans')) {
     //set number of humans
-    game.numHumansAtStart = $(e.target).data("humans");
+    game.numHumansAtStart = $(e.target).data('humans');
     // might have to disable this once robots can play
     game.newGame(game.numHumansAtStart, 0);
     // rehide player dropdown in modal for next time
-    $("#change-players-container").toggle();
-    $("#modal").modal("hide");
-  } else if ($(e.target).hasClass("num-robots")) {
+    $('#change-players-container').toggle();
+    $('#modal').modal('hide');
+  } else if ($(e.target).hasClass('num-robots')) {
     // set number robots
-    game.numRobotsAtStart = $(e.target).data("robots");
+    game.numRobotsAtStart = $(e.target).data('robots');
   }
 };
 
 /// SCREEN LOAD
-const canvas = document.querySelector("#canvas");
+const canvas = document.querySelector('#canvas');
 canvas.height = window.innerHeight;
 canvas.width = window.innerWidth;
-const ctx = canvas.getContext("2d");
+const ctx = canvas.getContext('2d');
 
-const jcanvas = document.querySelector("#jcanvas");
+const jcanvas = document.querySelector('#jcanvas');
 jcanvas.height = window.innerHeight;
 jcanvas.width = window.innerWidth;
 
@@ -757,7 +757,7 @@ if (!TEST_MODE) {
 
 // USER INPUT
 document.onkeydown = listenKeys;
-$("body").click((e) => handleClick(e));
+$('body').click((e) => handleClick(e));
 // REDRAW GAME IF USER RESIZES WINDOW
 $(window).resize(function () {
   location.reload(true);
