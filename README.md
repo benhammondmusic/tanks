@@ -103,7 +103,7 @@ Animation was also problematic; converting my static drawing loops into smooth a
 
 <!-- - [Play Game](http://www.benhammondmusic.com/tanks/) -->
 
-<!-- - [Play Game on GitHub Pages](https://benhammondmusic.github.io/tanks)
-- [Mirror Link to Play Game](http://benhammondmusic.com/tanks/) -->
+- [Play Game on GitHub Pages](https://benhammondmusic.github.io/tanks)
+<!--- [Mirror Link to Play Game](http://benhammondmusic.com/tanks/) -->
 
 - [Source Code on GitHub](https://github.com/benhammondmusic/benhammondmusic.github.io/tree/main/tanks)
