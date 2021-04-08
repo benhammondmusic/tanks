@@ -295,7 +295,7 @@ const loadClouds = function () {
   var img = new Image();
   img.src = '/clouds.jpg';
   img.onload = function () {
-    var pattern = ctxClouds.createPattern(img, 'repeat');
+    var pattern = ctxClouds.createPattern(img, 'no-repeat');
     ctxClouds.fillStyle = pattern;
     ctxClouds.fillRect(0, 0, canvas.width, canvas.height);
   };
