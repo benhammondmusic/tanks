@@ -299,21 +299,21 @@ const loadClouds = function () {
     ctxClouds.fillStyle = pattern;
     ctxClouds.fillRect(0, 0, canvas.width, canvas.height);
   };
-
-  $('canvas').drawText({
-    fillStyle: color('papaya-whip'),
-    strokeStyle: color('papaya-whip'),
-    strokeWidth: 1,
-    x: canvas.width - 90,
-    y: 15,
-    fontSize: 16,
-    fontFamily: 'Verdana, sans-serif',
-    text: 'benhammond.tech',
-  });
 };
 //////////////////////////////////////
 // draws  stored terrain array
 const drawBackground = function () {
+  $('canvas').drawText({
+    fillStyle: color('black-coffee'),
+    strokeStyle: color('fire-opal'),
+    strokeWidth: 1,
+    x: canvas.width - 90,
+    y: canvas.height - 15,
+    fontSize: 12,
+    fontFamily: 'Verdana, sans-serif',
+    text: 'benhammond.tech',
+  });
+
   // Add SHADOWS TO EVERYTHING ON #CANVAS
   ctx.shadowColor = color('black-coffee');
   ctx.shadowBlur = 10;
