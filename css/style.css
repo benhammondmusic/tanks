@@ -25,8 +25,11 @@ tanks
 }
 
 body {
-  /* background-color: var(--papaya-whip); */
-  background-color: transparent !important;
+  /* background-color: transparent !important; */
+  background-image: url('../clouds.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 100vh;
 }
 #canvasClouds {
   position: absolute;
@@ -62,7 +65,7 @@ body {
 #nav-text,
 #modal-title,
 .btn {
-  font-family: "Allerta Stencil", sans-serif;
+  font-family: 'Allerta Stencil', sans-serif;
 }
 
 /* FOR PLEASE ROTATE SCREEN */

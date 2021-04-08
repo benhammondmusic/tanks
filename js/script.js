@@ -52,7 +52,7 @@ const game = {
 
     // DRAW SKY AND GROUND
 
-    loadClouds();
+    // loadClouds(); // this is now set as CSS background on <body>
     drawBackground();
 
     // CREATE / RECREATE TANK OBJECTS
