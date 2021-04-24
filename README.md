@@ -99,6 +99,10 @@ Animation was also problematic; converting my static drawing loops into smooth a
 - [jCanvas.JS](https://projects.calebevans.me/jcanvas/) - Library to use jQuery on HTML Canvas (easier animations).
 - [PleaseRotate.JS](https://www.robscanlon.com/pleaserotate/) - Library to politely ask user to rotate phone to landscape.
 
+## Blog
+
+Read more at [blog.benhammond.tech](https://blog.benhammond.tech/tanks)
+
 ## Install Instructions
 
 - Visit the link below and play in Chrome browser with javascript enabled. Safari seems to work as well. Works best on a desktop computer using the keyboard, but limited mouse/touch integration also allows game play via mobile and other devices.
