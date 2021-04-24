@@ -2,6 +2,8 @@
 
 > [Play the Game!](https://tanks-js.netlify.app/)
 
+![Screen recording showing game play](./tanks-short.gif)
+
 ## Concept:
 
 _"What goes up must come down..."_
